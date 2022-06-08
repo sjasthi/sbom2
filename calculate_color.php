@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once('initialize.php');
 /*To clear colors in database:
 UPDATE `sbom` SET `color`= ''
@@ -17,7 +17,7 @@ function exist($key, $array){
 //compares two sql fields and returns list of node colors
 function color($sql1, $sql2){
 	$colors = array();
-	for ($i=0; $i < count($sql1); $i++) { 
+	for ($i=0; $i < count($sql1); $i++) {
 		$app = exist($sql1[$i][1], $sql2);
 		$cmp = exist($sql2[$i][1], $sql1);
 		$colors[$i] = colorize($app, $cmp);
@@ -50,8 +50,8 @@ function rowArray($sql){
 }
 
 //create color array
-$sql1 = "SELECT row_id, app_id from sbom;";
-$sql2 = "SELECT row_id, cmp_id from sbom;";
+$sql1 = "SELECT line_id, app_id from apps_components;";
+$sql2 = "SELECT line_id, cmpt_id from apps_components;";
 $result1 = $db->query($sql1);
 $result2 = $db->query($sql2);
 $resultCompare1 = rowArray($result1);
@@ -75,35 +75,35 @@ $color = color($resultCompare1, $resultCompare2);
 // $index = 0;
 
 // //populate output table
-// while($row1 = mysqli_fetch_array($result1)){ 
+// while($row1 = mysqli_fetch_array($result1)){
 // 	$row2 = mysqli_fetch_array($result2);
 // 	$appId = $row1['app_id'];
 // 	$cmpId = $row2['cmp_id'];
-	
-// 	echo '<tr><td align="left">' . 
+
+// 	echo '<tr><td align="left">' .
 // 	$row1['app_id'] . '</td><td align="left">' .
 // 	$row2['cmp_id'] . '</td><td align="left">' .
-// 	"$color[$index]" . 
+// 	"$color[$index]" .
 // 	'<td></td></tr>';
 // 	$index++;
 // }
 // echo '</table>';
 
 //create list of database row Id to insert colors correctly
-$sql1 = "SELECT row_id from sbom;";
+$sql1 = "SELECT line_id from apps_components;";
 $result1 = $db->query($sql1);
 $rowId = array();
 while($row = mysqli_fetch_array($result1)){
-	array_push($rowId, $row['row_id']);
+	array_push($rowId, $row['line_id']);
 }
 
-//update color fields in database
-$index = 0;
-foreach ($color as $c) {
-	$row = $rowId[$index];
-	$sql = "UPDATE sbom SET color = '$c' where row_id = '$row'";
-	mysqli_query($db, $sql);
-	$index++;
-}
+// //update color fields in database
+// $index = 0;
+// foreach ($color as $c) {
+// 	$row = $rowId[$index];
+// 	$sql = "UPDATE apps_components SET color = '$c' where line_id = '$row'";
+// 	mysqli_query($db, $sql);
+// 	$index++;
+// }
 
 ?>
