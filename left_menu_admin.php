@@ -28,6 +28,14 @@
       echo 'class="menu-left-current-page"';
     } ?>>
     <img src="./images/image36.png" alt="Import File" width="50">
+    </br>Import Bom (Do Not Use)</br></div>
+  </a>
+
+  <a href="admin_import_bom_2.php">
+    <div <?php if($left_selected == "IMPORTBOM") {
+      echo 'class="menu-left-current-page"';
+    } ?>>
+    <img src="./images/image36.png" alt="Import File" width="50">
     </br>Import Bom</br></div>
   </a>
 </div>

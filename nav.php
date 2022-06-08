@@ -44,11 +44,11 @@
               <br/>Software BOM</li>
             </a>
 
-            <a href="index.php">
+            <!-- <a href="index.php">
               <li <?php if($nav_selected == "HOME"){ echo 'class="current-page"'; } ?>>
               <img src="./images/home.png">
               <br/>Home</li>
-            </a>
+            </a> -->
 
             <a href="releases_releases_list.php">
               <li <?php if($nav_selected == "RELEASES"){ echo 'class="current-page"'; } ?>>
@@ -100,11 +100,40 @@
                 <br/>Setup</li>
             </a>
 
-            <a href="help.php">
+            <!-- <a href="help.php">
               <li <?php if($nav_selected == "HELP"){ echo 'class="current-page"'; } ?>>
                 <img src="./images/help.png">
                 <br/>help</li>
-            </a>
+            </a> -->
+
+            <?php
+            if(isset($_SESSION['login_user'])) {
+              echo '
+              <a href="logout.php">
+              <li <?php if($nav_selected == "LOGOUT"){ echo "class="current-page""; } ?>
+                <img src="./images/login.png">
+                <br/>logout</li>
+              </a>';
+            }else {
+              echo '
+              <a href="login.php">
+              <li <?php if($nav_selected == "LOGIN"){ echo "class="current-page""; } ?>
+                <img src="./images/login.png">
+                <br/>login</li>
+              </a>';
+            }
+            ?>
+
+            <?php
+            if(isset($_SESSION['admin'])) {
+              echo '
+              <a href="admin_users.php">
+                <li <?php if($nav_selected == "ABOUT"){ echo "class="current-page""; } ?>
+                  <img src="./images/admin.png">
+                  <br/>Admin</li>
+              </a>';
+            }
+            ?>
 
       </ul>
       <br />
