@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 09, 2022 at 12:54 AM
+-- Generation Time: Jun 10, 2022 at 02:07 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.12
 
@@ -24,12 +24,34 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `applications`
+--
+
+CREATE TABLE `applications` (
+  `app_id` varchar(15) NOT NULL,
+  `app_name` varchar(100) NOT NULL,
+  `app_version` varchar(30) NOT NULL,
+  `app_status` varchar(10) NOT NULL,
+  `is_eol` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `applications`
+--
+
+INSERT INTO `applications` (`app_id`, `app_name`, `app_version`, `app_status`, `is_eol`) VALUES
+('76074884', 'LTS JSON L', '9.9', 'Approved', 0),
+('944965237', 'Techno Com', '6.9', 'Approved', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `apps_components`
 --
 
 CREATE TABLE `apps_components` (
   `line_id` int(10) NOT NULL,
-  `product_id` varchar(10) NOT NULL,
+  `red_app_id` varchar(10) NOT NULL,
   `cmpt_id` varchar(10) NOT NULL,
   `cmpt_name` varchar(100) NOT NULL,
   `cmpt_version` varchar(50) NOT NULL,
@@ -48,7 +70,7 @@ CREATE TABLE `apps_components` (
 -- Dumping data for table `apps_components`
 --
 
-INSERT INTO `apps_components` (`line_id`, `product_id`, `cmpt_id`, `cmpt_name`, `cmpt_version`, `app_id`, `app_name`, `app_version`, `license`, `status`, `requester`, `monitoring_id`, `monitoring_digest`, `issue_count`) VALUES
+INSERT INTO `apps_components` (`line_id`, `red_app_id`, `cmpt_id`, `cmpt_name`, `cmpt_version`, `app_id`, `app_name`, `app_version`, `license`, `status`, `requester`, `monitoring_id`, `monitoring_digest`, `issue_count`) VALUES
 (1, '76074884', '77960664', 'Unicode for C Sharp (Unicode4C)', '67.9', '77956767', 'LTS JSON L', '9.9', 'Unicode License V7', 'Approved', 'Tierra Von', '76654', 'na', 0),
 (2, '76074884', '77960664', 'Unicode for C Sharp (Unicode4C)', '67.9', '77956767', 'LTS JSON L', '9.9', 'Unicode License V7', 'Approved', 'Tierra Von', '76654', 'na', 0),
 (3, '76074884', '69676777', 'kassandra/xerces-c', '6.7.7', '77956767', 'LTS JSON L', '9.9', 'kassandra License 7.0', 'Approved', 'Tierra Von', '48023', 'na', 9),
@@ -403,6 +425,12 @@ INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `hash`, `active`,
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `applications`
+--
+ALTER TABLE `applications`
+  ADD PRIMARY KEY (`app_id`);
 
 --
 -- Indexes for table `apps_components`
