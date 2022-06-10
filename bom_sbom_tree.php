@@ -1,12 +1,11 @@
 <?php
-  echo'v1';
-
   $nav_selected = "BOM";
   $left_buttons = "YES";
   $left_selected = "SBOMTREE";
+
   include("./nav.php");
   include "get_scope.php";
-  
+
   //Get DB Credentials
   $DB_SERVER = constant('DB_SERVER');
   $DB_NAME = constant('DB_NAME');
@@ -18,7 +17,7 @@
   $cookie_name = 'preference';
 
   $def = "false";
-  $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
+  // $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
   $scopeArray = array();
 
   //Grabs default app_ids that are to be shown in the default scope
@@ -73,7 +72,7 @@
         $app_version = $row_parent["version"];
         $class = $row_parent["class"];
         $app_status = $row_parent["status"];
-        $div_class = $row_parent["div_class"];
+        // $div_class = $row_parent["div_class"];
         $p_id = $p;
         $app_id = "NONE";
 
@@ -92,7 +91,7 @@
             <td >".$app_version."</td><td class='text-capitalize'>".$app_status."</td><td/><td/><td/><td/></tr>";
           }
        } else {
-        echo "<tbody class= '".$div_class."'>
+        echo "<tbody class= ''>
         <tr data-tt-id = '".$p_id."' ><td class='text-capitalize'>
         <div class = 'btn ".$class."' ><span class = 'app_name' style = 'max-width: 160em; white-space: pre-wrap; word-wrap: break-word; word-break: break-all;'>".$app_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
         <td >".$app_version."</td><td class='text-capitalize'>".$app_status."</td><td/><td/><td/><td/></tr>";
@@ -100,12 +99,12 @@
         $p++;
 
         // output data of child
-        $sql_child = "SELECT DISTINCT cmp_name as cmpname, cmp_type, cmp_version as cmpver, request_step,cmp_status, request_status, notes,
-        CASE WHEN cmp_name in (select distinct app_name
-          from sbom where app_name = cmpname and app_version = cmpver) THEN 'child'
+        $sql_child = "SELECT DISTINCT cmpt_name as cmpname, cmpt_version as cmpver, status,
+        CASE WHEN cmpt_name in (select distinct app_name
+          from sbom_db.apps_components where app_name = cmpname and app_version = cmpver) THEN 'child'
         ELSE 'grandchild'
         END AS class
-          from sbom where app_name = '".$app_name."' and app_version = '".$app_version."' and app_status = '".$app_status."'";
+          from sbom_db.apps_components where app_name = '".$app_name."' and app_version = '".$app_version."' and status = '".$app_status."'";
         $result_child = $db->query($sql_child);
 
         if ($result_child->num_rows > 0) {
@@ -113,26 +112,23 @@
           while($row_child = $result_child->fetch_assoc()) {
             $cmp_name = $row_child["cmpname"];
             $cmp_version = $row_child["cmpver"];
-            $cmp_status = $row_child["cmp_status"];
-            $request_step = $row_child["request_step"];
-            $request_status = $row_child["request_status"];
-            $cmp_type = $row_child["cmp_type"];
-            $notes = $row_child["notes"];
-            $c_class = $row_child["class"];
+            $cmp_status = $row_child["status"];
+            // $request_step = $row_child["request_step"];
+            // $request_status = $row_child["request_status"];
+            // $cmp_type = $row_child["cmp_type"];
+            // $notes = $row_child["notes"];
+            // $c_class = $row_child["class"];
             $c_id=$p_id."-".$c;
             echo "<tr data-tt-id = '".$c_id."' data-tt-parent-id='".$p_id."' class = 'component' >
-            <td class='text-capitalize'> <div class = 'btn ".$c_class."'> <span class = 'cmp_name'>".$cmp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
+            <td class='text-capitalize'> <div class = 'btn'> <span class = 'cmp_name'>".$cmp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
             <td class = 'cmp_version'>".$cmp_version."</td>
-            <td class='text-capitalize'>".$cmp_status."</td>
-            <td class='text-capitalize'>".$cmp_type."</td>
-            <td class='text-capitalize'>".$request_status."</td>
-            <td class='text-capitalize'>".$request_step."</td>
-            <td class='text-capitalize'>".$notes."</td></tr>";
+            <td class='text-capitalize'>".$cmp_status."</td>";
+
             $c++;
 
             // output data of grandchild
-            $sql_gchild = "SELECT DISTINCT  cmp_name, cmp_type, cmp_version, request_step, cmp_status, request_status, notes, 'grandchild' as class
-            from sbom
+            $sql_gchild = "SELECT DISTINCT  cmpt_name, cmpt_version, status, 'grandchild' as class
+            from sbom_db.apps_components
             where app_name = '".$cmp_name."' and app_version = '".$cmp_version."' ;";
 
             $result_gchild = $db->query($sql_gchild);
@@ -176,11 +172,11 @@
   //get all BOMS
   function getAllBoms($db) {
     $sql_parent = "SELECT DISTINCT app_name as name,
-      app_version as version, app_status as status, color as div_class,
-      CASE WHEN app_name in (select distinct cmp_name
-        from sbom where cmp_version = version and cmp_name = name) THEN 'child'
+      app_version as version, status,
+      CASE WHEN app_name in (select distinct cmpt_name
+        from sbom_db.apps_components where cmpt_version = version and cmpt_name = name) THEN 'child'
       ELSE 'parent'
-      END AS class from sbom
+      END AS class from sbom_db.apps_components
       GROUP BY name, version, status";
       $starttime = microtime(true);
       getBoms($db, $sql_parent);
@@ -245,7 +241,7 @@
 </nav>
   <div>
     <h4 id="loading-text">Loading...</h4>
-    <div class="h4" id="responsive-wrapper" style="opacity: 0.0;">
+    <div class="h4" id="responsive-wrapper" style="">
       <table id = "bom_treetable" >
         <thead class = 'h4'>
           <th style="width:50%" >Name</th>
@@ -290,8 +286,8 @@
               <?php
               $def = "true";
               $sql_parent = "SELECT DISTINCT app_name as name, app_id, app_version as version, app_status as status, color as div_class,
-              CASE WHEN app_name in (select distinct cmp_name from sbom where cmp_version = version and cmp_name = name) THEN 'child' ELSE 'parent' END AS class
-              from sbom
+              CASE WHEN app_name in (select distinct cmp_name from sbom_db.apps_components where cmp_version = version and cmp_name = name) THEN 'child' ELSE 'parent' END AS class
+              from sbom_db.apps_components
               group by name, version, status;";
               getFilterArray($db);
               $starttime = microtime(true);
@@ -310,10 +306,10 @@
                               '' as notes,
                               color as div_class,
                               CASE WHEN app_name in (select distinct cmp_name
-                                from sbom where cmp_version = version and cmp_name = name) THEN 'child'
+                                from sbom_db.apps_components where cmp_version = version and cmp_name = name) THEN 'child'
                               ELSE 'parent'
                               END AS class
-                              from sbom
+                              from sbom_db.apps_components
                               where app_id = '".$getAppId."'
                               group by name, version, status;";
 
@@ -332,10 +328,10 @@
                               '' as notes,
                               color as div_class,
                               CASE WHEN app_name in (select distinct cmp_name
-                                from sbom where cmp_version = version and cmp_name = name) THEN 'child'
+                                from sbom_db.apps_components where cmp_version = version and cmp_name = name) THEN 'child'
                               ELSE 'parent'
                               END AS class
-                              from sbom
+                              from sbom_db.apps_components
                               where app_name = '".$getAppName."'
                               and app_version = '".$getAppVer."'
                               group by name, version, status;";
@@ -355,9 +351,9 @@
               $sql = "SELECT DISTINCT app_name as name,
                 app_version as version, app_status as status, color as div_class,
                 CASE WHEN app_name in (select distinct cmp_name
-                  from sbom where cmp_version = version and cmp_name = name) THEN 'child'
+                  from sbom_db.apps_components where cmp_version = version and cmp_name = name) THEN 'child'
                 ELSE 'parent'
-                END AS class from sbom
+                END AS class from sbom_db.apps_components
                 WHERE app_id IN (".$prep.")
                 group by name, version, status;";
 
@@ -385,10 +381,10 @@
                 // output data of child
                 $sql_child = "SELECT DISTINCT cmp_name as cmpname, cmp_type, cmp_version as cmpver, request_step,cmp_status, request_status, notes,
                 CASE WHEN cmp_name in (select distinct app_name
-                  from sbom where app_name = cmpname and app_version = cmpver) THEN 'child'
+                  from sbom_db.apps_components where app_name = cmpname and app_version = cmpver) THEN 'child'
                 ELSE 'grandchild'
                 END AS class
-                  from sbom where app_name = '".$app_name."' and app_version = '".$app_version."' and app_status = '".$app_status."'";
+                  from sbom_db.apps_components where app_name = '".$app_name."' and app_version = '".$app_version."' and app_status = '".$app_status."'";
                 $result_child = $db->query($sql_child);
 
                 if ($result_child->num_rows > 0) {
@@ -415,7 +411,7 @@
 
                     // output data of grandchild
                     $sql_gchild = "SELECT DISTINCT  cmp_name, cmp_type, cmp_version, request_step, cmp_status, request_status, notes, 'grandchild' as class
-                    from sbom
+                    from sbom_db.apps_components
                     where app_name = '".$cmp_name."' and app_version = '".$cmp_version."' ;";
 
                     $result_gchild = $db->query($sql_gchild);

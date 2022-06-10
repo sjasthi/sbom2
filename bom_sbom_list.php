@@ -3,8 +3,8 @@
   $left_buttons = "YES";
   $left_selected = "SBOMLIST";
 
-  include "get_scope.php";
   include("./nav.php");
+  include "get_scope.php";
 
   //Get DB Credentials
   $DB_SERVER = constant('DB_SERVER');
@@ -15,7 +15,7 @@
   $pdo = new PDO("mysql:host=$DB_SERVER;dbname=$DB_NAME", $DB_USER, $DB_PASS);
 
   $def = "false";
-  $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
+  // $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
   $scopeArray = array();
 
   require_once('calculate_color.php');
@@ -28,30 +28,20 @@
 
   /*----------------- FUNCTION TO GET BOMS -----------------*/
   function getBoms($db) {
-    $sql = "SELECT * from sbom;";
+    $sql = "SELECT * from apps_components;";
     $result = $db->query($sql);
 
     if ($result->num_rows > 0) {
       // output data of each row
       while($row = $result->fetch_assoc()) {
         echo '<tr>
-          <td>'.$row["row_id"].'</td>
+          <td>'.$row["line_id"].'</td>
           <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
           <td>'.$row["app_name"].'</td>
           <td>'.$row["app_version"].'</td>
-          <td>'.$row["cmp_id"].' </span> </td>
-          <td>'.$row["cmp_name"].'</td>
-          <td>'.$row["cmp_version"].'</td>
-          <td>'.$row["cmp_type"].' </span> </td>
-          <td>'.$row["app_status"].' </span> </td>
-          <td>'.$row["cmp_status"].' </span> </td>
-          <td>'.$row["request_id"].'</td>
-          <td>'.$row["request_date"].'</td>
-          <td>'.$row["request_status"].'</td>
-          <td>'.$row["request_step"].'</td>
-          <td>'.$row["notes"].' </span> </td>
-          <td>'.$row["requestor"].'</td>
-          <td>'.$row["color"].'</td>
+          <td>'.$row["cmpt_id"].' </span> </td>
+          <td>'.$row["cmpt_name"].'</td>
+          <td>'.$row["cmpt_version"].'</td>
         </tr>';
       }//end while
     }//end if
@@ -134,16 +124,6 @@
             <th>CMP ID</th>
             <th>CMP Name</th>
             <th>CMP Version</th>
-            <th>CMP Type</th>
-            <th>App Status</th>
-            <th>CMP Status</th>
-            <th>Request ID</th>
-            <th>Request Date</th>
-            <th>Request Status</th>
-            <th>Request Step</th>
-            <th>Notes</th>
-            <th>Requester</th>
-            <th>Color</th>
           </tr>
         </thead>
       <tbody>
@@ -222,16 +202,6 @@
           <th>CMP ID</th>
           <th>CMP Name</th>
           <th>CMP Version</th>
-          <th>CMP Type</th>
-          <th>App Status</th>
-          <th>CMP Status</th>
-          <th>Request ID</th>
-          <th>Request Date</th>
-          <th>Request Status</th>
-          <th>Request Step</th>
-          <th>Notes</th>
-          <th>Requester</th>
-          <th>Color</th>
         </tr>
       </tfoot>
       </table>
