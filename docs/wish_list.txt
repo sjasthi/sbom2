@@ -1,8 +1,3 @@
-
-Alligators will be doing APIs and Chatbot.
-
-Bears will be doing reports
-
 [a] Schema for "applications" table
 
 app_id, app_name, app_version, app_status, is_eol
@@ -17,7 +12,7 @@ is_eol
 
 [b] Schema for 'ownership'
 
-app_name (primary key), app_type, foss_contact, app_owner, team_name, ownership_type, owning_bu
+app_name (primary key), app_type,  foss_contact, app_owner, team_name, ownership_type, owning_org
 
 app_name:
 * same as the app_name in "applications" table. 
