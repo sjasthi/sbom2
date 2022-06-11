@@ -36,7 +36,8 @@
     if ($result->num_rows > 0) {
       // output data of each row
       while($row = $result->fetch_assoc()) {
-        echo '<tr>
+				echo '<tr>
+					/*
           <td>'.$row["row_id"].'</td>
           <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
           <td>'.$row["app_name"].'</td>
@@ -54,6 +55,16 @@
           <td>'.$row["notes"].' </span> </td>
           <td>'.$row["requestor"].'</td>
           <td>'.$row["color"].'</td>
+					*/
+					<td>'.$row["line_id"].'</td>
+          <td>'.$row["cmpt_id"].' </span> </td>
+          <td>'.$row["cmpt_name"].'</td>
+          <td>'.$row["cmpt_version"].'</td>
+          <td>'.$row["cmpt_type"].' </span> </td>
+          <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
+          <td>'.$row["app_name"].'</td>
+          <td>'.$row["app_version"].'</td>
+          <td>'.$row["requestor"].'</td>
         </tr>';
       }//end while
     }//end if
@@ -128,7 +139,8 @@
           class="datatable table table-striped table-bordered datatable-style table-hover"
           width="100%" style="width: 100px;">
           <thead>
-            <tr id="table-first-row">
+						<tr id="table-first-row">
+							/*
               <th>Row ID</th>
               <th>App ID</th>
               <th>App Name</th>
@@ -145,7 +157,17 @@
               <th>Request Step</th>
               <th>Notes</th>
               <th>Requester</th>
-              <th>Color</th>
+							<th>Color</th>
+							*/
+              <th>Line ID</th>
+              <th>Component ID</th>
+              <th>Component Name</th>
+              <th>Component Version</th>
+              <th>Component Type</th>
+              <th>Application ID</th>
+              <th>Application Name</th>
+              <th>Application Version</th>
+              <th>Requester</th>
             </tr>
           </thead>
         <tbody>
@@ -178,7 +200,8 @@
             $pref->execute(json_decode($_COOKIE[$cookie_name]));
 
             while($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-              echo '<tr>
+							echo '<tr>
+								/*
                 <td>'.$row["row_id"].'</td>
                 <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
                 <td>'.$row["app_name"].'</td>
@@ -195,7 +218,17 @@
                 <td>'.$row["request_step"].'</td>
                 <td>'.$row["notes"].' </span> </td>
                 <td>'.$row["requestor"].'</td>
-                <td>'.$row["color"].'</td>
+								<td>'.$row["color"].'</td>
+								*/
+					      <td>'.$row["line_id"].'</td>
+						    <td>'.$row["cmpt_id"].' </span> </td>
+                <td>'.$row["cmpt_name"].'</td>
+							  <td>'.$row["cmpt_version"].'</td>
+                <td>'.$row["cmpt_type"].' </span> </td>
+                <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
+                <td>'.$row["app_name"].'</td>
+                <td>'.$row["app_version"].'</td>
+                <td>'.$row["requestor"].'</td>
               </tr>';
             }
           }//if no preference cookie is set but user clicks "show my BOMS"
@@ -216,7 +249,8 @@
         ?>
         </tbody>
         <tfoot>
-          <tr>
+					<tr>
+						/*
             <th>Row ID</th>
             <th>App ID</th>
             <th>App Name</th>
@@ -233,7 +267,17 @@
             <th>Request Step</th>
             <th>Notes</th>
             <th>Requester</th>
-            <th>Color</th>
+						<th>Color</th>
+						*/
+            <th>Line ID</th>
+            <th>Component ID</th>
+            <th>Component Name</th>
+            <th>Component Version</th>
+            <th>Component Type</th>
+            <th>Application ID</th>
+            <th>Application Name</th>
+            <th>Application Version</th>
+            <th>Requester</th>
           </tr>
         </tfoot>
         </table>
