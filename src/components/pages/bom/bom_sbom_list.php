@@ -30,7 +30,7 @@
 
   /*----------------- FUNCTION TO GET BOMS -----------------*/
   function getBoms($db) {
-    $sql = "SELECT * from sbom;";
+    $sql = "SELECT * from apps_components;";
     $result = $db->query($sql);
 
     if ($result->num_rows > 0) {
