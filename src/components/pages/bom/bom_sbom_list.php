@@ -30,13 +30,13 @@
 
   /*----------------- FUNCTION TO GET BOMS -----------------*/
   function getBoms($db) {
-    $sql = "SELECT * from apps_components;";
+    $sql = "SELECT * from sbom;";
     $result = $db->query($sql);
 
     if ($result->num_rows > 0) {
       // output data of each row
       while($row = $result->fetch_assoc()) {
-					/*
+				echo '<tr>
           <td>'.$row["row_id"].'</td>
           <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
           <td>'.$row["app_name"].'</td>
@@ -54,16 +54,6 @@
           <td>'.$row["notes"].' </span> </td>
           <td>'.$row["requester"].'</td>
           <td>'.$row["color"].'</td>
-					*/
-				echo '<tr>
-					<td>'.$row["line_id"].'</td>
-          <td>'.$row["cmpt_id"].' </span> </td>
-          <td>'.$row["cmpt_name"].'</td>
-          <td>'.$row["cmpt_version"].'</td>
-          <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
-          <td>'.$row["app_name"].'</td>
-          <td>'.$row["app_version"].'</td>
-          <td>'.$row["requester"].'</td>
         </tr>';
       }//end while
     }//end if
@@ -139,14 +129,23 @@
           width="100%" style="width: 100px;">
           <thead>
 						<tr id="table-first-row">
-              <th>Line ID</th>
-              <th>Component ID</th>
-              <th>Component Name</th>
-              <th>Component Version</th>
-              <th>Application ID</th>
-              <th>Application Name</th>
-              <th>Application Version</th>
+              <th>Row ID</th>
+              <th>App ID</th>
+              <th>App Name</th>
+              <th>App Version</th>
+              <th>CMP ID</th>
+              <th>CMP Name</th>
+              <th>CMP Version</th>
+              <th>CMP Type</th>
+              <th>App Status</th>
+              <th>CMP Status</th>
+              <th>Request ID</th>
+              <th>Request Date</th>
+              <th>Request Status</th>
+              <th>Request Step</th>
+              <th>Notes</th>
               <th>Requester</th>
+              <th>Color</th>
             </tr>
           </thead>
         <tbody>
@@ -179,7 +178,7 @@
             $pref->execute(json_decode($_COOKIE[$cookie_name]));
 
             while($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-								/*
+							echo '<tr>
                 <td>'.$row["row_id"].'</td>
                 <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
                 <td>'.$row["app_name"].'</td>
@@ -197,16 +196,6 @@
                 <td>'.$row["notes"].' </span> </td>
                 <td>'.$row["requester"].'</td>
 								<td>'.$row["color"].'</td>
-								*/
-							echo '<tr>
-					      <td>'.$row["line_id"].'</td>
-						    <td>'.$row["cmpt_id"].' </span> </td>
-                <td>'.$row["cmpt_name"].'</td>
-							  <td>'.$row["cmpt_version"].'</td>
-                <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
-                <td>'.$row["app_name"].'</td>
-                <td>'.$row["app_version"].'</td>
-                <td>'.$row["requester"].'</td>
               </tr>';
             }
           }//if no preference cookie is set but user clicks "show my BOMS"
@@ -228,14 +217,21 @@
         </tbody>
         <tfoot>
 					<tr>
-            <th>Line ID</th>
-            <th>Component ID</th>
-            <th>Component Name</th>
-            <th>Component Version</th>
-            <th>Application ID</th>
-            <th>Application Name</th>
-            <th>Application Version</th>
-            <th>Requester</th>
+            <th>Row ID</th>
+            <th>App ID</th>
+            <th>App Name</th>
+            <th>App Version</th>
+            <th>CMP ID</th>
+            <th>CMP Name</th>
+            <th>CMP Version</th>
+            <th>CMP Type</th>
+            <th>App Status</th>
+            <th>CMP Status</th>
+            <th>Request ID</th>
+            <th>Request Date</th>
+            <th>Request Status</th>
+            <th>Request Step</th>
+            <th>Notes</th>
           </tr>
         </tfoot>
         </table>
