@@ -36,7 +36,6 @@
     if ($result->num_rows > 0) {
       // output data of each row
       while($row = $result->fetch_assoc()) {
-				echo '<tr>
 					/*
           <td>'.$row["row_id"].'</td>
           <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
@@ -56,6 +55,7 @@
           <td>'.$row["requestor"].'</td>
           <td>'.$row["color"].'</td>
 					*/
+				echo '<tr>
 					<td>'.$row["line_id"].'</td>
           <td>'.$row["cmpt_id"].' </span> </td>
           <td>'.$row["cmpt_name"].'</td>
@@ -200,7 +200,6 @@
             $pref->execute(json_decode($_COOKIE[$cookie_name]));
 
             while($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-							echo '<tr>
 								/*
                 <td>'.$row["row_id"].'</td>
                 <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
@@ -220,6 +219,7 @@
                 <td>'.$row["requestor"].'</td>
 								<td>'.$row["color"].'</td>
 								*/
+							echo '<tr>
 					      <td>'.$row["line_id"].'</td>
 						    <td>'.$row["cmpt_id"].' </span> </td>
                 <td>'.$row["cmpt_name"].'</td>
