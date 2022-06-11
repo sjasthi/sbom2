@@ -60,7 +60,6 @@
           <td>'.$row["cmpt_id"].' </span> </td>
           <td>'.$row["cmpt_name"].'</td>
           <td>'.$row["cmpt_version"].'</td>
-          <td>'.$row["cmpt_type"].' </span> </td>
           <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
           <td>'.$row["app_name"].'</td>
           <td>'.$row["app_version"].'</td>
@@ -144,7 +143,6 @@
               <th>Component ID</th>
               <th>Component Name</th>
               <th>Component Version</th>
-              <th>Component Type</th>
               <th>Application ID</th>
               <th>Application Name</th>
               <th>Application Version</th>
@@ -205,7 +203,6 @@
 						    <td>'.$row["cmpt_id"].' </span> </td>
                 <td>'.$row["cmpt_name"].'</td>
 							  <td>'.$row["cmpt_version"].'</td>
-                <td>'.$row["cmpt_type"].' </span> </td>
                 <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
                 <td>'.$row["app_name"].'</td>
                 <td>'.$row["app_version"].'</td>
@@ -235,7 +232,6 @@
             <th>Component ID</th>
             <th>Component Name</th>
             <th>Component Version</th>
-            <th>Component Type</th>
             <th>Application ID</th>
             <th>Application Name</th>
             <th>Application Version</th>
