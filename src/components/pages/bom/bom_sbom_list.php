@@ -52,7 +52,7 @@
           <td>'.$row["request_status"].'</td>
           <td>'.$row["request_step"].'</td>
           <td>'.$row["notes"].' </span> </td>
-          <td>'.$row["requestor"].'</td>
+          <td>'.$row["requester"].'</td>
           <td>'.$row["color"].'</td>
 					*/
 				echo '<tr>
@@ -63,7 +63,7 @@
           <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
           <td>'.$row["app_name"].'</td>
           <td>'.$row["app_version"].'</td>
-          <td>'.$row["requestor"].'</td>
+          <td>'.$row["requester"].'</td>
         </tr>';
       }//end while
     }//end if
@@ -195,7 +195,7 @@
                 <td>'.$row["request_status"].'</td>
                 <td>'.$row["request_step"].'</td>
                 <td>'.$row["notes"].' </span> </td>
-                <td>'.$row["requestor"].'</td>
+                <td>'.$row["requester"].'</td>
 								<td>'.$row["color"].'</td>
 								*/
 							echo '<tr>
@@ -206,7 +206,7 @@
                 <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
                 <td>'.$row["app_name"].'</td>
                 <td>'.$row["app_version"].'</td>
-                <td>'.$row["requestor"].'</td>
+                <td>'.$row["requester"].'</td>
               </tr>';
             }
           }//if no preference cookie is set but user clicks "show my BOMS"
