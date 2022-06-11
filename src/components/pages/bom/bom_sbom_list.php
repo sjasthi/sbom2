@@ -140,25 +140,6 @@
           width="100%" style="width: 100px;">
           <thead>
 						<tr id="table-first-row">
-							/*
-              <th>Row ID</th>
-              <th>App ID</th>
-              <th>App Name</th>
-              <th>App Version</th>
-              <th>CMP ID</th>
-              <th>CMP Name</th>
-              <th>CMP Version</th>
-              <th>CMP Type</th>
-              <th>App Status</th>
-              <th>CMP Status</th>
-              <th>Request ID</th>
-              <th>Request Date</th>
-              <th>Request Status</th>
-              <th>Request Step</th>
-              <th>Notes</th>
-              <th>Requester</th>
-							<th>Color</th>
-							*/
               <th>Line ID</th>
               <th>Component ID</th>
               <th>Component Name</th>
@@ -250,25 +231,6 @@
         </tbody>
         <tfoot>
 					<tr>
-						/*
-            <th>Row ID</th>
-            <th>App ID</th>
-            <th>App Name</th>
-            <th>App Version</th>
-            <th>CMP ID</th>
-            <th>CMP Name</th>
-            <th>CMP Version</th>
-            <th>CMP Type</th>
-            <th>App Status</th>
-            <th>CMP Status</th>
-            <th>Request ID</th>
-            <th>Request Date</th>
-            <th>Request Status</th>
-            <th>Request Step</th>
-            <th>Notes</th>
-            <th>Requester</th>
-						<th>Color</th>
-						*/
             <th>Line ID</th>
             <th>Component ID</th>
             <th>Component Name</th>
