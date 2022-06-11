@@ -30,7 +30,7 @@
                $_SESSION['admin'] = "It is working";
             }
             
-            header("location: index.php");
+            header("location: ../../../../index.php");
          }else {
             $error = "Your Login Name or Password is invalid";
          }

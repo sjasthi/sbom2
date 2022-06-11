@@ -46,7 +46,8 @@
           <?php
             include "src/components/header/header.php";
 
-            if( !isset( $nav_selected ) ) {
+            // header changes the nav_selected to an empty string
+            if( $nav_selected === '' ) {
               echo '<h3> Welcome to Software Bill Of Materials </h3>';
             }
           ?>
