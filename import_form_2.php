@@ -1,4 +1,4 @@
-<form id="importform" action="admin_import_bom.php" method="post">
+<form id="importform" action="admin_import_bom_2.php" method="post">
 <h4>Column Mapping for: <span style='color: red;'><?php echo $_FILES["file"]["name"]?></span></h4>
 <div class="group">
   <label for="red_app_id">Red App ID:</label>

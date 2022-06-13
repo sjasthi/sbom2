@@ -433,20 +433,20 @@
          $monitoring_digest, $issue_count);
 
        foreach ($data as $row) {
-            $red_app_id = $row[$red_app_id];
-            $cmpt_id = $row[$cmpt_id];
-            $cmpt_name = $row[$cmpt_name];
-            $cmpt_version = $row[$cmpt_version];
-            $app_id = $row[$app_id];
-            $app_name = $row[$app_name];
-            $app_version = $row[$app_version];
-            $license = $row[$license];
-            $status = $row[$status];
-            $requester = $row[$requester];
-            $description = $row[$description];
-            $monitoring_id = $row[$monitoring_id];
-            $monitoring_digest = $row[$monitoring_digest];
-            $issue_count = $row[$issue_count];
+            $red_app_id = $row[$red_app_id_col];
+            $cmpt_id = $row[$cmpt_id_col];
+            $cmpt_name = $row[$cmpt_name_col];
+            $cmpt_version = $row[$cmpt_version_col];
+            $app_id = $row[$app_id_col];
+            $app_name = $row[$app_name_col];
+            $app_version = $row[$app_version_col];
+            $license = $row[$license_col];
+            $status = $row[$status_col];
+            $requester = $row[$requester_col];
+            $description = $row[$description_col];
+            $monitoring_id = $row[$monitoring_id_col];
+            $monitoring_digest = $row[$monitoring_digest_col];
+            $issue_count = $row[$issue_count_col];
        }
        /* 
        $sqlinsert->bind_param('sssssssssssssss', $app_id, $app_name, $app_version,
