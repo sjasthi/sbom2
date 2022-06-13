@@ -65,27 +65,26 @@
     <h2 style = "color: #01B0F1;">Admin --> Import BOM</h2>
     <div id='list'>
       <p>Before importing a file, please make sure the file is a <span style="font-weight: bold;">CSV</span>
-      file with these <span style="font-weight: bold;">15 </span>columns:<br></p>
+      file with these <span style="font-weight: bold;">14 </span>columns:<br></p>
       <ul>
-              <li>App ID</li>
-              <li>App Name</li>
-              <li>App Version</li>
+              <li>Red Application ID</li>
               <li>Component ID</li>
-              <li>Component name</li>
-      </ul>
-      <ul>
+              <li>Component Name</li>
               <li>Component Version</li>
-              <li>Component Type</li>
-              <li>App Status</li>
-              <li>Component Status</li>
-              <li>Request ID</li>
+              <li>Application ID</li>
       </ul>
       <ul>
-              <li>Request Date</li>
-              <li>Request Status</li>
-              <li>Request Step</li>
-              <li>Requestor</li>
-              <li>Notes</li>
+              <li>Application Name</li>
+              <li>Application Version</li>
+              <li>License</li>
+              <li>Status</li>
+              <li>Requester</li>
+      </ul>
+      <ul>
+              <li>Description</li>
+              <li>Monitoring ID</li>
+              <li>Monitoring Digest</li>
+              <li>Issue Count</li>
       </ul>
     </div>
     <form enctype="multipart/form-data" method="POST" role="form">
@@ -139,9 +138,9 @@
   
         if(FALSE !== $handle) {
             $row = fgetcsv($handle, 1000, ',');
-            if(count($row) < 15) {
+            if(count($row) < 14) {
               echo "<p style='color: white; background-color: red; font-weight: bold; width: 500px;
-              text-align: center; border-radius: 2px;'>FILE CAN'T HAVE LESS THAN 15 COLUMNS</p>";
+              text-align: center; border-radius: 2px;'>FILE CAN'T HAVE LESS THAN 14 COLUMNS</p>";
             }else {
               //function to populate options with headers from uploaded file
               function file_options($row) {
@@ -314,7 +313,7 @@
                   file_options($row);
                 }
               }
-              include('import_form.php');
+              include('import_form_2.php');
             }
         }
       }
@@ -475,7 +474,6 @@
                $sqlinsert->execute();
          }
        */
-echo "WHAT THE FUCK!?"
          if(!$sqlinsert->execute()) {
            echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
          }else {
