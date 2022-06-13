@@ -25,6 +25,7 @@ h3,
 {
     color: var( --color-page-title );
     margin-bottom: 20px;
+    margin-top: 0;
 }
 
 div.container {

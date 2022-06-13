@@ -122,7 +122,6 @@
           padding: 1rem;'>Show All BOMS</button>
       </form>
 
-      <h3><img src="../../../assets/images/sbom_list.png"  style="max-height: 35px;" />BOM List</h3>
       <div class="table-container">
         <table id="info" cellpadding="0" cellspacing="0" border="0"
           class="datatable table table-striped table-bordered datatable-style table-hover"

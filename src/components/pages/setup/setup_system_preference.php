@@ -32,7 +32,7 @@
 </head>
 
 <div class="wrap">
-  <h2 style = "color: #01B0F1;">Setup --> System Preferences</h2>
+  <h3>Setup --> System Preferences</h3>
 
   <table id = "apps">
     <caption>System Scope Applications<caption>
@@ -79,24 +79,12 @@
   if($logRow["value"] == "true"){
     echo "<br/>Logging is enabled<br/>";
     echo "<form id='disable-form' name='disable-form' method='post' action=''>
-    <button type='submit' name='disable' value='submit'
-    style='background: #01B0F1;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 1rem;
-      margin-right: 1rem;'>Disable Logging</button>
+    <button type='submit' name='disable' value='submit'>Disable Logging</button>
     </form>";
   } else {
     echo "<br/>Logging is disabled<br/>";
     echo "<form id='enable-form' name='enable-form' method='post' action=''>
-    <button type='submit' name='enable' value='submit'
-    style='background: #01B0F1;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 1rem;
-      margin-right: 1rem;'>Enable Logging</button>
+    <button type='submit' name='enable' value='submit'>Enable Logging</button>
     </form>";
   }
 

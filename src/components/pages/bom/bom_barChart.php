@@ -154,8 +154,7 @@
     <body>
         <div class="right-content">
             <div class="container">
-                <h3 style = "color: #01B0F1;">BOM --> Bar Chart.</h3>
-                <h3><img src="../../../assets/images/reports.png" style="max-height: 35px;" /> Bar Chart</h3>
+                <h3>BOM --> Bar Chart.</h3>
             </div>
         </div>
         <div class="container">

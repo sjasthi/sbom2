@@ -152,11 +152,6 @@
 
 <div class="right-content">
     <h3> BOM --> Pie Chart. </h3>
-
-    <h3>
-        <img src="../../../assets/images/reports.png" style="max-height: 35px;" />
-        Pie Chart
-    </h3>
 </div>
 <div class="container">
     <div class="table-container center unset">
