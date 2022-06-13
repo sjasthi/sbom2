@@ -1,0 +1,20 @@
+
+/* forms */
+form fieldset {
+    display: grid;
+}
+
+#app-form a,
+#app-form a.btn
+{
+    color: var( --color-tab-selected );
+}
+
+form button {
+    color: var( --color-button-text );
+    background: var( --color-button );
+    border: none;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    padding: 1rem;
+}

@@ -1,0 +1,19 @@
+
+/* TREE STRUCTURE */
+.grandchild,
+.child,
+.parent {
+  border-radius: 30px;
+}
+
+.grandchild {
+  background: #66cc66;
+}
+
+.child {
+  background: #ffff66;
+}
+
+.parent {
+  background: #ff6666;
+}

@@ -1,0 +1,127 @@
+
+<ul id="HEADER">
+    <?php
+        function checkSelectedTab( $tab ) {
+            // if the tab you selected matches the page
+            if( $tab === $GLOBALS['nav_selected'] ) {
+                return 'current-page';
+            }
+
+            return '';
+        }
+
+        function checkSelectedLink( $tab, $path ) {
+            if( $GLOBALS['nav_selected'] !== $tab ) {
+                return $path;
+            } else {
+                return '#';
+            }
+        }
+
+        function checkSelectedLeftMenuLink( $tab, $path ) {
+            if( $GLOBALS['left_selected'] !== $tab ) {
+                return $path;
+            } else {
+                return "#";
+            }
+        }
+
+        echo
+            '<a href="'.checkSelectedLink( "", $indexPath.'index.php' ).'">
+                <li class="logo '.checkSelectedTab( "" ).'">';
+        include $assetsPath.'svg/structure.svg';
+        echo '
+                    <h1> SOFTWARE BOM </h1>
+                </li>
+            </a>';
+    ?>
+
+    <span class="links">
+        <?php
+            echo
+                '<a href="'.checkSelectedLink( "RELEASES", $componentsPath.'pages/releases/releases_releases_list.php' ).'">
+                    <li class="'.checkSelectedTab( "RELEASES" ).'">';
+            include $assetsPath.'svg/releases.svg';
+            echo
+                        '<h2> RELEASES </h2>
+                    </li>
+                </a>';
+            
+            echo
+                '<a href="'.checkSelectedLink( "APPLICATIONS", $componentsPath.'pages/applications/applications_page.php' ).'">
+                    <li class="'.checkSelectedTab( "APPLICATIONS" ).'">';
+            include $assetsPath.'svg/applications.svg';
+            echo
+                        '<h2> APPLICATIONS </h2>
+                    </li>
+                </a>';
+
+            echo 
+                '<a href="'.checkSelectedLink( "BOM", $componentsPath.'pages/bom/bom_sbom_list.php' ).'">
+                    <li class="'.checkSelectedTab( "BOM" ).'">';
+            include $assetsPath.'svg/bom.svg';
+            echo
+                        '<h2> BOM </h2>
+                    </li>
+                </a>';
+
+            echo
+                '<a href="'.checkSelectedLink( "SETUP", $componentsPath.'pages/setup/setup_system_preference.php' ).'">
+                    <li class="'.checkSelectedTab( "SETUP" ).'">';
+            include $assetsPath.'svg/tools.svg';
+            echo
+                        '<h2> SETUP </h2>
+                    </li>
+                </a>';
+
+            echo
+                '<a href="'.checkSelectedLink( "REPORTS", $componentsPath.'pages/reports/reports.php' ).'">
+                    <li class="'.checkSelectedTab( "REPORTS" ).'">';
+            include $assetsPath.'svg/chart.svg';
+            echo
+                        '<h2> REPORTS </h2>
+                    </li>
+                </a>';
+
+            echo
+                '<a href="'.checkSelectedLink( "HELP", $componentsPath.'pages/help/help.php' ).'">
+                    <li class="'.checkSelectedTab( "HELP" ).'">';
+            include $assetsPath.'svg/help.svg';
+            echo
+                        '<h2> HELP </h2>
+                    </li>
+                </a>';
+
+            if( isset( $_SESSION['admin'] ) ) {
+                echo
+                    '<a href="'.checkSelectedLink( "ADMIN", $componentsPath.'pages/admin/admin_users.php' ).'">
+                        <li class="'.checkSelectedTab( "ADMIN" ).'">';
+                include $assetsPath.'svg/admin.svg';
+                echo
+                            '<h2> ADMIN </h2>
+                        </li>
+                    </a>';
+            }
+
+            if( isset( $_SESSION['login_user'] ) ) { // logout will never have a selected state.
+                echo 
+                    '<a href="'.$componentsPath.'pages/login/logout.php">
+                        <li>';
+                include $assetsPath.'svg/logout.svg';
+                echo
+                            '<h2> LOGOUT </h2>
+                        </li>
+                    </a>';
+            } else {
+                echo
+                    '<a href="'.checkSelectedLink( "LOGIN", $componentsPath.'pages/login/login.php' ).'">
+                        <li class="'.checkSelectedTab( "LOGIN" ).'">';
+                include $assetsPath.'svg/login.svg';
+                echo
+                            '<h2> LOGIN </h2>
+                        </li>
+                    </a>';
+            }
+        ?>
+    </span>
+</ul>
