@@ -114,7 +114,7 @@
           if($query_component_children->num_rows > 0){
             displayComponents($db, $comp_id, $query_component_children, $comp_table_id);
           }
-
+          $query_component_children->close();
           $c++;
         }
       }
@@ -178,9 +178,11 @@
             if($query_component_children->num_rows > 0){
               displayComponents($db, $comp_id, $query_component_children, $comp_table_id);
             }
+            $query_component_children->close();
             $c++;
           }
         }
+        $query_components->close();
         $p_id++;
       }
     }
