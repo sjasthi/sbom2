@@ -57,70 +57,36 @@
  </style>
 
 <?php
-  // Function to show the application components and their dependencies
-  function displayComponents($db, $parent_id, $parent_component_query, $parent_table_id) {
-    $c = 1;
+  // Function to show the components and their dependencies
+  function displayComponents($db, $parent_component_query, $parent_table_id) {
+    $parent_c = 1;
     while($component = $parent_component_query->fetch_assoc()){
       $comp_id = $component["cmpt_id"];
       $comp_name = $component["cmpt_name"];
       $comp_version = $component["cmpt_version"];
       $comp_status = $component["status"];
-      // $comp_request_step = $component["request_step"];
-      // $request_status = $component["request_status"];
-      // $cmp_type = $component["cmp_type"];
       $comp_description = $component["description"];
-      // $comp_class = $component["class"];
-      $comp_table_id=$parent_id."-".$c;
+      $comp_table_id=$parent_table_id."-".$parent_c;
 
-      echo "<tr data-tt-id = '".$comp_table_id."' data-tt-parent-id='".$p_id."' class = 'component' >
-      <td class='text-capitalize'> <div class = 'btn child'> <span class = 'cmp_name'>".$comp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
+      $sql_components = "
+        SELECT * FROM apps_components
+        WHERE app_id = '".$comp_id."'
+      ";
+      $query_component_children = $db->query($sql_components);
+      $has_children = $query_component_children->num_rows > 0;
+      $comp_color = ($has_children)?"child":"grandchild";
+
+
+      echo "<tr data-tt-id = '".$comp_table_id."' data-tt-parent-id='".$parent_table_id."' class = 'component' >
+      <td class='text-capitalize'> <div class = 'btn ".$comp_color."'> <span class = 'cmp_name'>".$comp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
       <td class = 'cmp_version'>".$comp_version."</td>
       <td class='text-capitalize'>".$comp_status."</td>
       <td class='text-capitalize'>".$comp_description."</td></tr>";
 
-      $sql_components = "
-        SELECT * FROM apps_components
-        WHERE app_id = '".$app_id."'
-      ";
-      $query_components = $db->query($sql_components);
-      if($query_components->num_rows > 0){
-        $c = 1;
-        while($component = $query_components->fetch_assoc()){
-          $comp_id = $component["cmpt_id"];
-          $comp_name = $component["cmpt_name"];
-          $comp_version = $component["cmpt_version"];
-          $comp_status = $component["status"];
-          // $comp_request_step = $component["request_step"];
-          // $request_status = $component["request_status"];
-          // $cmp_type = $component["cmp_type"];
-          $comp_description = $component["description"];
-          // $comp_class = $component["class"];
-          $comp_table_id=$parent_table_id."-".$c;
-
-          $comp_color = "child";
-          $sql_child_components = "
-            SELECT * FROM apps_components
-            WHERE app_id = ".$comp_id."
-          ";
-          $query_component_children = $db->query($sql_child_components);
-          if($query_component_children->num_rows == 0){
-            $comp_color = "grandchild";
-          }
-          echo "<tr data-tt-id = '".$comp_table_id."' data-tt-parent-id='".$p_id."' class = 'component' >
-          <td class='text-capitalize'> <div class = 'btn child'> <span class = 'cmp_name'>".$comp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
-          <td class = 'cmp_version'>".$comp_version."</td>
-          <td class='text-capitalize'>".$comp_status."</td>
-          <td class='text-capitalize'>".$comp_description."</td></tr>";
-          if($query_component_children->num_rows > 0){
-            displayComponents($db, $comp_id, $query_component_children, $comp_table_id);
-          }
-
-          $c++;
-        }
+      if($has_children){
+        displayComponents($db, $query_component_children, $comp_table_id);
       }
-
-
-      $c++;
+      $parent_c++;
     }
   }
 
@@ -133,7 +99,7 @@
     $query_applications = $db->query($sql_applications);
     if($query_applications->num_rows > 0){
       while($application = $query_applications->fetch_assoc()){
-        $app_id = $application["app_id"];
+        $red_app_id = $application["app_id"];
         $app_name = $application["app_name"];
         $app_version = $application["app_version"];
         $app_status = $application["app_status"];
@@ -144,7 +110,7 @@
 
         $sql_components = "
           SELECT * FROM apps_components
-          WHERE app_id = '".$app_id."'
+          WHERE app_id = '".$red_app_id."'
         ";
         $query_components = $db->query($sql_components);
         if($query_components->num_rows > 0){
@@ -154,11 +120,7 @@
             $comp_name = $component["cmpt_name"];
             $comp_version = $component["cmpt_version"];
             $comp_status = $component["status"];
-            // $comp_request_step = $component["request_step"];
-            // $request_status = $component["request_status"];
-            // $cmp_type = $component["cmp_type"];
             $comp_description = $component["description"];
-            // $comp_class = $component["class"];
             $comp_table_id=$p_id."-".$c;
 
             $comp_color = "child";
@@ -171,16 +133,19 @@
               $comp_color = "grandchild";
             }
             echo "<tr data-tt-id = '".$comp_table_id."' data-tt-parent-id='".$p_id."' class = 'component' >
-            <td class='text-capitalize'> <div class = 'btn child'> <span class = 'cmp_name'>".$comp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
+            <td class='text-capitalize'> <div class = 'btn ".$comp_color."'> <span class = 'cmp_name'>".$comp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
             <td class = 'cmp_version'>".$comp_version."</td>
             <td class='text-capitalize'>".$comp_status."</td>
-            <td class='text-capitalize'>".$comp_description."</td></tr>";
+            <td class='text-capitalize'>".$comp_description."</td>
+            <td class='text-capitalize'>".$comp_id."</td></tr>";
             if($query_component_children->num_rows > 0){
-              displayComponents($db, $comp_id, $query_component_children, $comp_table_id);
+              displayComponents($db, $query_component_children, $comp_table_id);
             }
+            $query_component_children->close();
             $c++;
           }
         }
+        $query_components->close();
         $p_id++;
       }
     }
@@ -248,8 +213,8 @@
           <th style="width:50%" >Name</th>
           <th>Version</th>
           <th>Status</th>
-          <th>CMP Type</th>
-          <th>Request Status</th>
+          <th>CMP Desc.</th>
+          <th>Comp. ID</th>
           <th>Request Step</th>
           <th>Notes</th>
         </thead>
