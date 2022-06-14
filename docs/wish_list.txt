@@ -133,4 +133,20 @@ https://botpress.com/docs/
 
 [12] Aplication List --> Visualization of Security issues. (List View)
 
+===========
 
+
+
+CRUD Operations: Ownership
+Create 
+Update
+Swap
+Delete
+
+CRUD Operations: Application
+Create
+Update
+Delete
+Swap EOL
+
+========= Site Map =========
