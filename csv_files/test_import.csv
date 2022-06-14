@@ -1,0 +1,2 @@
+red_app_id, cmpt_id, cmpt_name, cmpt_version, app_id, app_name, app_version, license, status, requester, description, monitoring_id, monitoring_digest, issue_count
+76074884, 77960664, Level 3 component, 1.0, 00000002, LTS JSON L, 1.0, Commercial:  License V7, Approved, Anthony, NULL, 00005, na, 0
