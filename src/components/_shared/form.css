@@ -10,10 +10,15 @@ form fieldset {
     color: var( --color-tab-selected );
 }
 
+/* buttons */
 form button,
-label.form-btn
+label.form-btn,
+#info_paginate .paginate_button.next,
+#info_paginate .paginate_button.previous,
+#info_paginate .paginate_button
 {
     cursor: pointer;
+    text-decoration: none;
     color: var( --color-button-text ) !important;
     background: var( --color-button ) !important;
     border: none !important;
@@ -23,6 +28,12 @@ label.form-btn
     border-radius: 10px !important;
     padding: 1rem 2rem !important;
     outline: none !important;
+}
+
+#info_paginate .paginate_button.current {
+    cursor: default;
+    background-color: #fff !important;
+    color: var( --color-tab-selected ) !important;
 }
 
 form button span {
