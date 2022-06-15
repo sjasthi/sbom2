@@ -93,7 +93,7 @@
   // Function to show applications and their dependencies
   function displayBomsAsTable($db) {
     $sql_applications = "
-      SELECT * FROM Applications
+      SELECT * FROM applications
     ";
     $p_id = 1;
     $query_applications = $db->query($sql_applications);
