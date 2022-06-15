@@ -47,14 +47,6 @@ div.container {
     padding: 0;
 }
 
-div.dt-buttons {
-    float: unset;
-}
-
-div.dt-buttons button {
-    margin: 10px 0;
-}
-
 #getall-form + h3 {
     display: flex;
     align-items: center;

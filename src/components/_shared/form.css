@@ -11,6 +11,14 @@ form fieldset {
 }
 
 /* buttons */
+div.dt-buttons {
+    float: unset;
+}
+
+div.dt-buttons button {
+    margin: 10px 0;
+}
+
 form button,
 label.form-btn,
 #info_paginate .paginate_button.next,
@@ -49,4 +57,8 @@ label.form-btn {
 
 form.inline {
     display: flex;
+}
+
+form button + button {
+    margin-left: 10px;
 }

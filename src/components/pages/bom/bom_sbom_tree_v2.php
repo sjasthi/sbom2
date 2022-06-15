@@ -1,6 +1,7 @@
 <?php
   $nav_selected = "BOM";
   $left_selected = "SBOMTREE2";
+  $tabTitle = "SBOM - BOM (Tree V2)";
 
   include("../../../../index.php");
   include "get_scope.php";
