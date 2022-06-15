@@ -27,7 +27,7 @@ label.form-btn,
 {
     cursor: pointer;
     text-decoration: none;
-    color: var( --color-button-text ) !important;
+    color: #fff !important;
     background: var( --color-button ) !important;
     border: none !important;
     box-shadow: none !important;
@@ -36,6 +36,7 @@ label.form-btn,
     border-radius: 10px !important;
     padding: 1rem 2rem !important;
     outline: none !important;
+    font-weight: bold;
 }
 
 #info_paginate .paginate_button {
@@ -50,12 +51,13 @@ label.form-btn,
 
 form button span {
     display: flex;
+    font-weight: 900;
     padding: 10px 0;
     line-height: 0;
 }
 
 label.form-btn {
-    font-weight: 100;
+    font-weight: bold;
     margin: 0 !important;
 }
 
@@ -75,5 +77,6 @@ form button + button,
 form + form button,
 form input + button
 {
+    font-weight: bold !important;
     margin-left: 10px;
 }
