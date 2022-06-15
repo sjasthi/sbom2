@@ -19,6 +19,16 @@
     width: calc( var( --window-width ) - 40px );
 }
 
+.wrap p,
+.wrap label
+{
+    margin-bottom: 20px;
+}
+
+.wrap label input {
+    margin-left: 10px;
+}
+
 /* PAGE DEFAULTS */
 h3,
 .right-content h3
