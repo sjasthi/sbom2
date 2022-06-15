@@ -13,9 +13,17 @@
         function checkSelectedLink( $tab, $path ) {
             if( $GLOBALS['nav_selected'] !== $tab ) {
                 return $path;
-            } else {
-                return '#';
             }
+
+            return '#';
+        }
+
+        function checkSelectedLeftMenu( $tab ) {
+            if( isset($GLOBALS['left_selected']) && $GLOBALS['left_selected'] === $tab ) {
+                return 'class="menu-left-current-page"';
+            }
+
+            return '';
         }
 
         function checkSelectedLeftMenuLink( $tab, $path ) {
@@ -38,6 +46,12 @@
 
     <span class="links">
         <?php
+            echo
+                '<li class="search" tabindex="0">
+                    <input />';
+            include $assetsPath.'svg/search.svg';
+            echo '</li>';
+
             echo
                 '<a href="'.checkSelectedLink( "RELEASES", $componentsPath.'pages/releases/releases_releases_list.php' ).'">
                     <li class="'.checkSelectedTab( "RELEASES" ).'">';
@@ -66,6 +80,15 @@
                 </a>';
 
             echo
+                '<a href="'.checkSelectedLink( "OWNERSHIP", $componentsPath.'pages/ownership/ownership.php' ).'">
+                    <li class="'.checkSelectedTab( "OWNERSHIP" ).'">';
+            include $assetsPath.'svg/copyright.svg';
+            echo
+                        '<h2> OWNERSHIP </h2>
+                    </li>
+                </a>';
+            
+            echo
                 '<a href="'.checkSelectedLink( "SETUP", $componentsPath.'pages/setup/setup_system_preference.php' ).'">
                     <li class="'.checkSelectedTab( "SETUP" ).'">';
             include $assetsPath.'svg/tools.svg';
@@ -75,7 +98,7 @@
                 </a>';
 
             echo
-                '<a href="'.checkSelectedLink( "REPORTS", $componentsPath.'pages/reports/reports.php' ).'">
+                '<a href="'.checkSelectedLink( "REPORTS", $componentsPath.'pages/reports/reports_location.php' ).'">
                     <li class="'.checkSelectedTab( "REPORTS" ).'">';
             include $assetsPath.'svg/chart.svg';
             echo
@@ -84,7 +107,7 @@
                 </a>';
 
             echo
-                '<a href="'.checkSelectedLink( "HELP", $componentsPath.'pages/help/help.php' ).'">
+                '<a href="'.checkSelectedLink( "HELP", $componentsPath.'pages/help/help_process.php' ).'">
                     <li class="'.checkSelectedTab( "HELP" ).'">';
             include $assetsPath.'svg/help.svg';
             echo
@@ -94,7 +117,7 @@
 
             if( isset( $_SESSION['admin'] ) ) {
                 echo
-                    '<a href="'.checkSelectedLink( "ADMIN", $componentsPath.'pages/admin/admin_users.php' ).'">
+                    '<a href="'.checkSelectedLink( "ADMIN", $componentsPath.'pages/admin/admin_bom_backup.php' ).'">
                         <li class="'.checkSelectedTab( "ADMIN" ).'">';
                 include $assetsPath.'svg/admin.svg';
                 echo

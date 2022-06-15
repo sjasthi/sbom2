@@ -2,20 +2,16 @@
 <div class="wrap">
 	<div id="menu-left">
 		<a href="<?php echo checkSelectedLeftMenuLink( "SYSPREFERENCES", "setup_system_preference.php" ); ?>">
-			<div <?php if(isset($left_selected) && $left_selected == "SYSPREFERENCES")
-			{ echo 'class="menu-left-current-page"'; } ?>>
+			<div <?php echo checkSelectedLeftMenu( "SYSPREFERENCES" ); ?>>
                 <?php include $assetsPath."svg/systemGear.svg"; ?>
-				<p> System </p>
-				<p> Preferences </p>
+				<p> System Preferences </p>
 			</div>
 		</a>
 
 		<a href="<?php echo checkSelectedLeftMenuLink( "USERPREFERENCES", "setup_user_preference.php" ); ?>">
-			<div <?php if(isset($left_selected) && $left_selected == "USERPREFERENCES")
-			{ echo 'class="menu-left-current-page"'; } ?>>
+			<div <?php echo checkSelectedLeftMenu( "USERPREFERENCES" ); ?>>
                 <?php include $assetsPath."svg/user.svg"; ?>
-				<p> User </p>
-				<p> Preferences </p>
+				<p> User Preferences </p>
 			</div>
 		</a>
 	</div>

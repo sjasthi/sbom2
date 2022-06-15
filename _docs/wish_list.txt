@@ -162,40 +162,38 @@ Show additional columns
 
 ========= Site Map =========
 
-Add Search in the tool bar:
-* add a text field before "Releases"
-User can type "where some_name" (default) or "who some_name"  to find out who owns a component or where it is being used.
-May be enhanced to support other searches later.
+Add "Search" before Releases
+Search:
+    * User can type "where some_name" (default) or "who some_name"  to find out who owns a component or where it is being used.
+    * May be enhanced to support other searches later.
 
 Add "Ownership" before the setup
-* it will not have any left hand side
-* we will show just the JQuery data table on the "ownership" table
-* We support CRUD operations on the "Ownership"
+Ownership:
+    * it will not have any left hand side
+    * we will show just the JQuery data table on the "ownership" table
+    * We support CRUD operations on the "Ownership"
 
 Reports:
-
-Note: All of these reports are applicable to "SYSTEM BOMs" only.
-* Where Used Report    (need input)
-* FOSS Counts By App  
-* Unique FOSS List 
-* Duplicate Versions
-* Multiple Versions
-* Ownership Report     (need input)
+    Note: All of these reports are applicable to "SYSTEM BOMs" only.
+    * Reports - Location    (need input)
+    * FOSS Count     (what is FOSS?)
+    * Unique FOSS List     (what is FOSS?)
+    * Duplicate Versions
+    * Multiple Versions
+    * Reports - Ownership    (need input)
 
 Help:
-
-* Process
-* Chat
-* APIs
-* FAQs 
+    * Process
+    * Chat
+    * APIs
+    * FAQs 
 
 Admin:
-* Import BOM
-* Backup DB
+    * Users (commented out)
+    * Import BOM
+    * BOM Compare (commented out)
+    * Backup DB
 
 ============== One specific task ===========
 * BOM Import
 * BOM Tree
-
-
-
