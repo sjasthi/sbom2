@@ -105,6 +105,8 @@ get_bomlines_pending(app_id)
 get_bomlines_pending(app_name, app_version)
 get_bomlines_pending(app_name)
 
+get_assemblies_unique_list  (return the names of all red_n_yellow)
+get_assemblies_all_list (return a list of lists - name, version) 
 
 [2] Help --> ChatBot
 https://botpress.com/docs/messaging-channels/botpress-webchat/website-embedding
@@ -128,14 +130,72 @@ https://botpress.com/docs/
 
 [8] Applications --> Duplicate Component Report (app-specific)
 
-[9] Applications --> BOM Compare (app-specific)
+[9] Applications --> Duplicate Component Report (app-specific)
+
+[10] Applications --> BOM Compare (app-specific)
 
 
-[10] Application List --> When Report (app-specific)
+[11] Application List --> When Report (app-specific)
 
-[11] Application List --> Security Report (app-specific)
+[12] Application List --> Security Report (app-specific)
 
 
-[12] Aplication List --> Visualization of Security issues. (List View)
+[13] Aplication List --> Visualization of Security issues. (List View)
+
+===========
+
+
+CRUD Operations: Ownership table
+Create  (on the top of the table)
+Swap (on the top of the table)
+Update  (as action icon in the last column)
+Delete  (as action icon in the last column)
+
+
+CRUD Operations: Application table
+Create  (on the top of the table)
+Update  (as action icon in the last column)
+Delete  (as action icon in the last column)
+
+Enhancements to "Applications" table:
+Show additional columns
+
+========= Site Map =========
+
+Add Search in the tool bar:
+* add a text field before "Releases"
+User can type "where some_name" (default) or "who some_name"  to find out who owns a component or where it is being used.
+May be enhanced to support other searches later.
+
+Add "Ownership" before the setup
+* it will not have any left hand side
+* we will show just the JQuery data table on the "ownership" table
+* We support CRUD operations on the "Ownership"
+
+Reports:
+
+Note: All of these reports are applicable to "SYSTEM BOMs" only.
+* Where Used Report    (need input)
+* FOSS Counts By App  
+* Unique FOSS List 
+* Duplicate Versions
+* Multiple Versions
+* Ownership Report     (need input)
+
+Help:
+
+* Process
+* Chat
+* APIs
+* FAQs 
+
+Admin:
+* Import BOM
+* Backup DB
+
+============== One specific task ===========
+* BOM Import
+* BOM Tree
+
 
 
