@@ -17,8 +17,8 @@
         </a>
 
         <!-- // changed to v3 10-26-2020 -->
-        <a href="<?php echo checkSelectedLeftMenuLink( "SBOMTREE2", "bom_sbom_tree_v3.php" ); ?>">
-            <div <?php echo checkSelectedLeftMenu( "SBOMTREE2" ); ?>>
+        <a href="<?php echo checkSelectedLeftMenuLink( "SBOMTREE3", "bom_sbom_tree_v3.php" ); ?>">
+            <div <?php echo checkSelectedLeftMenu( "SBOMTREE3" ); ?>>
                 <?php include $assetsPath."svg/treeV2.svg"; ?>
                 <p>BOM Tree V3</p>
             </div>

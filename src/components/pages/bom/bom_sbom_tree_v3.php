@@ -1,7 +1,7 @@
 <?php
   //echo'v2';
   $nav_selected = "BOM";
-  $left_selected = "SBOMTREE2";
+  $left_selected = "SBOMTREE3";
   $tabTitle = "SBOM - BOM (Tree V3)";
 
   include("../../../../index.php");

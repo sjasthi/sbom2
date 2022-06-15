@@ -180,14 +180,14 @@
                   echo "<td><input type='checkbox' name='app[]' value='".$row['app_id']."'></td>";
                 }
 
-                echo '<td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>';
-                echo '<td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["id"].' </a> </td>';
+                echo '<td><a class="btn" href="../bom/bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>';
+                echo '<td><a class="btn" href="../bom/bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["id"].' </a> </td>';
 
                 if ($result2->num_rows > 0) {
                   while($row2 = $result2->fetch_assoc()) {
                     $id = $row2["appID"];
                   }
-                  echo '<td><a href="bom_sbom_tree_v2.php?id='.$id.'">'.$row["name"].' </a> </span> </td>';
+                  echo '<td><a href="../bom/bom_sbom_tree_v2.php?id='.$id.'">'.$row["name"].' </a> </span> </td>';
 
                 }//end if
                 else {

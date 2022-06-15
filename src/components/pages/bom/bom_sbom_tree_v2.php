@@ -1,11 +1,10 @@
 <?php
-  //echo'v2';
-
   $nav_selected = "BOM";
-  $left_buttons = "YES";
   $left_selected = "SBOMTREE2";
-  include("./index.php");
+
+  include("../../../../index.php");
   include "get_scope.php";
+  include("bom_left_menu.php");
 
   //Get DB Credentials
   $DB_SERVER = constant('DB_SERVER');
@@ -537,7 +536,6 @@
         </div>
       </div>
     </div>
-    <?php include("./footer.php"); ?>
 
     <script>
       //Params for the treetable
