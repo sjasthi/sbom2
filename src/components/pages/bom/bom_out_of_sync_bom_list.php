@@ -124,5 +124,12 @@
             retrieve: true
         } );
 
+        const listTable = document.querySelector('#info');
+        const infoFilter = document.querySelector('#info_filter');
+        let z = document.createElement('div');
+        z.classList.add('table-container');
+
+        z.append(listTable);
+        infoFilter.after(z);
     } );
 </script>

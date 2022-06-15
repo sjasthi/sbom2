@@ -36,7 +36,7 @@
 
       echo '</table>';
     } else {
-        echo "<br><font size = '+1'>No preference cookie found.</font><br>";
+        echo "<script> console.warn('No preference cookie found.'); </script>";
     }
   ?>
 
@@ -46,13 +46,13 @@
     $logRow = $logList->fetch_assoc();
 
     if($logRow["value"] == "true"){
-      echo "<br/>Logging is enabled<br/>";
+      echo "<script> console.warn('Logging is enabled'); </script>";
       echo
         "<form id='disable-form' name='disable-form' method='post'>
           <button type='submit' name='disable' value='submit'> Disable Logging </button>
         </form>";
     } else {
-      echo "<br/>Logging is disabled<br/>";
+      echo "<script> console.warn('Logging is disabled'); </script>";
       echo
         "<form id='enable-form' name='enable-form' method='post'>
           <button type='submit' name='enable' value='submit'> Enable Logging </button>
@@ -75,6 +75,6 @@
       header("Refresh:0");
     }
 
-    echo "<br><font size='+2'>To change user BOMs you must select BOMs from the releases list to save into a browser cookie.</font>";
-  ?>
+    echo "<p> To change user BOMs you must select BOMs from the releases list to save into a browser cookie. </p>";
+    ?>
 </div>

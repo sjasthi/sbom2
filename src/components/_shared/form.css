@@ -38,6 +38,10 @@ label.form-btn,
     outline: none !important;
 }
 
+#info_paginate .paginate_button {
+    line-height: 36px;
+}
+
 #info_paginate .paginate_button.current {
     cursor: default;
     background-color: #fff !important;
@@ -55,10 +59,21 @@ label.form-btn {
     margin: 0 !important;
 }
 
+#info_filter label {
+    margin-bottom: 20px;
+}
+
+#info_wrapper .dataTables_length label {
+    margin: 10px 0;
+}
+
 form.inline {
     display: flex;
 }
 
-form button + button {
+form button + button,
+form + form button,
+form input + button
+{
     margin-left: 10px;
 }

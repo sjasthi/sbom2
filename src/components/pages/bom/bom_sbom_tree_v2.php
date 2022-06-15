@@ -269,30 +269,13 @@
     <h3 id=scannerHeader style="color: #01B0F1;">BOM --> BOM Tree V2</h3>
     <!-- Form to retrieve user preference -->
     <form id='getpref-form' name='getpref-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getpref' value='submit'
-        style='background: #01B0F1;
-          color: white;
-          border: none;
-          border-radius: 10px;
-          padding: 1rem;
-          margin-right: 1rem;'>Show My BOMS</button>
+        <button type='submit' name='getpref' value='submit'>Show My BOMS</button>
       </form>
       <form id='getdef-form' name='getdef-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getdef' value='submit'
-        style='background: #01B0F1;
-          color: white;
-          border: none;
-          border-radius: 10px;
-          padding: 1rem;
-          margin-right: 1rem;'>Show System Boms</button>
+        <button type='submit' name='getdef' value='submit'>Show System Boms</button>
       </form>
       <form id='getall-form' name='getall-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getall' value='submit'
-        style='background: #01B0F1;
-          color: white;
-          border: none;
-          border-radius: 10px;
-          padding: 1rem;'>Show All BOMS</button>
+        <button type='submit' name='getall' value='submit'>Show All BOMS</button>
       </form>
 
     <nav class="navbar">

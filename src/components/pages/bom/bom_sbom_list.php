@@ -96,30 +96,13 @@
 
       <!-- Form to retrieve user preference -->
       <form id='getpref-form' name='getpref-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getpref' value='submit'
-        style='background: #01B0F1;
-          color: white;
-          border: none;
-          border-radius: 10px;
-          padding: 1rem;
-          margin-right: 1rem;'>Show My BOMS</button>
+        <button type='submit' name='getpref' value='submit'>Show My BOMS</button>
       </form>
       <form id='getdef-form' name='getdef-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getdef' value='submit'
-        style='background: #01B0F1;
-          color: white;
-          border: none;
-          border-radius: 10px;
-          padding: 1rem;
-          margin-right: 1rem;'>Show System Boms</button>
+        <button type='submit' name='getdef' value='submit'>Show System Boms</button>
       </form>
       <form id='getall-form' name='getall-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getall' value='submit'
-        style='background: #01B0F1;
-          color: white;
-          border: none;
-          border-radius: 10px;
-          padding: 1rem;'>Show All BOMS</button>
+        <button type='submit' name='getall' value='submit'>Show All BOMS</button>
       </form>
 
       <div class="table-container">
@@ -290,5 +273,13 @@
           });
         table.rows(indexes).remove().draw();
      }
+
+    const listTable = document.querySelector('#info');
+    const infoFilter = document.querySelector('#info_filter');
+    let z = document.createElement('div');
+    z.classList.add('table-container');
+
+    z.append(listTable);
+    infoFilter.after(z);
     } );
   </script>

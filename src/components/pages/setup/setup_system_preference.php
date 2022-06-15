@@ -77,18 +77,20 @@
   $logRow = $logList->fetch_assoc();
 
   if($logRow["value"] == "true"){
-    echo "<br/>Logging is enabled<br/>";
+    echo "<script> console.warn('Logging is enabled'); </script>";
+    echo "<br/>";
     echo "<form id='disable-form' name='disable-form' method='post' action=''>
     <button type='submit' name='disable' value='submit'>Disable Logging</button>
     </form>";
   } else {
-    echo "<br/>Logging is disabled<br/>";
+    echo "<script> console.warn('Logging is disabled'); </script>";
+    echo "<br/>";
     echo "<form id='enable-form' name='enable-form' method='post' action=''>
     <button type='submit' name='enable' value='submit'>Enable Logging</button>
     </form>";
   }
 
-  echo "<br><font size='+2'>To change system scope you must be logged in as an administrator and select BOMs from the releases list.</font>"; 
+  echo "<p> To change system scope you must be logged in as an administrator and select BOMs from the releases list. </p>";
 
   if(isset($_POST['disable'])){
     $sql = "UPDATE preferences
