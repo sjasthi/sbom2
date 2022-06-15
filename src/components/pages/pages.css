@@ -25,6 +25,10 @@
     margin-bottom: 20px;
 }
 
+#info_info {
+    margin-bottom: 10px;
+}
+
 .wrap label input {
     margin-left: 10px;
 }
@@ -47,6 +51,10 @@ div.dt-buttons {
     float: unset;
 }
 
+div.dt-buttons button {
+    margin: 10px 0;
+}
+
 #getall-form + h3 {
     display: flex;
     align-items: center;
@@ -55,4 +63,14 @@ div.dt-buttons {
 
 .toggle-vis {
     cursor: pointer;
+}
+
+.container-fluid,
+.nav.navbar-nav li:first-of-type a
+{
+    padding-left: 0;
+}
+
+.glyphicon {
+    line-height: 0;
 }

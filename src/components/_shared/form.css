@@ -10,11 +10,32 @@ form fieldset {
     color: var( --color-tab-selected );
 }
 
-form button {
-    color: var( --color-button-text );
-    background: var( --color-button );
-    border: none;
+form button,
+label.form-btn
+{
+    cursor: pointer;
+    color: var( --color-button-text ) !important;
+    background: var( --color-button ) !important;
+    border: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
     margin-bottom: 1rem;
-    border-radius: 10px;
-    padding: 1rem;
+    border-radius: 10px !important;
+    padding: 1rem 2rem !important;
+    outline: none !important;
+}
+
+form button span {
+    display: flex;
+    padding: 10px 0;
+    line-height: 0;
+}
+
+label.form-btn {
+    font-weight: 100;
+    margin: 0 !important;
+}
+
+form.inline {
+    display: flex;
 }

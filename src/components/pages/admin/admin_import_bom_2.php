@@ -57,8 +57,9 @@
       <li>Notes</li>
     </ul>
   </div>
-    <form enctype="multipart/form-data" method="POST" role="form">
-      <input type="file" name="file" id="file" size="150" style="color:black; display: inline-block;">
+    <form class="inline" enctype="multipart/form-data" method="POST" role="form">
+      <label for="file-upload" class="form-btn">Choose File </label>
+      <input type="file" name="file" id="file-upload" size="150" style="display: none;">
       <button style="background: #01B0F1; color: white;" type="submit"
       class="btn btn-default" name="submit" value="submit">Submit</button>
     </form>
