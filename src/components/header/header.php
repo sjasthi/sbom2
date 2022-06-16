@@ -47,10 +47,13 @@
     <span class="links">
         <?php
             echo
-                '<li class="search" tabindex="0">
-                    <input />';
+                '<li class="search '.checkSelectedTab( "SEARCH" ).'" tabindex="0">
+                    <form action="'.$componentsPath.'pages/search/search.php" method="POST">
+                        <input name="searchVal" />';
             include $assetsPath.'svg/search.svg';
-            echo '</li>';
+            echo
+                    '</form>
+                </li>';
 
             echo
                 '<a href="'.checkSelectedLink( "RELEASES", $componentsPath.'pages/releases/releases_releases_list.php' ).'">

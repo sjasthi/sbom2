@@ -7,15 +7,6 @@
   include("../../../../index.php");
   include("bom_left_menu.php");
 
-  //Get DB Credentials
-  $DB_SERVER = constant('DB_SERVER');
-  $DB_NAME = constant('DB_NAME');
-  $DB_USER = constant('DB_USER');
-  $DB_PASS = constant('DB_PASS');
-
-  //PDO connection
-  $pdo = new PDO("mysql:host=$DB_SERVER;dbname=$DB_NAME", $DB_USER, $DB_PASS);
-
   $def = "false";
   $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
   $scopeArray = array();

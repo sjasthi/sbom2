@@ -35,6 +35,10 @@
     align-items: end;
 }
 
+#HEADER .search form {
+    margin: 0;
+}
+
 #HEADER .search:active svg {
     fill: var( --color-black );
 }
@@ -53,6 +57,7 @@
 
 #HEADER .search svg {
     position: absolute;
+    bottom: 12px;
     margin: 0 5px;
     height: var( --search-height );
 }
