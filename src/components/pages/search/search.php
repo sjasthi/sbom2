@@ -66,7 +66,7 @@
 <!-- HTML -->
 <div class="wrap">
   <h3>
-    <span>Searched: <i>"app_components"</i></span>
+    <span>Query: <i>"app_components"</i></span>
 
     <div>
       WHERE <span> (cmpt_name</span> OR <span>app_name) = </span>
