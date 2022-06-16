@@ -17,9 +17,10 @@
     justify-content: center;
 }
 
-table {
+.table-container table {
     width: unset !important;
     table-layout: fixed;
+    margin: 0;
 }
 
 table caption {
