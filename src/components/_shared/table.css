@@ -33,7 +33,9 @@ table th, table td {
 
 table th {
     white-space: nowrap;
+    background: #777;
     width: unset !important;
+    color: #fff;
 }
 
 table td:first-child {

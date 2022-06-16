@@ -96,100 +96,11 @@
         <button type='submit' name='getall' value='submit'>Show All BOMS</button>
       </form>
 
-      <div class="table-container">
-        <table id="info" cellpadding="0" cellspacing="0" border="0"
-          class="datatable table table-striped table-bordered datatable-style table-hover"
-          width="100%" style="width: 100px;">
-          <thead>
-            <tr id="table-first-row">
-              <th>Row ID</th>
-              <th>App ID</th>
-              <th>App Name</th>
-              <th>App Version</th>
-              <th>CMP ID</th>
-              <th>CMP Name</th>
-              <th>CMP Version</th>
-              <th>CMP Type</th>
-              <th>App Status</th>
-              <th>CMP Status</th>
-              <th>Request ID</th>
-              <th>Request Date</th>
-              <th>Request Status</th>
-              <th>Request Step</th>
-              <th>Notes</th>
-              <th>Requester</th>
-              <th>Color</th>
-            </tr>
-          </thead>
-        <tbody>
-        <?php
-          /*----------------- GET PREFERENCE COOKIE -----------------*/
-          //if user clicks "get all BOMS", retrieve all BOMS
-          if(isset($_POST['getall'])) {
-            $def = "false";
-            ?>
-            <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
-            <?php
-            getBoms($db);
-          //If user clicks "show system BOMS", display BOM list filtered by default system scope
-          } elseif (isset($_POST['getdef'])) {
-            $def = "true";
-            ?>
-            <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> System BOMS";</script>
-            <?php
-            getBoms($db);
-            getFilterArray($db);
-          } //default if preference cookie is set, display user BOM preferences
-          elseif(isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
-            $def = "false";
-            ?>
-            <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> My BOMS";</script>
-            <?php
-            $prep = rtrim(str_repeat('?,', count(json_decode($_COOKIE[$cookie_name]))), ',');
-            $sql = 'SELECT * FROM sbom WHERE app_id IN ('.$prep.')';
-            $pref = $pdo->prepare($sql);
-            $pref->execute(json_decode($_COOKIE[$cookie_name]));
-
-            while($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-              echo '<tr>
-                <td>'.$row["row_id"].'</td>
-                <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
-                <td>'.$row["app_name"].'</td>
-                <td>'.$row["app_version"].'</td>
-                <td>'.$row["cmp_id"].' </span> </td>
-                <td>'.$row["cmp_name"].'</td>
-                <td>'.$row["cmp_version"].'</td>
-                <td>'.$row["cmp_type"].' </span> </td>
-                <td>'.$row["app_status"].' </span> </td>
-                <td>'.$row["cmp_status"].' </span> </td>
-                <td>'.$row["request_id"].'</td>
-                <td>'.$row["request_date"].'</td>
-                <td>'.$row["request_status"].'</td>
-                <td>'.$row["request_step"].'</td>
-                <td>'.$row["notes"].' </span> </td>
-                <td>'.$row["requestor"].'</td>
-                <td>'.$row["color"].'</td>
-              </tr>';
-            }
-          }//if no preference cookie is set but user clicks "show my BOMS"
-          elseif(isset($_POST['getpref']) && !isset($_COOKIE[$cookie_name])) {
-            $def = "false";
-            ?>
-            <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
-            <?php
-            getBoms($db);
-          }//if no preference cookie is set show all BOMS
-          else {
-            $def = "false";
-            ?>
-            <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
-            <?php
-            getBoms($db);
-          }
-        ?>
-        </tbody>
-        <tfoot>
-          <tr>
+      <table id="info" cellpadding="0" cellspacing="0" border="0"
+        class="datatable table table-striped table-bordered datatable-style table-hover"
+        width="100%" style="width: 100px;">
+        <thead>
+          <tr id="table-first-row">
             <th>Row ID</th>
             <th>App ID</th>
             <th>App Name</th>
@@ -208,9 +119,96 @@
             <th>Requester</th>
             <th>Color</th>
           </tr>
-        </tfoot>
-        </table>
-      </div>
+        </thead>
+      <tbody>
+      <?php
+        /*----------------- GET PREFERENCE COOKIE -----------------*/
+        //if user clicks "get all BOMS", retrieve all BOMS
+        if(isset($_POST['getall'])) {
+          $def = "false";
+          ?>
+          <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
+          <?php
+          getBoms($db);
+        //If user clicks "show system BOMS", display BOM list filtered by default system scope
+        } elseif (isset($_POST['getdef'])) {
+          $def = "true";
+          ?>
+          <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> System BOMS";</script>
+          <?php
+          getBoms($db);
+          getFilterArray($db);
+        } //default if preference cookie is set, display user BOM preferences
+        elseif(isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+          $def = "false";
+          ?>
+          <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> My BOMS";</script>
+          <?php
+          $prep = rtrim(str_repeat('?,', count(json_decode($_COOKIE[$cookie_name]))), ',');
+          $sql = 'SELECT * FROM sbom WHERE app_id IN ('.$prep.')';
+          $pref = $pdo->prepare($sql);
+          $pref->execute(json_decode($_COOKIE[$cookie_name]));
+
+          while($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+            echo '<tr>
+              <td>'.$row["row_id"].'</td>
+              <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
+              <td>'.$row["app_name"].'</td>
+              <td>'.$row["app_version"].'</td>
+              <td>'.$row["cmp_id"].' </span> </td>
+              <td>'.$row["cmp_name"].'</td>
+              <td>'.$row["cmp_version"].'</td>
+              <td>'.$row["cmp_type"].' </span> </td>
+              <td>'.$row["app_status"].' </span> </td>
+              <td>'.$row["cmp_status"].' </span> </td>
+              <td>'.$row["request_id"].'</td>
+              <td>'.$row["request_date"].'</td>
+              <td>'.$row["request_status"].'</td>
+              <td>'.$row["request_step"].'</td>
+              <td>'.$row["notes"].' </span> </td>
+              <td>'.$row["requestor"].'</td>
+              <td>'.$row["color"].'</td>
+            </tr>';
+          }
+        }//if no preference cookie is set but user clicks "show my BOMS"
+        elseif(isset($_POST['getpref']) && !isset($_COOKIE[$cookie_name])) {
+          $def = "false";
+          ?>
+          <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
+          <?php
+          getBoms($db);
+        }//if no preference cookie is set show all BOMS
+        else {
+          $def = "false";
+          ?>
+          <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
+          <?php
+          getBoms($db);
+        }
+      ?>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Row ID</th>
+          <th>App ID</th>
+          <th>App Name</th>
+          <th>App Version</th>
+          <th>CMP ID</th>
+          <th>CMP Name</th>
+          <th>CMP Version</th>
+          <th>CMP Type</th>
+          <th>App Status</th>
+          <th>CMP Status</th>
+          <th>Request ID</th>
+          <th>Request Date</th>
+          <th>Request Status</th>
+          <th>Request Step</th>
+          <th>Notes</th>
+          <th>Requester</th>
+          <th>Color</th>
+        </tr>
+      </tfoot>
+      </table>
 
     <script type="text/javascript" language="javascript">
     $(document).ready( function () {
@@ -272,5 +270,7 @@
 
     z.append(listTable);
     infoFilter.after(z);
+
+    $('.table-container').doubleScroll(); // assign a double scroll to this class
     } );
   </script>

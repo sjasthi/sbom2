@@ -25,6 +25,7 @@
     <!-- jQuery library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-treetable/3.2.0/css/jquery.treetable.theme.default.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
 
@@ -38,10 +39,10 @@
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.1/js/buttons.print.min.js"></script>
-
-    <?php
-      echo '<script src="'.$assetsPath.'/jquery/jquery.treetable.js"></script>';
-    ?>
+    <script src="<?php echo $assetsPath; ?>/jquery/jquery.treetable.js"></script>
+    
+    <!-- double scrollbar -->
+    <script type="text/javascript" src="<?php echo $assetsPath; ?>jquery/doubleScroll/doubleScroll.js"></script>
 
     <!-- app styles -->
     <?php
