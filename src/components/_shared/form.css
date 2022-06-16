@@ -39,6 +39,15 @@ label.form-btn,
     text-shadow: 0 0 2px var( --color-black ) !important;
 }
 
+form button:active,
+label.form-btn:active,
+#info_paginate .paginate_button.next:active,
+#info_paginate .paginate_button.previous:active,
+#info_paginate .paginate_button:active
+{
+    box-shadow: inset 0 5px 5px rgba( 0,0,0, .1 ) !important;
+}
+
 #info_paginate .paginate_button {
     line-height: 36px;
 }
