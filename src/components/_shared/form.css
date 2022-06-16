@@ -31,12 +31,12 @@ label.form-btn,
     background: var( --color-button ) !important;
     border: none !important;
     box-shadow: none !important;
-    text-shadow: none !important;
     margin-bottom: 1rem;
     border-radius: 10px !important;
     padding: 1rem 2rem !important;
     outline: none !important;
     font-weight: bold;
+    text-shadow: 0 0 2px var( --color-black ) !important;
 }
 
 #info_paginate .paginate_button {
@@ -47,6 +47,7 @@ label.form-btn,
     cursor: default;
     background-color: #fff !important;
     color: var( --color-tab-selected ) !important;
+    text-shadow: none !important;
 }
 
 form button span {

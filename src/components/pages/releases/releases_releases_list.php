@@ -121,7 +121,7 @@
   });
 </script>
 
-<div class="wrap">
+<div id="releases" class="wrap">
   <h3>Releases -> System Releases List</h3>
 
   <p>
