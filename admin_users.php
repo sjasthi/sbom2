@@ -1,20 +1,35 @@
 <?php
-// set the current page to one of the main buttons
-$nav_selected = "ADMIN";
-// make the left menu buttons visible; options: YES, NO
-$left_buttons = "YES";
-// set the left menu button selected; options will change based on the main selection
-$left_selected = "ADMIN";
-include("./nav.php");
-$query = "SELECT * FROM users";
+  // set the current page to one of the main buttons
+  $nav_selected = "ADMIN";
+  // make the left menu buttons visible; options: YES, NO
+  $left_buttons = "YES";
+  // set the left menu button selected; options will change based on the main selection
+  $left_selected = "ADMIN";
+  include("./nav.php");
+  /*
+  // Changing for consistency with other locations in code
+  // hard coded database was breaking for me. NAS 16.06.22
+  $query = "SELECT * FROM users";
+  
+  $GLOBALS['data'] = mysqli_query($db, $query);
+  
+  $servername = 'localhost';
+  $dbname = 'bom';
+  $username = 'root';
+  $password = '';
+  */
 
-$GLOBALS['data'] = mysqli_query($db, $query);
-
-$servername = 'localhost';
-$dbname = 'bom';
-$username = 'root';
-$password = '';
-$pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+  //Get DB Credentials
+  $DB_SERVER = constant('DB_SERVER');
+  $DB_NAME = constant('DB_NAME');
+  $DB_USER = constant('DB_USER');
+  $DB_PASS = constant('DB_PASS');
+  //PDO connection
+  //$pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+  $pdo = new PDO("mysql:host=$DB_SERVER;dbname=$DB_NAME", $DB_USER, $DB_PASS);
+  // Query
+  $query = "SELECT * FROM users";
+  $GLOBALS['data'] = mysqli_query($db, $query); // $db from initialize.php
 
 ?>
 
