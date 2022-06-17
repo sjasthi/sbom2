@@ -347,6 +347,7 @@
    */
    // red_app_id no longer part of the column mapping
    //$red_app_id_col = $_POST['red_app_id'];
+   $red_app_id_field = $_POST['red_app_id_field'];
    $cmpt_id_col = $_POST['cmpt_id'];
    $cmpt_name_col = $_POST['cmpt_name'];
    $cmpt_version_col = $_POST['cmpt_version'];
@@ -385,7 +386,7 @@
    $cmp_version_col, $cmp_type_col, $app_status_col, $cmp_status_col, $request_id_col, $request_date_col,
    $request_status_col, $request_step_col, $notes_col, $requestor_col);
    */
-   $headers = array( $red_app_id_col, $cmpt_id_col, $cmpt_name_col,
+   $headers = array( $cmpt_id_col, $cmpt_name_col,
      $cmpt_version_col, $app_id_col, $app_name_col, $app_version_col,
      $license_col, $status_col, $requester_col, $description_col,
      $monitoring_id_col, $monitoring_digest_col, $issue_count_col);
@@ -420,11 +421,18 @@
        echo "EMPTY";
 
      }else {
-       /* We will no longer delete everything because we are instead appending.
        //delete existing data in table
-       $sqlDelete = "DELETE FROM sbom";
-       mysqli_query($db, $sqlDelete);
-       */
+       $sqldelete = $db->prepare('DELETE FROM apps_components WHERE red_app_id = ?');
+       $sqldelete->bind_param('s',$red_app_id_field);
+       //mysqli_query($db, $sqlDelete);
+       if(!$sqldelete->execute()) {
+         echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
+       }else {
+         echo $_POST['red_app_id_form'];
+         echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
+         text-align: center; border-radius: 2px;'>IMPORT SUCCESSFUL";
+         echo "<br>".count($data)." rows have been successfully deleted from the apps_components table.</p>";
+       }
 
        //insert data into database
        /*
@@ -434,13 +442,15 @@
        */
        $sqlinsert = $db->prepare('INSERT INTO apps_components ( red_app_id, cmpt_id, cmpt_name, cmpt_version, app_id, app_name, app_version, license, status, requester, description, monitoring_id, monitoring_digest, issue_count ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
 
-       $sqlinsert->bind_param('sssssssssssssi', $red_app_id, $cmpt_id,
+       //$sqlinsert->bind_param('ssssssssssssss', $red_app_id, $cmpt_id,
+       $sqlinsert->bind_param('ssssssssssssss', $red_app_id_field, $cmpt_id,
          $cmpt_name, $cmpt_version, $app_id, $app_name, $app_version,
          $license, $status, $requester, $description, $monitoring_id,
          $monitoring_digest, $issue_count);
 
        foreach ($data as $row) {
-            $red_app_id = $row[$red_app_id_col];
+            echo "YO".$red_app_id_field."YO!";
+            $red_app_id = $red_app_id_field;
             $cmpt_id = $row[$cmpt_id_col];
             $cmpt_name = $row[$cmpt_name_col];
             $cmpt_version = $row[$cmpt_version_col];
@@ -486,7 +496,7 @@
          }else {
            echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
            text-align: center; border-radius: 2px;'>IMPORT SUCCESSFUL";
-           echo "<br>".count($data)." rows have been successfully imported into the sbom table.</p>";
+           echo "<br>".count($data)." rows have been successfully imported into the apps_components table.</p>";
          }
      }
 
