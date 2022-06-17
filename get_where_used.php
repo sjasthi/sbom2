@@ -40,13 +40,13 @@ while ($app = $result->fetch_assoc()){
      $apps[] = $app;
 }
 
-echo json_encode($apps);
-//printArray($apps);	//The function to print each row from the $apps result
+echo json_encode($apps)."<br>";
+printArray($apps);	//The function to print each row from the $apps result
 
 //Prints out each data entry from the $apps on its own line(function to read data easier)
 function printArray( $array ){
 	foreach($array as $item) {
-    	$uses = $item['app_id']."\n".$item['app_name']."\n".$item['app_version'];
+    	$uses = "app_id:".$item['app_id']."\napp_name:".$item['app_name']."\napp_version:".$item['app_version'];
     	echo $uses."<br>";
     }
 }
