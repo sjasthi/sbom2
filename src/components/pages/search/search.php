@@ -8,14 +8,18 @@
   // search component name first, then app name.
   // default to "where" searches when nothing is provided (where/who)
   $searchVal = $_POST["searchVal"];
-  $sql =
-  'SELECT * from apps_components
-  WHERE cmpt_name LIKE "'.$searchVal.'%"
-  OR app_name LIKE "'.$searchVal.'%"';
-  $result = $GLOBALS['db'] -> query( $sql );
+  function searchAppComponents( $search ) {
+    $sql =
+      'SELECT * from apps_components
+      WHERE cmpt_name LIKE "'.$search.'%"
+      OR app_name LIKE "'.$search.'%"';
+
+    return $data = $GLOBALS['db'] -> query( $sql );
+  }
 
   function grabList( $result ) {
     $list = [];
+
     foreach( $result as $key => $val ) {
       array_push( $list, $val );
     }
@@ -24,32 +28,70 @@
   }
 
   function buildTable( $object ) {
-    $x = 0;
-    foreach( $object as $key => $val ) { // grab first object
-      if( $x === 0 ) {
-        $x++;
+    echo 
+      '<div class="table-container">
+        <table class="table table-striped table-bordered">';
 
-        foreach( $val as $col => $cell ) { // but only the headers
-          echo '<p>'.$col.'</p>';
+    $x = 0; // used to find first object, not increment
+    foreach( $object as $key => $val ) {
+      if( $x === 0 ) { // build headers from first object
+        echo '<tr>';
+        foreach( $val as $col => $cell ) {
+          echo '<th>'.$col.'</th>';
         }
+        echo '</tr>';
 
-        return;
+        echo '<tr>';
+        foreach( $val as $col => $cell ) { // apply first row values from object
+          echo '<td>'.$cell.'</td>';
+        }
+        echo '</tr>';
+      } else { // build any other rows that come after
+        echo '<tr>';
+        foreach( $val as $col => $cell ) {
+          echo '<td>'.$cell.'</td>';
+        }
+        echo '</tr>';
       }
+
+      $x++;
     }
+
+    echo
+        '</table>
+      </div>';
   }
 ?>
 
-<!-- output -->
+<!-- HTML -->
 <div class="wrap">
-  <h3> Search val: <?php echo $searchVal; ?> </h3>
+  <h3>
+    <span>Query: <i>"app_components"</i></span>
+
+    <div>
+      WHERE <span> (cmpt_name</span> OR <span>app_name) = </span>
+      <span><i><u><?php echo $searchVal; ?></u></i></span>
+    </div>
+  </h3>
 
   <?php
-    $searchResults = grabList( $result );
+    // can possibly build toggle to search other tables.
+    $resultsObject = searchAppComponents( $searchVal );
 
-    buildTable( $result );
-
-    $json = json_encode( $searchResults, JSON_PRETTY_PRINT );
-    echo '<script> console.warn("Data:"); </script>';
-    echo '<script> console.warn('.$json.'); </script>';
+    buildTable( $resultsObject ); // table output to HTML
   ?>
 </div>
+
+<!-- added functionality -->
+<script>
+  $('.table-container').doubleScroll(); // assign a double scroll to this class
+</script>
+
+<?php
+  // console output
+  $resultsArray = grabList( $resultsObject );
+  $json = json_encode( $resultsArray, JSON_PRETTY_PRINT );
+  
+  echo '<script> console.warn("Data:"); </script>';
+  echo '<script> console.warn('.$json.'); </script>';
+?>

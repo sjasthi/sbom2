@@ -17,9 +17,10 @@
     justify-content: center;
 }
 
-table {
+.table-container table {
     width: unset !important;
     table-layout: fixed;
+    margin: 0;
 }
 
 table caption {
@@ -33,12 +34,9 @@ table th, table td {
 
 table th {
     white-space: nowrap;
+    background: #777;
     width: unset !important;
-}
-
-table td:first-child {
-    text-align: center;
-    vertical-align: middle !important;
+    color: #fff;
 }
 
 /* pagination */
