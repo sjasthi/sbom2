@@ -1,4 +1,6 @@
 <?php
+	// Added by Shahid
+  // Revamped the User Interface; Refactored the code
   // connect to DB
   require_once( 'src/db/connect.php' );
   // variables
