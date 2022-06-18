@@ -1,11 +1,6 @@
 <form id="importform" action="admin_import_bom_2.php" method="post">
 <h4>Column Mapping for: <span style='color: red;'><?php echo $_FILES["file"]["name"]?></span></h4>
 <div class="group">
-  <label for="red_app_id">Red App ID:</label>
-  <select id="red_app_id" name="red_app_id" required>
-    <?php dropdown($cookie_map, 'red_app_id', $row); ?>
-  </select>
-
   <label for="cmpt_id">Component ID:</label>
   <select id="cmpt_id" name="cmpt_id" required>
     <?php dropdown($cookie_map, 'cmpt_id', $row); ?>
@@ -76,6 +71,11 @@
   </select>
 
 </div>
+
+<?php
+  // Simply passing the Red App ID from admin_import_bom_2.php back to the same
+  echo '<input type="hidden" id="red_app_id_field" name="red_app_id_field" value="'.$_POST['red_app_id_form'].'">';
+?>
 
 <button type="submit" name="submitform" value="submit">Import File</button>
 </form>
