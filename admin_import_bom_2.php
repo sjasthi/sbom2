@@ -109,28 +109,28 @@
         margin-left:auto;
         margin-right:auto;
       }
-  
+
       #list ul {
         display: inline-block;
         text-align: left;
       }
-  
+
       select {
         display: block;
       }
-  
+
       .group {
         width: 250px;
         display: inline-block;
       }
-  
+
       #importform {
         margin-top: 1rem;
         background: #acdff2;
         padding: 2rem;
         width: 900px;
       }
-  
+
       #importform button {
         margin-top: 3rem;
         display: block;
@@ -180,41 +180,41 @@
   /*if(!isset($_SESSION)){
     session_start();
   }*/
-  
+
   $c = 0;
-  
+
   $labels = array('cmpt_id', 'cmpt_name', 'cmpt_version',
 	'app_id', 'app_name', 'app_version', 'license', 'status', 'requester',
 	'description', 'monitoring_id', 'monitoring_digest', 'issue_count');
   $data = array();
   $map = array();
-  
+
   if (isset($_POST['submit'])) {
     $chkfile = $_FILES['file']['name'];
     $file = $_FILES['file']['tmp_name'];
-  
+
     //if user clicks button with no file uploaded
     if(!file_exists($file)) {
       echo $_POST['red_app_id_form'];
       echo "<p style='color: white; background-color: red; font-weight: bold; width: 500px;
       text-align: center; border-radius: 2px;'>NO FILE WAS SELCTED</p>";
-  
+
     }else {
       $extension = 'csv';
       $file_ext = pathinfo($chkfile);
-  
+
       //if the uploaded file is not a csv file
       if($file_ext['extension'] !== $extension) {
         echo "<p style='color: white; background-color: red; font-weight: bold; width: 500px;
         text-align: center; border-radius: 2px;'>PLEASE SELECT AN CSV FILE</p>";
-  
+
       }else {
         $target_dir = "csv_files/";
         $target_file = $target_dir.basename($_FILES["file"]["name"]);
         move_uploaded_file($file,$target_file);
         $_SESSION["the_file"] = $target_file;
         $handle = fopen($target_file, "r");
-  
+
         if(FALSE !== $handle) {
             $row = fgetcsv($handle, 1000, ',');
             if(count($row) < 13) {
@@ -227,7 +227,7 @@
                   echo '<option value="'.$val.'">'.$val.'</option>';
                 }
               }
- 
+
               include('import_form_2.php');
             }
         }
@@ -319,29 +319,33 @@
          $license, $status, $requester, $description, $monitoring_id,
          $monitoring_digest, $issue_count);
 
-       foreach ($data as $row) {
-            $red_app_id = $red_app_id_field;
-            $cmpt_id = $row[$cmpt_id_col];
-            $cmpt_name = $row[$cmpt_name_col];
-            $cmpt_version = $row[$cmpt_version_col];
-            $app_id = $row[$app_id_col];
-            $app_name = $row[$app_name_col];
-            $app_version = $row[$app_version_col];
-            $license = $row[$license_col];
-            $status = $row[$status_col];
-            $requester = $row[$requester_col];
-            $description = $row[$description_col];
-            $monitoring_id = $row[$monitoring_id_col];
-            $monitoring_digest = $row[$monitoring_digest_col];
-            $issue_count = $row[$issue_count_col];
+         $successful_inserts = true;
+         foreach ($data as $row) {
+              $red_app_id = $red_app_id_field;
+              $cmpt_id = $row[$cmpt_id_col];
+              $cmpt_name = $row[$cmpt_name_col];
+              $cmpt_version = $row[$cmpt_version_col];
+              $app_id = $row[$app_id_col];
+              $app_name = $row[$app_name_col];
+              $app_version = $row[$app_version_col];
+              $license = $row[$license_col];
+              $status = $row[$status_col];
+              $requester = $row[$requester_col];
+              $description = $row[$description_col];
+              $monitoring_id = $row[$monitoring_id_col];
+              $monitoring_digest = $row[$monitoring_digest_col];
+              $issue_count = $row[$issue_count_col];
+
+           if(!$sqlinsert->execute()) {
+             echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
+             $successful_inserts = false;
+           }
        }
-         if(!$sqlinsert->execute()) {
-           echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
-         }else {
-           echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
-           text-align: center; border-radius: 2px;'>IMPORT SUCCESSFUL";
-           echo "<br>".count($data)." rows have been successfully imported into the apps_components table.</p>";
-         }
+       if($successful_inserts){
+         echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
+         text-align: center; border-radius: 2px;'>IMPORT SUCCESSFUL";
+         echo "<br>".count($data)." rows have been successfully imported into the apps_components table.</p>";
+       }
      }
 
    }

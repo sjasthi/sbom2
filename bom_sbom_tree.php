@@ -106,7 +106,7 @@
         echo "<tbody class= 'red'>
         <tr data-tt-id = '".$p_id."' ><td class='text-capitalize'>
         <div class = 'btn parent' ><span class = 'app_name' style = 'max-width: 160em; white-space: pre-wrap; word-wrap: break-word; word-break: break-all;'>".$app_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
-        <td >".$app_version."</td><td class='text-capitalize'>".$app_status."</td><td/><td/><td/><td/></tr>";
+        <td >".$app_version."</td><td class='text-capitalize'>".$app_status."</td><td/><td>".$red_app_id."<td/><td/><td/></tr>";
 
         $sql_components = "
           SELECT * FROM apps_components
