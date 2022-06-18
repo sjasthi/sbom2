@@ -71,8 +71,11 @@
   </select>
 
 </div>
+
 <?php
+  // Simply passing the Red App ID from admin_import_bom_2.php back to the same
   echo '<input type="hidden" id="red_app_id_field" name="red_app_id_field" value="'.$_POST['red_app_id_form'].'">';
 ?>
+
 <button type="submit" name="submitform" value="submit">Import File</button>
 </form>
