@@ -306,7 +306,6 @@
        if(!$sqldelete->execute()) {
          echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
        }else {
-         echo $_POST['red_app_id_form'];
          echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
          text-align: center; border-radius: 2px;'>DELETE SUCCESSFUL";
          echo "<br>".count($data)." rows have been successfully deleted from the apps_components table.</p>";
