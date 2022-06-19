@@ -113,38 +113,7 @@
           WHERE app_id = '".$red_app_id."'
         ";
         $query_components = $db->query($sql_components);
-        if($query_components->num_rows > 0){
-          $c = 1;
-          while($component = $query_components->fetch_assoc()){
-            $comp_id = $component["cmpt_id"];
-            $comp_name = $component["cmpt_name"];
-            $comp_version = $component["cmpt_version"];
-            $comp_status = $component["status"];
-            $comp_description = $component["description"];
-            $comp_table_id=$p_id."-".$c;
-
-            $comp_color = "child";
-            $sql_child_components = "
-              SELECT * FROM apps_components
-              WHERE app_id = ".$comp_id."
-            ";
-            $query_component_children = $db->query($sql_child_components);
-            if($query_component_children->num_rows == 0){
-              $comp_color = "grandchild";
-            }
-            echo "<tr data-tt-id = '".$comp_table_id."' data-tt-parent-id='".$p_id."' class = 'component' >
-            <td class='text-capitalize'> <div class = 'btn ".$comp_color."'> <span class = 'cmp_name'>".$comp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
-            <td class = 'cmp_version'>".$comp_version."</td>
-            <td class='text-capitalize'>".$comp_status."</td>
-            <td class='text-capitalize'>".$comp_description."</td>
-            <td class='text-capitalize'>".$comp_id."</td></tr>";
-            if($query_component_children->num_rows > 0){
-              displayComponents($db, $query_component_children, $comp_table_id);
-            }
-            $query_component_children->close();
-            $c++;
-          }
-        }
+        displayComponents($db, $query_components, $p_id);
         $query_components->close();
         $p_id++;
       }
@@ -456,6 +425,7 @@
         //click getRed to hide the yellows and show the reds
         $("#showRed").click(function(){
           $("div .yellow").hide();
+          $("div .green").hide();
           $("div .red").show();
         });
       });
