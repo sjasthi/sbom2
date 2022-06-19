@@ -3,16 +3,18 @@
 $connection = new mysqli ("localhost", "root", "", "sbom");
 
 if(!empty($_GET['id'])){//given app_id
-     $sql = "SELECT app_id,app_name,app_version
-     FROM apps_components";
+     $sql = "SELECT requester
+     FROM apps_components
+     WHERE `app_id` = $_GET[id];";
 }
 elseif(!empty($_GET['id']) && !empty($_GET['version'])){//given app_id & app_version
-     $sql = "SELECT app_id,app_name,app_version
-     FROM apps_components";
+     $sql = "SELECT requester
+     FROM apps_components
+     WHERE `app_id` = $_GET[id] and `app_version` = $_GET[version]'";
 }
 elseif(!empty($_GET['name'])){//given app_name
-     $sql = "SELECT app_id,app_name,app_version
-     FROM apps_components";
+     $sql = "SELECT requester
+     FROM apps_components;";
 }
 else {//error response if the given input does not match above
      $error = array("error" => "Invalid input");
@@ -43,7 +45,7 @@ printArray($apps);	//The function to print each row from the $apps result
 //Prints out each data entry from the $apps on its own line(function to read data easier)
 function printArray( $array ){
 	foreach($array as $item) {
-    	$uses = "app_id:".$item['app_id']."\napp_name:".$item['app_name']."\napp_version:".$item['app_version'];
+    	$uses = "Requester: ".$item['requester']."\n";
     	echo $uses."<br>";
     }
 }
