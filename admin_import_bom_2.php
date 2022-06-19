@@ -298,14 +298,15 @@
      if(empty($data)) {
        echo "EMPTY";
 
-     }else {
+     } else {
+       /* apps_components */
        //delete existing data in table
        $sqldelete = $db->prepare('DELETE FROM apps_components WHERE red_app_id = ?');
        $sqldelete->bind_param('s',$red_app_id_field);
        //mysqli_query($db, $sqlDelete);
        if(!$sqldelete->execute()) {
          echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
-       }else {
+       } else {
          echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
          text-align: center; border-radius: 2px;'>DELETE SUCCESSFUL";
          echo "<br>".count($data)." rows have been successfully deleted from the apps_components table.</p>";
@@ -346,7 +347,22 @@
          text-align: center; border-radius: 2px;'>IMPORT SUCCESSFUL";
          echo "<br>".count($data)." rows have been successfully imported into the apps_components table.</p>";
        }
+       /* applications */
+       $red_query = $db->prepare('select distinct app_id, app_name, app_version, status from apps_components where red_app_id = ?');
+       $red_query->bind_param('s',$red_app_id_field);
+       if(!$red_query->execute()) {
+         echo "<h1>Error querying apps_components to update applications.</h1>";
+       }
+       $red_results = $red_query->get_result();
+       foreach ($red_results as $red_row) {
+         $upsert = $db->prepare('insert into applications (app_id, app_name, app_version, app_status, is_eol) values (?,?,?,?,0) on duplicate key update app_name = ?, app_version = ?, app_status = ?');
+         $upsert->bind_param('sssssss', $red_row['app_id'], $red_row['app_name'],
+           $red_row['app_version'], $red_row['status'], $red_row['app_name'],
+           $red_row['app_version'], $red_row['status']);
+         if(!$upsert->execute()) {
+           echo "Failed to upsert app_id: ".$red_row['app_id'];
+         }
+       }
      }
-
    }
-  ?>
+?>
