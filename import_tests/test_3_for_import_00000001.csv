@@ -1,7 +1,0 @@
-cmpt_id,cmpt_name,cmpt_version,app_id,app_name,app_version,license,status,requester,description,monitoring_id,monitoring_digest,issue_count
-00000001,Component 1,1,00000001,Component 1,1,GPLv2,Approved,Nathan Souer,First Component,00000001,NULL,1
-00000002,Component 2,1,00000001,Component 1,1,GPLv2,Approved,Nathan Souer,Second Component,00000002,NULL,1
-00000003,Component 3,1,00000002,Component 2,1,GPLv2,Approved,Nathan Souer,Third Component,00000003,NULL,1
-00000004,Component 4,1,00000003,Component 3,1,GPLv2,Approved,Nathan Souer,Fourth Component,00000004,NULL,1
-00000005,Component 5,1,00000004,Component 4,1,GPLv2,Approved,Nathan Souer,Fifth Component,00000005,NULL,1
-00000006,Component 6,1,00000005,Component 5,1,GPLv2,Approved,Nathan Souer,Sixth Component,00000006,NULL,1
