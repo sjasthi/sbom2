@@ -75,9 +75,10 @@
       $query_component_children = $db->query($sql_components);
       $has_children = $query_component_children->num_rows > 0;
       $comp_color = ($has_children)?"child":"grandchild";
+      $comp_class = ($has_children)?"yellowComp":"greenComp";
 
 
-      echo "<tr data-tt-id = '".$comp_table_id."' data-tt-parent-id='".$parent_table_id."' class = 'component' >
+      echo "<tr data-tt-id = '".$comp_table_id."' data-tt-parent-id='".$parent_table_id."' class = 'component ".$comp_class."' >
       <td class='text-capitalize'> <div class = 'btn ".$comp_color."'> <span class = 'cmp_name'>".$comp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
       <td class = 'cmp_version'>".$comp_version."</td>
       <td class='text-capitalize'>".$comp_status."</td>
@@ -103,7 +104,7 @@
         $app_name = $application["app_name"];
         $app_version = $application["app_version"];
         $app_status = $application["app_status"];
-        echo "<tbody class= 'red'>
+        echo "<tbody class= 'redApp'>
         <tr data-tt-id = '".$p_id."' ><td class='text-capitalize'>
         <div class = 'btn parent' ><span class = 'app_name' style = 'max-width: 160em; white-space: pre-wrap; word-wrap: break-word; word-break: break-all;'>".$app_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
         <td >".$app_version."</td><td class='text-capitalize'>".$app_status."</td><td/><td>".$red_app_id."<td/><td/><td/></tr>";
@@ -394,7 +395,6 @@
               ?>
               <script>document.getElementById("scannerHeader").innerHTML = "BOM --> BOM Tree --> My BOMS";</script>
               <?php
-              // getAllBoms($db);
               displayBomsAsTable($db);
              }
           ?>
@@ -424,23 +424,24 @@
         $(document).ready(function(){
         //click getRed to hide the yellows and show the reds
         $("#showRed").click(function(){
-          $("div .yellow").hide();
-          $("div .green").hide();
-          $("div .red").show();
+          $(".yellowComp").hide();
+          $(".greenComp").hide();
+          $(".redApp").show();
         });
       });
         $(document).ready(function(){
         //click getYellow to hide the reds and show the yellows
         $("#showYellow").click(function(){
-          $("div .yellow").show();
-          $("div .red").hide();
+          $(".yellowComp").show();
+          $(".redApp").hide();
         });
       });
         $(document).ready(function(){
         //click getRedYellow to show everything
         $("#showRedYellow").click(function(){
-          $("div .yellow").show();
-          $("div .red").show();
+          $(".yellowComp").show();
+          $(".greenComp").hide();
+          $(".redApp").show();
         });
       });
       $(document).ready(function() {
