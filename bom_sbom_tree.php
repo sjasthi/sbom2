@@ -161,8 +161,8 @@
         <li class="active"><a href="#" onclick="collapseAll();"><span class="glyphicon glyphicon-chevron-up"></span>Collapse All</a></li>
         <li><a href="#" id='color_noColor'><span id = 'no_color'>No </span>Color</a></li>
         <!-- <li><a href="#" id ="showYellow" >Show <span class="glyphicon glyphicon-tint" style='color:#ffd966;'> </span>Yellow</a></li> -->
-        <li><a href="#" id ="showRed" >Show <span class="glyphicon glyphicon-tint" style='color:#ff6666;'> </span>Red</a></li>
-        <li><a href="#" id = "showRedYellow" > Show <span class="glyphicon glyphicon-tint" style='color:#ff6666;'></span>Red and <span class="glyphicon glyphicon-tint" style='color:#ffd966;'></span>Yellow</a></li>
+        <li><a href="#" id="showRed">Show <span class="glyphicon glyphicon-tint" style='color:#ff6666;'> </span>Red</a></li>
+        <li><a href="#" id="showRedYellow"> Show <span class="glyphicon glyphicon-tint" style='color:#ff6666;'></span>Red and <span class="glyphicon glyphicon-tint" style='color:#ffd966;'></span>Yellow</a></li>
         <li><div class="input-group">
           <input type="text" id="input" class="form-control" placeholder="Where Used" >
           <div class="input-group-btn">
@@ -439,6 +439,7 @@
         $(document).ready(function(){
         //click getRedYellow to show everything
         $("#showRedYellow").click(function(){
+          expandAll();
           $(".yellowComp").show();
           $(".greenComp").hide();
           $(".redApp").show();
@@ -501,9 +502,9 @@
       }
       let expandAll = function(){
         $("#bom_treetable tbody tr.leaf").each((index, item) => {
-          setTimeout(() => {
-            $("#bom_treetable").treetable("reveal", $(item).attr("data-tt-id"))
-          }, 0);
+          // setTimeout(() => {
+          $("#bom_treetable").treetable("reveal", $(item).attr("data-tt-id"))
+          // }, 0);
         });
       }
       let collapseAll = function(){
