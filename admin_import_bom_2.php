@@ -348,7 +348,8 @@
          echo "<br>".count($data)." rows have been successfully imported into the apps_components table.</p>";
        }
        /* applications */
-       $red_query = $db->prepare('select distinct app_id, app_name, app_version, status from apps_components where red_app_id = ?');
+       //$red_query = $db->prepare('select distinct app_id, app_name, app_version, status from apps_components where red_app_id = ?');
+       $red_query = $db->prepare('select distinct app_id, app_name, app_version, status from apps_components where app_id = ?');
        $red_query->bind_param('s',$red_app_id_field);
        if(!$red_query->execute()) {
          echo "<h1>Error querying apps_components to update applications.</h1>";
