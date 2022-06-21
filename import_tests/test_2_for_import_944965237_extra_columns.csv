@@ -1,0 +1,64 @@
+cmpt_id,cmpt_name,cmpt_version,app_id,app_name,app_version,license,status,requester,description,monitoring_id,monitoring_digest,issue_count,extra,extra,extra,extra
+77960664,Unicode for C Sharp (Unicode4C),67.9,77956767,LTS JSON L,9.9,Unicode License V7,Approved,Tierra Von,NULL,76654,na,0,extra,extra,extra,extra
+77960664,Unicode for C Sharp (Unicode4C),67.9,77956767,LTS JSON L,9.9,Unicode License V7,Approved,Tierra Von,NULL,76654,na,0,extra,extra,extra,extra
+69676777,kassandra/xerces-c,6.7.7,77956767,LTS JSON L,9.9,kassandra License 7.0,Approved,Tierra Von,NULL,48023,na,9,extra,extra,extra,extra
+69676777,kassandra/xerces-c,6.7.7,77956767,LTS JSON L,9.9,kassandra License 7.0,Approved,Tierra Von,NULL,48023,na,9,extra,extra,extra,extra
+755954,Commons IO,7.5,49823779,General ED,7.7.0.9,kassandra License 7.0,Approved,Barry Lind,NULL,75896,na,9,extra,extra,extra,extra
+957947,kassandra Commons Codec,9.9,49823779,General ED,7.7.0.9,kassandra License 7.0,Approved,Barry Lind,NULL,76884,na,0,extra,extra,extra,extra
+9496864,kassandra Jakarta Commons Codec,9.6,944977767,General Te,"96.6.0.4,94.0.0.7,94.9",kassandra License 7.0,Approved,Clay Rowe,NULL,9697,na,0,extra,extra,extra,extra
+7796970,kassandra Xalan-C++,9.23,77956767,LTS JSON L,9.9,kassandra License 7.0,Approved,Clay Rowe,NULL,95867,na,0,extra,extra,extra,extra
+7796970,kassandra Xalan-C++,9.23,77956767,LTS JSON L,9.9,kassandra License 7.0,Approved,Clay Rowe,NULL,95867,na,0,extra,extra,extra,extra
+779484,Commons Log Express - commons-Log Express:commons-Log Express,9.0.4,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Clay Rowe,NULL,509,na,0,extra,extra,extra,extra
+779484,Commons Log Express - commons-Log Express:commons-Log Express,9.0.4,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Clay Rowe,NULL,509,na,0,extra,extra,extra,extra
+779484,Commons Log Express - commons-Log Express:commons-Log Express,9.0.4,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Clay Rowe,NULL,509,na,0,extra,extra,extra,extra
+940777669,jackson-databind,7.96.7.7,944965237,Techno Com,6.9,kassandra License 7.0,Approved,Madie Koss,NULL,967507,na,0,extra,extra,extra,extra
+949609756,Jackson-annotations,7.96.7,944965237,Techno Com,6.9,kassandra License 7.0,Approved,Madie Koss,NULL,968579,na,0,extra,extra,extra,extra
+940774974,jackson-core,7.96.7,944965237,Techno Com,6.9,kassandra License 7.0,Approved,Madie Koss,NULL,964570,na,0,extra,extra,extra,extra
+978896784,kassandra log4j,7.97.9,944965237,Techno Com,6.9,kassandra License 7.0,Approved,Madie Koss,NULL,952389,na,0,extra,extra,extra,extra
+967466766,Xerces7 PHP,7.97.7,944965237,Techno Com,6.9,kassandra License 7.0,Approved,Madie Koss,NULL,955784,na,0,extra,extra,extra,extra
+967968679,google-gson,7.9.0,944965237,Techno Com,6.9,kassandra License 7.0,Approved,Madie Koss,NULL,967598,na,0,extra,extra,extra,extra
+949794747,General Techno FileMail Client,96.6.0.5,944965237,Techno Com,6.9,Assembly: Product Clearing for General Component (7098),Approved,Madie Koss,NULL,,na,0,extra,extra,extra,extra
+946770560,General Techno Cloud Library - PHP Integration,"96.6.0.4,94.0.0.7,94.9",944965237,Techno Com,6.9,Assembly: Obligations available in PCM,Approved,Madie Koss,NULL,,na,0,extra,extra,extra,extra
+945959787,General Techno RSA Client Integrations - PHP,"96.6.0.5,94.0.0.7,94.9",944965237,Techno Com,6.9,Assembly: Obligations available in PCM,Approved,Madie Koss,NULL,,na,0,extra,extra,extra,extra
+7979409,Mozilla Rhino,9.7r7,948968974,General Te,96.6.0.5,Mozilla Public License 9.9,Approved,Sonya Wolf,NULL,2309,na,0,extra,extra,extra,extra
+7076759,kassandra Commons Lang,7.9 (9),948968974,General Te,96.6.0.5,kassandra License 7.0,Approved,Sonya Wolf,NULL,9408,na,0,extra,extra,extra,extra
+79474797,LTS JSON Libray,9.9,944965237,Techno Com,6.9,Assembly: Obligations available in PCM,Approved,Wilton Von,NULL,,na,0,extra,extra,extra,extra
+86945689,kassandra HttpClient,4.5.96 (9),944965237,Techno Com,6.9,kassandra License 7.0,Approved,Wilton Von,NULL,90597,na,0,extra,extra,extra,extra
+47238764,7-Zip - 7-Zip,23,944965237,Techno Com,6.9,GNU Lesser General Public License v7.9 or later,Approved,Wilton Von,NULL,50704,na,0,extra,extra,extra,extra
+9496864,kassandra Jakarta Commons Codec,9.6,944965237,Techno Com,6.9,kassandra License 7.0,Approved,Denis Mann,NULL,9697,na,0,extra,extra,extra,extra
+48978967,kassandra Derby Project,90.94.7.0,944965237,Techno Com,6.9,kassandra License 7.0,Approved,Denis Mann,NULL,57609,na,0,extra,extra,extra,extra
+7909777,Apache Rich Client Platform Subset,6.8,944965237,Techno Com,6.9,Unspecified,Approved,Denis Mann,NULL,95697,na,9,extra,extra,extra,extra
+64702377,jaxb-impl (repo.maven.kassandra.org/maven7/com/sun/xml/bind/jaxb-ri),7.6.0,944965237,Techno Com,6.9,GNU General Public License v7.0 w/Classpath exception,Approved,Denis Mann,NULL,49479,na,0,extra,extra,extra,extra
+66909456,PHPBeans Activation Framework (JAF),9.7.0,944965237,Techno Com,6.9,GNU General Public License v7.0 w/Classpath exception,Approved,Denis Mann,NULL,47969,na,0,extra,extra,extra,extra
+909654677,kassandra Ant,9.90.23,944965237,Techno Com,6.9,kassandra License 7.0,Approved,Denis Mann,NULL,974080,na,0,extra,extra,extra,extra
+5674558,PHP Servlet API,7.6,944965237,Techno Com,6.9,kassandra License 7.0,Approved,Denis Mann,NULL,90605,na,0,extra,extra,extra,extra
+8679448,kassandra Jakarta Commons CLI,9,944965237,Techno Com,6.9,kassandra License 9.9,Approved,Denis Mann,NULL,9764,na,0,extra,extra,extra,extra
+7966969,JacORB - the free PHP ORB,7.6.0,944965237,Techno Com,6.9,GNU Library General Public License v7 or later,Approved,Denis Mann,NULL,4079,na,0,extra,extra,extra,extra
+49870967,General EDS SDK,7.7.0.9,944965237,Techno Com,6.9,Assembly: Obligations available in PCM,Approved,Denis Mann,NULL,,na,0,extra,extra,extra,extra
+940777669,jackson-databind,7.96.7.7,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Jared Ward,NULL,967507,na,0,extra,extra,extra,extra
+940777669,jackson-databind,7.96.7.7,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Jared Ward,NULL,967507,na,0,extra,extra,extra,extra
+940777669,jackson-databind,7.96.7.7,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Jared Ward,NULL,967507,na,0,extra,extra,extra,extra
+949609756,Jackson-annotations,7.96.7,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Jared Ward,NULL,968579,na,0,extra,extra,extra,extra
+949609756,Jackson-annotations,7.96.7,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Jared Ward,NULL,968579,na,0,extra,extra,extra,extra
+949609756,Jackson-annotations,7.96.7,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Jared Ward,NULL,968579,na,0,extra,extra,extra,extra
+940774974,jackson-core,7.96.7,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Jared Ward,NULL,964570,na,0,extra,extra,extra,extra
+940774974,jackson-core,7.96.7,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Jared Ward,NULL,964570,na,0,extra,extra,extra,extra
+940774974,jackson-core,7.96.7,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Jared Ward,NULL,964570,na,0,extra,extra,extra,extra
+967466766,Xerces7 PHP,7.97.7,944977767,General Te,"96.6.0.4,94.0.0.7,94.9",kassandra License 7.0,Approved,Jared Ward,NULL,955784,na,0,extra,extra,extra,extra
+945959787,General Techno RSA Client Integrations - PHP,"96.6.0.5,94.0.0.7,94.9",944977767,General Te,"96.6.0.4,94.0.0.7,94.9",Assembly: Obligations available in PCM,Approved,Jared Ward,NULL,,na,0,extra,extra,extra,extra
+70760908,jaxb-impl (repo.maven.kassandra.org/maven7/com/sun/xml/bind/jaxb-ri),7.6.9,944977767,General Te,"96.6.0.4,94.0.0.7,94.9",GNU General Public Licence v7.0 w/ Oracle Classpath exception V7,Approved,Loy Hilll,NULL,47023,na,0,extra,extra,extra,extra
+978896784,kassandra log4j,7.97.9,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Loy Hilll,NULL,952389,na,0,extra,extra,extra,extra
+978896784,kassandra log4j,7.97.9,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Loy Hilll,NULL,952389,na,0,extra,extra,extra,extra
+978896784,kassandra log4j,7.97.9,944977767,General Te,"96.6.0.4,94.0.0.7,94.9",kassandra License 7.0,Approved,Loy Hilll,NULL,952389,na,0,extra,extra,extra,extra
+978896784,kassandra log4j,7.97.9,944974646,General Te,"96.6.0.5,94.0.0.7,94.9",kassandra License 7.0,Approved,Loy Hilll,NULL,952389,na,0,extra,extra,extra,extra
+86945689,kassandra HttpClient,4.5.96 (9),944977767,General Te,"96.6.0.4,94.0.0.7,94.9",kassandra License 7.0,Approved,Loy Hilll,NULL,90597,na,0,extra,extra,extra,extra
+76577677,jaxb-v7,7.6.9,948968974,General Te,96.6.0.5,GNU General Public Licence v7.0 w/ Oracle Classpath exception V7,Approved,Arjun Roob,NULL,47023,na,0,extra,extra,extra,extra
+79474797,LTS JSON Libray,9.9,948968974,General Te,96.6.0.5,Assembly: Obligations available in PCM,Approved,Arjun Roob,NULL,,na,0,extra,extra,extra,extra
+86798594,Commons IO,7.8.0,948968974,General Te,96.6.0.5,kassandra License 7.0,Approved,Arjun Roob,NULL,96607,na,0,extra,extra,extra,extra
+978896784,kassandra log4j,7.97.9,948968974,General Te,96.6.0.5,kassandra License 7.0,Approved,Arjun Roob,NULL,952389,na,0,extra,extra,extra,extra
+965656984,JDOM,7.0.6.9,948968974,General Te,96.6.0.5,Jdom License V7,Approved,Arjun Roob,NULL,956776,na,0,extra,extra,extra,extra
+89660459,Xerces7 PHP,7.97.9,948968974,General Te,96.6.0.5,kassandra License 7.0,Approved,Arjun Roob,NULL,23506,na,9,extra,extra,extra,extra
+86945689,kassandra HttpClient,4.5.96 (9),948968974,General Te,96.6.0.5,kassandra License 7.0,Approved,Arjun Roob,NULL,90597,na,0,extra,extra,extra,extra
+986755,commons-Log Express,9.7,948968974,General Te,96.6.0.5,kassandra License 7.0,Approved,Arjun Roob,NULL,77679,na,0,extra,extra,extra,extra
+77496505,Commons Codec - commons-codec:commons-codec,9.23,948968974,General Te,96.6.0.5,kassandra License 7.0,Approved,Arjun Roob,NULL,40769,na,0,extra,extra,extra,extra
+945959787,General Techno RSA Client Integrations - PHP,"96.6.0.5,94.0.0.7,94.9",948968974,General Te,96.6.0.5,Assembly: Obligations available in PCM,Approved,Arjun Roob,NULL,,na,0,extra,extra,extra,extra
