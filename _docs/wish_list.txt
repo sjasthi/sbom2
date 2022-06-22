@@ -91,7 +91,6 @@ get_security_summary(component_id, component_version)
 get_security_summary(component_name)
 
 get_owner(app_id)
-get_owner(app_id, app_version)
 get_owner(app_name)
 
 get_owner(component_id)

@@ -7,14 +7,9 @@ if(!empty($_GET['id'])){//given app_id
      FROM apps_components
      WHERE `app_id` = $_GET[id];";
 }
-elseif(!empty($_GET['id']) && !empty($_GET['version'])){//given app_id & app_version
-     $sql = "SELECT requester
-     FROM apps_components
-     WHERE `app_id` = $_GET[id] and `app_version` = $_GET[version]'";
-}
 elseif(!empty($_GET['name'])){//given app_name
-     $sql = "SELECT requester
-     FROM apps_components;";
+     $sql = "SELECT app_owner
+     FROM ownership";
 }
 else {//error response if the given input does not match above
      $error = array("error" => "Invalid input");
@@ -45,7 +40,7 @@ printArray($apps);	//The function to print each row from the $apps result
 //Prints out each data entry from the $apps on its own line(function to read data easier)
 function printArray( $array ){
 	foreach($array as $item) {
-    	$uses = "Requester: ".$item['requester']."\n";
+    	$uses = "App owner: ".$item['app_owner']."\n";
     	echo $uses."<br>";
     }
 }
