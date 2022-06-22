@@ -4,6 +4,7 @@
   $left_selected = "SBOMTREE";
   $tabTitle = "SBOM - BOM (Tree)";
 
+  include "../../../../index.php";
   include "get_scope.php";
 
   //Get DB Credentials
