@@ -2,10 +2,15 @@
   // set the current page to one of the main buttons
   $nav_selected = "ADMIN";
   // make the left menu buttons visible; options: YES, NO
-  $left_buttons = "YES";
+  //$left_buttons = "YES"; // Commented in effort to work with upstream
   // set the left menu button selected; options will change based on the main selection
-  $left_selected = "ADMIN";
-  include("./nav.php");
+  //$left_selected = "ADMIN";
+  $left_selected = "IMPORTBOM";
+  $tabTitle =  "SBOM - Admin (Import BOM)";
+
+  //include("./nav.php");
+  include("../../../../index.php");
+  include("admin_left_menu.php");
 
   if(!isset($_SESSION)){
     session_start();
@@ -104,75 +109,36 @@
 
 <html>
   <head>
-    <style>
-      table.center {
-        margin-left:auto;
-        margin-right:auto;
-      }
-
-      #list ul {
-        display: inline-block;
-        text-align: left;
-      }
-
-      select {
-        display: block;
-      }
-
-      .group {
-        width: 250px;
-        display: inline-block;
-      }
-
-      #importform {
-        margin-top: 1rem;
-        background: #acdff2;
-        padding: 2rem;
-        width: 900px;
-      }
-
-      #importform button {
-        margin-top: 3rem;
-        display: block;
-        background: #01B0F1;
-        color: white;
-        padding: .5rem 1rem;
-        border: solid #ccc 1px;
-        border-radius: 4px;
-      }
-    </style>
   </head>
   <body>
-    <h2 style = "color: #01B0F1;">Admin --> Import BOM</h2>
-    <div id='list'>
-      <p>Before importing a file, please make sure the file is a <span style="font-weight: bold;">CSV</span>
-      file with these <span style="font-weight: bold;">13 </span>columns:<br></p>
-      <ul>
-              <li>Component ID</li>
-              <li>Component Name</li>
-              <li>Component Version</li>
-              <li>Application ID</li>
-      </ul>
-      <ul>
-              <li>Application Name</li>
-              <li>Application Version</li>
-              <li>License</li>
-              <li>Status</li>
-              <li>Requester</li>
-      </ul>
-      <ul>
-              <li>Monitoring ID</li>
-              <li>Monitoring Digest</li>
-              <li>Issue Count</li>
-              <li>Description</li>
-      </ul>
+    <div class="wrap">
+      <h3>Admin --> Import BOM</h3>
+      <div id='list'>
+        <p>Before importing a file, please make sure the file is a <span style="font-weight: bold;">CSV</span>
+        file with these <span style="font-weight: bold;">13 </span>columns:<br></p>
+        <ul>
+                <li>Component ID</li>
+                <li>Component Name</li>
+                <li>Component Version</li>
+                <li>Application ID</li>
+                <li>Application Name</li>
+                <li>Application Version</li>
+                <li>License</li>
+                <li>Status</li>
+                <li>Requester</li>
+                <li>Monitoring ID</li>
+                <li>Monitoring Digest</li>
+                <li>Issue Count</li>
+                <li>Description</li>
+        </ul>
+      </div>
+      <form enctype="multipart/form-data" method="POST" role="form">
+        <input type="file" name="file" id="file" size="150" style="color:black; display: inline-block;">
+        Red Application ID: <input type="test" name="red_app_id_form" id="file" style="color:black; display: inline-block;">
+        <button style="background: #01B0F1; color: white;" type="submit"
+        class="btn btn-default" name="submit" value="submit">Submit</button>
+      </form>
     </div>
-    <form enctype="multipart/form-data" method="POST" role="form">
-      <input type="file" name="file" id="file" size="150" style="color:black; display: inline-block;">
-      Red Application ID: <input type="test" name="red_app_id_form" id="file" style="color:black; display: inline-block;">
-      <button style="background: #01B0F1; color: white;" type="submit"
-      class="btn btn-default" name="submit" value="submit">Submit</button>
-    </form>
   </body>
 </html>
 
@@ -180,41 +146,41 @@
   /*if(!isset($_SESSION)){
     session_start();
   }*/
-
+  
   $c = 0;
-
+  
   $labels = array('cmpt_id', 'cmpt_name', 'cmpt_version',
 	'app_id', 'app_name', 'app_version', 'license', 'status', 'requester',
 	'description', 'monitoring_id', 'monitoring_digest', 'issue_count');
   $data = array();
   $map = array();
-
+  
   if (isset($_POST['submit'])) {
     $chkfile = $_FILES['file']['name'];
     $file = $_FILES['file']['tmp_name'];
-
+  
     //if user clicks button with no file uploaded
     if(!file_exists($file)) {
       echo $_POST['red_app_id_form'];
       echo "<p style='color: white; background-color: red; font-weight: bold; width: 500px;
       text-align: center; border-radius: 2px;'>NO FILE WAS SELCTED</p>";
-
+  
     }else {
       $extension = 'csv';
       $file_ext = pathinfo($chkfile);
-
+  
       //if the uploaded file is not a csv file
       if($file_ext['extension'] !== $extension) {
         echo "<p style='color: white; background-color: red; font-weight: bold; width: 500px;
         text-align: center; border-radius: 2px;'>PLEASE SELECT AN CSV FILE</p>";
-
+  
       }else {
-        $target_dir = "csv_files/";
+        $target_dir = "../../../../csv_files/";
         $target_file = $target_dir.basename($_FILES["file"]["name"]);
         move_uploaded_file($file,$target_file);
         $_SESSION["the_file"] = $target_file;
         $handle = fopen($target_file, "r");
-
+  
         if(FALSE !== $handle) {
             $row = fgetcsv($handle, 1000, ',');
             if(count($row) < 13) {
@@ -227,7 +193,7 @@
                   echo '<option value="'.$val.'">'.$val.'</option>';
                 }
               }
-
+ 
               include('import_form_2.php');
             }
         }
@@ -298,15 +264,14 @@
      if(empty($data)) {
        echo "EMPTY";
 
-     } else {
-       /* apps_components */
+     }else {
        //delete existing data in table
        $sqldelete = $db->prepare('DELETE FROM apps_components WHERE red_app_id = ?');
        $sqldelete->bind_param('s',$red_app_id_field);
        //mysqli_query($db, $sqlDelete);
        if(!$sqldelete->execute()) {
          echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
-       } else {
+       }else {
          echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
          text-align: center; border-radius: 2px;'>DELETE SUCCESSFUL";
          echo "<br>".count($data)." rows have been successfully deleted from the apps_components table.</p>";
@@ -320,50 +285,31 @@
          $license, $status, $requester, $description, $monitoring_id,
          $monitoring_digest, $issue_count);
 
-         $successful_inserts = true;
-         foreach ($data as $row) {
-              $red_app_id = $red_app_id_field;
-              $cmpt_id = $row[$cmpt_id_col];
-              $cmpt_name = $row[$cmpt_name_col];
-              $cmpt_version = $row[$cmpt_version_col];
-              $app_id = $row[$app_id_col];
-              $app_name = $row[$app_name_col];
-              $app_version = $row[$app_version_col];
-              $license = $row[$license_col];
-              $status = $row[$status_col];
-              $requester = $row[$requester_col];
-              $description = $row[$description_col];
-              $monitoring_id = $row[$monitoring_id_col];
-              $monitoring_digest = $row[$monitoring_digest_col];
-              $issue_count = $row[$issue_count_col];
-
-           if(!$sqlinsert->execute()) {
-             echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
-             $successful_inserts = false;
-           }
+       foreach ($data as $row) {
+            $red_app_id = $red_app_id_field;
+            $cmpt_id = $row[$cmpt_id_col];
+            $cmpt_name = $row[$cmpt_name_col];
+            $cmpt_version = $row[$cmpt_version_col];
+            $app_id = $row[$app_id_col];
+            $app_name = $row[$app_name_col];
+            $app_version = $row[$app_version_col];
+            $license = $row[$license_col];
+            $status = $row[$status_col];
+            $requester = $row[$requester_col];
+            $description = $row[$description_col];
+            $monitoring_id = $row[$monitoring_id_col];
+            $monitoring_digest = $row[$monitoring_digest_col];
+            $issue_count = $row[$issue_count_col];
        }
-       if($successful_inserts){
-         echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
-         text-align: center; border-radius: 2px;'>IMPORT SUCCESSFUL";
-         echo "<br>".count($data)." rows have been successfully imported into the apps_components table.</p>";
-       }
-       /* applications */
-       //$red_query = $db->prepare('select distinct app_id, app_name, app_version, status from apps_components where red_app_id = ?');
-       $red_query = $db->prepare('select distinct app_id, app_name, app_version, status from apps_components where app_id = ?');
-       $red_query->bind_param('s',$red_app_id_field);
-       if(!$red_query->execute()) {
-         echo "<h1>Error querying apps_components to update applications.</h1>";
-       }
-       $red_results = $red_query->get_result();
-       foreach ($red_results as $red_row) {
-         $upsert = $db->prepare('insert into applications (app_id, app_name, app_version, app_status, is_eol) values (?,?,?,?,0) on duplicate key update app_name = ?, app_version = ?, app_status = ?');
-         $upsert->bind_param('sssssss', $red_row['app_id'], $red_row['app_name'],
-           $red_row['app_version'], $red_row['status'], $red_row['app_name'],
-           $red_row['app_version'], $red_row['status']);
-         if(!$upsert->execute()) {
-           echo "Failed to upsert app_id: ".$red_row['app_id'];
+         if(!$sqlinsert->execute()) {
+           echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
+         }else {
+           echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
+           text-align: center; border-radius: 2px;'>IMPORT SUCCESSFUL";
+           echo "<br>".count($data)." rows have been successfully imported into the apps_components table.</p>";
          }
-       }
      }
+
    }
-?>
+  ?>
+
