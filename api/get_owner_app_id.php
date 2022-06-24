@@ -3,13 +3,16 @@
 $connection = new mysqli ("localhost", "root", "", "sbom");
 
 if(!empty($_GET['id'])){//given app_id
-     $sql = "SELECT requester
-     FROM apps_components
-     WHERE `app_id` = $_GET[id];";
+    $app_id = json_decode($_GET['id']);
+     $sql = "SELECT app_owner FROM `ownership` WHERE EXISTS\n"
+
+    . "(SELECT app_name FROM `applications` WHERE app_id = \"$app_id\" and ownership.app_name = app_name);";
 }
 elseif(!empty($_GET['name'])){//given app_name
-     $sql = "SELECT app_owner
-     FROM ownership";
+    $name = json_decode($_GET['name']);
+    $sql = "SELECT app_owner
+    FROM ownership
+    WHERE `app_name` = '$name'";
 }
 else {//error response if the given input does not match above
      $error = array("error" => "Invalid input");

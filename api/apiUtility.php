@@ -85,4 +85,33 @@
             return $db->query($sql);
         }
 
+        /**
+         * @param $app_id
+         *
+         * @return bool|mysqli_result
+         */
+        public function get_owner_app_id($app_id) {
+            global $db;
+            $app_id = json_decode($app_id);
+            $sql = "SELECT app_owner 
+            FROM `ownership` 
+            WHERE EXISTS\n". 
+            "(SELECT app_name FROM `applications` WHERE app_id = \"$app_id\" and ownership.app_name = app_name);";
+            return $db->query($sql);
+        }
+
+        /**
+         * @param $app_name
+         *
+         * @return bool|mysqli_result
+         */
+        public function get_owner_app_name($app_name) {
+            global $db;
+            echo "$app_name";
+            $sql = "SELECT app_owner
+            FROM ownership
+            WHERE app_owner = '$app_name'";
+            return $db->query($sql);
+        }
+
     }
