@@ -70,7 +70,7 @@
         public function getWhereUsed_name_version($component_name, $component_version) {
             global $db;
             $sql = "SELECT app_id,app_name,app_version FROM apps_components 
-                                   WHERE cmpt_name = '$component_name' AND cmpt_version = '$component_version'";
+                                   WHERE cmpt_name LIKE '$component_name%' AND cmpt_version = '$component_version'";
             return $db->query($sql);
         }
 
@@ -81,7 +81,7 @@
          */
         public function getWhereUsed_name($component_name) {
             global $db;
-            $sql = "SELECT app_id,app_name,app_version FROM apps_components WHERE cmpt_name = '$component_name'";
+            $sql = "SELECT app_id,app_name,app_version FROM apps_components WHERE cmpt_name LIKE '$component_name%'";
             return $db->query($sql);
         }
 

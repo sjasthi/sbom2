@@ -1,75 +1,100 @@
 <?php
+    /**
+     * Project: FP3
+     * Name: Shahid Iqbal, Isaac Hentges, Nathan Lantaigne-Goetsch, Abdulsalam Geddi
+     *
+     * The apiUtility class is for various helper functions for the php pages.
+     */
+    require("./apiUtility.php");
 
-$connection = new mysqli ("localhost", "root", "", "sbom");
+    if (isset($_GET['component_name'], $_GET['component_version'])) {
+        $component_name = $_GET['component_name'];
+        $component_version = $_GET['component_version'];
 
-if(!empty($_GET['id'])){
-     $sql = "SELECT app_id,app_name,app_version
-     FROM apps_components
-     WHERE `cmpt_id` = $_GET[id];";
-}
-elseif(!empty($_GET['name']) && !empty($_GET['version'])){
-     $sql = "SELECT app_id,app_name,app_version
-     FROM apps_components
-     WHERE `cmpt_name` = '$_GET[name]' and `cmpt_version` = '$_GET[version]'";
-}
-elseif(!empty($_GET['name'])){
-     $sql = "SELECT app_id,app_name,app_version
-     FROM apps_components
-     WHERE `cmpt_name` = '$_GET[name]'";
-}
-else {
-     $error = array("error" => "Invalid input");
-     echo json_encode($error);
-     exit;
-}
+        if((!empty($component_name) && preg_match('/^[\d A-Za-z +:-]*$/', $component_name)) &&
+            (!empty($component_version) && preg_match('/^[\d., ]*$/', $component_version))) {
+            $apiFunctions = new apiUtility();
+            $processor = $apiFunctions->getWhereUsed_name_version($component_name, $component_version);
+            $data = [];
+            $count = 0;
+            if($processor->num_rows > 0) {
+                $count = $processor->num_rows;
+                while($row  = $processor->fetch_assoc()){
+                    $data[] = $row;
+                }
+            }
+            response(200, $count, $component_name . ", " . $component_version, $data);
+        }
 
+        else if (isset($component_name, $component_version) && empty($component_name) && empty($component_version)) {
+            invalidResponse("Invalid or Empty input");
+        }
 
-
-$result = $connection->query($sql);
-
-if($result->num_rows == 0){
-     $input = implode(",", $_GET);
-     $error = array("error" => $input." Not found.");
-     echo json_encode($error);
-     exit;
-}
-
-$apps = array();
-
-while ($app = $result->fetch_assoc()){
-     $apps[] = $app;
-}
-
-echo json_encode($apps)."<br>";
-printArray($apps);	//The function to print each row from the $apps result
-
-//Prints out each data entry from the $apps on its own line(function to read data easier)
-function printArray( $array ){
-	foreach($array as $item) {
-    	$uses = "app_id:".$item['app_id']."\napp_name:".$item['app_name']."\napp_version:".$item['app_version'];
-    	echo $uses."<br>";
+        else {
+            invalidResponse("Invalid Request");
+        }
     }
-}
 
+    else if (isset($_GET['component_id'])) {
+        $component_id = $_GET['component_id'];
 
-
-function to_utf8( $string ) {
-// From http://w3.org/International/questions/qa-forms-utf-8.html
-    if ( preg_match('%^(?:
-      [\x09\x0A\x0D\x20-\x7E]            # ASCII
-    | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
-    | \xE0[\xA0-\xBF][\x80-\xBF]         # excluding overlongs
-    | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
-    | \xED[\x80-\x9F][\x80-\xBF]         # excluding surrogates
-    | \xF0[\x90-\xBF][\x80-\xBF]{2}      # planes 1-3
-    | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
-    | \xF4[\x80-\x8F][\x80-\xBF]{2}      # plane 16
-)*$%xs', $string) ) {
-        return $string;
-    } else {
-        return iconv( 'CP1252', 'UTF-8', $string);
+        if (!empty($component_id) && preg_match('/^\d*$/', $component_id)) {
+            $apiFunctions = new apiUtility();
+            $processor = $apiFunctions->getWhereUsed_id($component_id);
+            $data = [];
+            $count = 0;
+            if ($processor->num_rows > 0) {
+                $count = $processor->num_rows;
+                while ($row = $processor->fetch_assoc()) {
+                    $data[] = $row;
+                }
+            }
+            response(200, $count, $component_id, $data);
+        }
+        else if (isset($component_id) && empty($component_id)) {
+            invalidResponse("Invalid or Empty input");
+        }
+        else {
+            invalidResponse("Invalid Request");
+        }
     }
-}
 
-?>
+    else if (isset($_GET['component_name'])) {
+        $component_name = $_GET['component_name'];
 
+        if(!empty($component_name) && preg_match('/^[\d A-Za-z +:-]*$/', $component_name)) {
+            $apiFunctions = new apiUtility();
+            $processor = $apiFunctions->getWhereUsed_name($component_name);
+            $data = [];
+            $count = 0;
+            if($processor!==false && $processor->num_rows > 0) {
+                $count = $processor->num_rows;
+                while($row  = $processor->fetch_assoc()){
+                    $data[] = $row;
+                }
+            }
+            response(200, $count, $component_name, $data);
+        }
+        else if (isset($component_name) && empty($component_name)) {
+            invalidResponse("Invalid or Empty input");
+        }
+        else {
+            invalidResponse("Invalid Request");
+        }
+    }
+
+
+    function invalidResponse($message) {
+        response(400, $message, NULL, NULL);
+    }
+
+    function response($responseCode, $message, $string, $data) {
+        // Locally cache results for two hours
+        header('Cache-Control: max-age=7200');
+        // JSON Header
+        header('Content-type:application/json;charset=utf-8');
+        http_response_code($responseCode);
+        $response = array("response_code" => $responseCode, "Records" => $message, "Parameter Value" => $string, "data" => $data);
+        $json = json_encode($response, JSON_PRETTY_PRINT);
+        echo $json;
+    }
