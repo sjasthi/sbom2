@@ -42,6 +42,8 @@
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.1/js/buttons.print.min.js"></script>
+	<script src="http://localhost:3000/assets/modules/channel-web/inject.js"></script>
+	
 
     <?php
       echo '<script src="'.$assetsPath.'/jquery/jquery.treetable.js"></script>';
@@ -80,4 +82,10 @@
       }
     ?>
   </body>
+  <script>
+		window.botpressWebChat.init({
+		host: "http://localhost:3000",
+		botId: "test",
+		})
+</script>
 </html>
