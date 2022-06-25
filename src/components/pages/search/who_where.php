@@ -15,17 +15,25 @@
       $data = $GLOBALS['db'] -> query( $sql );
 
       if( $val === '' ) {
-        $val = '*';
+        echo 
+          '<h3>
+            <div>
+              SELECT <span> * </span> FROM <span> Ownership </span>
+            </div>
+          </h3>';
+      } else {
+        echo 
+          '<h3>
+            <div>
+              SELECT <span> * </span> FROM <span> Ownership </span>
+            </div>
+            
+            <div>
+              WHERE <span> app_type = </span>
+              <span><i><u>'.$val.'</u></i></span>
+            </div>
+          </h3>';
       }
-
-      echo 
-        '<h3>
-          <span>Query: <i>"Ownership"</i></span>
-          <div>
-            WHERE <span> app_type = </span>
-            <span><i><u>'.$val.'</u></i></span>
-          </div>
-        </h3>';
 
       buildTable( $data );
 
@@ -37,15 +45,25 @@
         OR app_name LIKE "'.$search.'%"';
       $data = $GLOBALS['db'] -> query( $sql );
 
-      echo 
-        '<h3>
-          <span>Query: <i>"app_components"</i></span>
-
-          <div>
-            WHERE <span> (cmpt_name</span> OR <span>app_name) = </span>
-            <span><i><u>'.$search.'</u></i></span>
-          </div>
-        </h3>';
+      if( $search === '' ) {
+        echo 
+          '<h3>
+            <div>
+              SELECT <span> * </span> FROM <span> app_components </span>
+            </div>
+          </h3>';
+      } else {
+        echo 
+          '<h3>
+            <div>
+              SELECT <span> * </span> FROM <span> app_components </span>
+            </div>
+            <div>
+              WHERE <span> (cmpt_name</span> OR <span>app_name) = </span>
+              <span><i><u>'.$search.'</u></i></span>
+            </div>
+          </h3>';
+      }
       
       buildTable( $data );
 
