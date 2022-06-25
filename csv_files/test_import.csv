@@ -1,0 +1,4 @@
+"line_id","red_app_id","cmpt_id","cmpt_name","cmpt_version","app_id","app_name","app_version","license","status","requester","description","monitoring_id","monitoring_digest","issue_count"
+"204","946907896"," 00000004"," Level 3 component"," 1.0","79474797"," LTS JSON "," 1.0"," Commercial:  License V7"," Approved"," Anthony"," NULL"," 00005"," na","0"
+"205","76074884"," 00000006","Level 4 Component"," 1.0"," 00000004"," LTS JSON "," 1.0"," Commercial:  License V7"," Approved"," Anthony"," NULL"," 00005"," na","0"
+"206","946907896"," 00000005"," Level 3 component"," 1.0","79474797"," LTS JSON "," 1.0"," Commercial:  License V7"," Approved"," Anthony"," NULL"," 00005"," na","0"

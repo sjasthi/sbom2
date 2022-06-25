@@ -278,6 +278,29 @@ INSERT INTO `apps_components` (`line_id`, `red_app_id`, `cmpt_id`, `cmpt_name`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ownership`
+--
+
+CREATE TABLE `ownership` (
+  `app_name` varchar(100) NOT NULL,
+  `app_type` enum('red','yellow','red_n_yellow','') NOT NULL DEFAULT 'red' COMMENT 'red = top_level application; yellow = intermediate assembly; red_n_yellow = both',
+  `foss_contact` varchar(50) NOT NULL COMMENT 'email of the contact point',
+  `app_owner` varchar(50) NOT NULL COMMENT 'email of the application owner (usually executive)',
+  `team_name` varchar(100) NOT NULL COMMENT 'team name',
+  `ownership_type` enum('application','component','') NOT NULL DEFAULT 'application' COMMENT 'application and ',
+  `owning_org` varchar(5) NOT NULL DEFAULT 'BOM' COMMENT 'organization name'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `ownership` (`app_name`, `app_type`, `foss_contact`, `app_owner`, `team_name`, `ownership_type`, `owning_org`) VALUES
+('test1', 'red', '', '', '', '', ''),
+('test2', 'yellow', '', '', '', '', ''),
+('test3', 'red_n_yellow', '', '', '', '', '');
+
+-- --------------------------------------------------------
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `preferences`
 --
 
