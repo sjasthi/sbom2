@@ -11,7 +11,7 @@
     $assetsPath = '../../../assets/';
     $componentsPath = '../../';
 
-    if( $nav_selected !== 'SEARCH' ) {
+    if( $nav_selected !== 'SEARCH' ) { // special case for autofocus
       $autoFocus = '';
     }
   }
