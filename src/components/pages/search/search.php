@@ -7,14 +7,48 @@
 
   // search component name first, then app name.
   // default to "where" searches when nothing is provided (where/who)
-  $searchVal = $_POST["searchVal"];
-  function searchAppComponents( $search ) {
-    $sql =
+  function searchApp() {
+    $search = $_POST["searchVal"];
+    $firstWord = strtok( $search, ' ' );
+
+    if( !strcasecmp( $firstWord, 'who' ) ) { // Ownership table
+      $val = strstr( $search, ' ' );
+
+      echo 
+      '<h3>
+        <span>Query: <i>"Ownership"</i></span>
+
+        <div>
+          WHERE <span> app_name = </span>
+          <span><i><u>'.$val.'</u></i></span>
+        </div>
+      </h3>';
+
+      $data = array( 0 => array( 'who' => $val ) );
+      buildTable( $data );
+
+      return $data;
+    } else { // App_Components table
+      $sql =
       'SELECT * from apps_components
       WHERE cmpt_name LIKE "'.$search.'%"
       OR app_name LIKE "'.$search.'%"';
 
-    return $data = $GLOBALS['db'] -> query( $sql );
+      echo 
+        '<h3>
+          <span>Query: <i>"app_components"</i></span>
+
+          <div>
+            WHERE <span> (cmpt_name</span> OR <span>app_name) = </span>
+            <span><i><u>'.$search.'</u></i></span>
+          </div>
+        </h3>';
+      
+      $data = $GLOBALS['db'] -> query( $sql );
+      buildTable( $data );
+
+      return $data;
+    }
   }
 
   function grabList( $result ) {
@@ -65,20 +99,9 @@
 
 <!-- HTML -->
 <div class="wrap">
-  <h3>
-    <span>Query: <i>"app_components"</i></span>
-
-    <div>
-      WHERE <span> (cmpt_name</span> OR <span>app_name) = </span>
-      <span><i><u><?php echo $searchVal; ?></u></i></span>
-    </div>
-  </h3>
-
   <?php
     // can possibly build toggle to search other tables.
-    $resultsObject = searchAppComponents( $searchVal );
-
-    buildTable( $resultsObject ); // table output to HTML
+    $resultsObject = searchApp();
   ?>
 </div>
 

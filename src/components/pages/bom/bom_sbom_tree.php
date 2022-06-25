@@ -6,6 +6,7 @@
 
   include "../../../../index.php";
   include "get_scope.php";
+  include("bom_left_menu.php");
 
   //Get DB Credentials
   $DB_SERVER = constant('DB_SERVER');
@@ -66,7 +67,6 @@
       $comp_name = $component["cmpt_name"];
       $comp_version = $component["cmpt_version"];
       $comp_status = $component["status"];
-      $comp_description = $component["description"];
       $comp_table_id=$parent_table_id."-".$parent_c;
 
       $sql_components = "
@@ -82,8 +82,7 @@
       echo "<tr data-tt-id = '".$comp_table_id."' data-tt-parent-id='".$parent_table_id."' class = 'component ".$comp_class."' >
       <td class='text-capitalize'> <div class = 'btn ".$comp_color."'> <span class = 'cmp_name'>".$comp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
       <td class = 'cmp_version'>".$comp_version."</td>
-      <td class='text-capitalize'>".$comp_status."</td>
-      <td class='text-capitalize'>".$comp_description."</td></tr>";
+      <td class='text-capitalize'>".$comp_status."</td>";
 
       if($has_children){
         displayComponents($db, $query_component_children, $comp_table_id);
