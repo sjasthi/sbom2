@@ -12,7 +12,7 @@
   <?php
     include("options/search_options.php"); // search_options();
 
-    // search & build table based on paramaters
+    // search table based on paramaters
     $resultsObject = search_options();
 
     include("buildTable.php"); // buildTable();
