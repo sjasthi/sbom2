@@ -14,7 +14,9 @@
 
   /*----------------- FUNCTION TO GET BOMS -----------------*/
   function getBoms($db) {
-    $sql = "SELECT * from apps_components;";
+    $sql = "SELECT app_name, app_version, SUM(CASE WHEN license NOT LIKE '%Commercial%' THEN 1 ELSE 0 END) as oss_count, SUM(CASE WHEN license LIKE '%Commercial%' THEN 1 ELSE 0 END) as commercial_count, COUNT(license) as total
+    FROM apps_components
+    GROUP BY app_name;";
     $result = $db->query($sql);
 
     if ($result->num_rows > 0) {
