@@ -10,10 +10,13 @@
 <!-- HTML -->
 <div class="wrap">
   <?php
-    include("who_where.php"); // who_where();
+    include("options/search_options.php"); // search_options();
 
-    // search table based on "who" or "what" keyword
-    $resultsObject = who_where();
+    // search & build table based on paramaters
+    $resultsObject = search_options();
+
+    include("buildTable.php"); // buildTable();
+    buildTable( $resultsObject );
   ?>
 
   <!-- added functionality -->
