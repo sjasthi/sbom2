@@ -1,6 +1,6 @@
 <?php
     /**
-     * Purpose: API module get_where_used.php provides information about the application id,
+     * Purpose: API module is_safe.php provides information about the application id,
      *          application name, and application version given component information.
      *
      * Input:   supported input parameters are 'component_name, 'component_id'. Both the
@@ -29,7 +29,7 @@
         if((!empty($component_name) && preg_match('/^[\d A-Za-z +:-]*$/', $component_name)) &&
             (!empty($component_version) && preg_match('/^[\d.,_ ]*$/', $component_version))) {
             $apiFunctions = new apiUtility();
-            $processor = $apiFunctions->getWhereUsed_name_version($component_name, $component_version);
+            $processor = $apiFunctions->is_safe_name_version($component_name, $component_version);
             $data = [];
             $count = 0;
             if($processor->num_rows > 0) {
@@ -55,7 +55,7 @@
 
         if (!empty($component_id) && preg_match('/^\d*$/', $component_id)) {
             $apiFunctions = new apiUtility();
-            $processor = $apiFunctions->getWhereUsed_id($component_id);
+            $processor = $apiFunctions->is_safe_id($component_id);
             $data = [];
             $count = 0;
             if ($processor->num_rows > 0) {
@@ -79,7 +79,7 @@
 
         if(!empty($component_name) && preg_match('/^[\d A-Za-z +:-]*$/', $component_name)) {
             $apiFunctions = new apiUtility();
-            $processor = $apiFunctions->getWhereUsed_name($component_name);
+            $processor = $apiFunctions->is_safe_name($component_name);
             $data = [];
             $count = 0;
             if($processor!==false && $processor->num_rows > 0) {
@@ -97,7 +97,6 @@
             invalidResponse("Invalid Request");
         }
     }
-
     else {
         invalidResponse("Invalid Request");
     }

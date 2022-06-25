@@ -1,6 +1,6 @@
 <?php
     /**
-     * Purpose: API module get_where_used.php provides information about the application id,
+     * Purpose: API module get_security_summary.php provides information about the application id,
      *          application name, and application version given component information.
      *
      * Input:   supported input parameters are 'component_name, 'component_id'. Both the
@@ -22,14 +22,17 @@
      */
     require("./apiUtility.php");
 
+    /**
+     *      get_security_summary with component_id, component_name, component_version
+     */
     if (isset($_GET['component_name'], $_GET['component_version'])) {
         $component_name = $_GET['component_name'];
         $component_version = $_GET['component_version'];
 
         if((!empty($component_name) && preg_match('/^[\d A-Za-z +:-]*$/', $component_name)) &&
-            (!empty($component_version) && preg_match('/^[\d.,_ ]*$/', $component_version))) {
+            (!empty($component_version) && preg_match('/^[\d-.,_v ]*$/', $component_version))) {
             $apiFunctions = new apiUtility();
-            $processor = $apiFunctions->getWhereUsed_name_version($component_name, $component_version);
+            $processor = $apiFunctions->get_security_summary_id_version($component_name, $component_version);
             $data = [];
             $count = 0;
             if($processor->num_rows > 0) {
@@ -55,7 +58,7 @@
 
         if (!empty($component_id) && preg_match('/^\d*$/', $component_id)) {
             $apiFunctions = new apiUtility();
-            $processor = $apiFunctions->getWhereUsed_id($component_id);
+            $processor = $apiFunctions->get_security_summary_id($component_id);
             $data = [];
             $count = 0;
             if ($processor->num_rows > 0) {
@@ -79,7 +82,7 @@
 
         if(!empty($component_name) && preg_match('/^[\d A-Za-z +:-]*$/', $component_name)) {
             $apiFunctions = new apiUtility();
-            $processor = $apiFunctions->getWhereUsed_name($component_name);
+            $processor = $apiFunctions->get_security_summary_name($component_name);
             $data = [];
             $count = 0;
             if($processor!==false && $processor->num_rows > 0) {
@@ -98,10 +101,88 @@
         }
     }
 
+    /**
+     *      get_security_summary with app_id, app_name, app_version
+     */
+    if (isset($_GET['app_name'], $_GET['app_version'])) {
+        $app_name = $_GET['app_name'];
+        $app_version = $_GET['app_version'];
+
+        if((!empty($app_name) && preg_match('/^[\d A-Za-z +:-]*$/', $app_name)) &&
+            (!empty($app_version) && preg_match('/^[\d.,_v ]*$/', $app_version))) {
+            $apiFunctions = new apiUtility();
+            $processor = $apiFunctions->get_security_summary_app_name_version($app_name, $app_version);
+            $data = [];
+            $count = 0;
+            if($processor->num_rows > 0) {
+                $count = $processor->num_rows;
+                while($row  = $processor->fetch_assoc()){
+                    $data[] = $row;
+                }
+            }
+            response(200, $count, $app_name . ", " . $app_version, $data);
+        }
+
+        else if (isset($app_name, $app_version) && empty($app_name) && empty($app_version)) {
+            invalidResponse("Invalid or Empty input");
+        }
+
+        else {
+            invalidResponse("Invalid Request");
+        }
+    }
+
+    else if (isset($_GET['app_id'])) {
+        $app_id = $_GET['app_id'];
+
+        if (!empty($app_id) && preg_match('/^\d*$/', $app_id)) {
+            $apiFunctions = new apiUtility();
+            $processor = $apiFunctions->get_security_summary_app_id($app_id);
+            $data = [];
+            $count = 0;
+            if ($processor->num_rows > 0) {
+                $count = $processor->num_rows;
+                while ($row = $processor->fetch_assoc()) {
+                    $data[] = $row;
+                }
+            }
+            response(200, $count, $app_id, $data);
+        }
+        else if (isset($app_id) && empty($app_id)) {
+            invalidResponse("Invalid or Empty input");
+        }
+        else {
+            invalidResponse("Invalid Request");
+        }
+    }
+
+    else if (isset($_GET['app_name'])) {
+        $app_name = $_GET['app_name'];
+
+        if(!empty($app_name) && preg_match('/^[\d A-Za-z +:-]*$/', $app_name)) {
+            $apiFunctions = new apiUtility();
+            $processor = $apiFunctions->get_security_summary_app_name($app_name);
+            $data = [];
+            $count = 0;
+            if($processor!==false && $processor->num_rows > 0) {
+                $count = $processor->num_rows;
+                while($row  = $processor->fetch_assoc()){
+                    $data[] = $row;
+                }
+            }
+            response(200, $count, $app_name, $data);
+        }
+        else if (isset($app_name) && empty($app_name)) {
+            invalidResponse("Invalid or Empty input");
+        }
+        else {
+            invalidResponse("Invalid Request");
+        }
+    }
+
     else {
         invalidResponse("Invalid Request");
     }
-
 
     function invalidResponse($message) {
         response(400, $message, NULL, NULL);
