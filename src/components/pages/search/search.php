@@ -2,6 +2,7 @@
 <?php
   $nav_selected = "SEARCH";
   $tabTitle = "SBOM - Search";
+  $autoFocus = 'autofocus';
 
   include("../../../../index.php");
 
