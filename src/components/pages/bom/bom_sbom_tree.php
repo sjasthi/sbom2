@@ -6,6 +6,7 @@
 
   include "../../../../index.php";
   include "get_scope.php";
+  include("bom_left_menu.php");
 
   //Get DB Credentials
   $DB_SERVER = constant('DB_SERVER');
