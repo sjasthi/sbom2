@@ -13,7 +13,7 @@
   global $pref_err;
 
   /*----------------- FUNCTION TO GET BOMS -----------------*/
-  function getBoms($db) {
+  function getReports($db) {
     $sql = "SELECT app_name, app_version, SUM(CASE WHEN license NOT LIKE '%Commercial%' THEN 1 ELSE 0 END) as oss_count, SUM(CASE WHEN license LIKE '%Commercial%' THEN 1 ELSE 0 END) as commercial_count, COUNT(license) as total
     FROM apps_components
     GROUP BY app_name;";
@@ -56,7 +56,7 @@
 
   //Display error if user retrieves preferences w/o any cookies set
   if(isset($_POST['getpref']) && !isset($_COOKIE[$cookie_name])) {
-    $pref_err = "You don't have BOMS saved.";
+    $pref_err = "You don't have Reports saved.";
   }
   echo '<p
   style="font-size: 2.5rem;
@@ -66,19 +66,7 @@
 ?>
 
     <div class="wrap">
-      <h3  id = scannerHeader style = "color: #01B0F1;">Scanner --> Software BOM </h3>
-
-      <!-- Form to retrieve user preference -->
-      <form id='getpref-form' name='getpref-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getpref' value='submit'>Show My BOMS</button>
-      </form>
-      <form id='getdef-form' name='getdef-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getdef' value='submit'>Show System Boms</button>
-      </form>
-      <form id='getall-form' name='getall-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getall' value='submit'>Show All BOMS</button>
-      </form>
-
+      <h3  id = scannerHeader style = "color: #01B0F1;">Reports --> FOSS Count </h3>
       <table id="info" cellpadding="0" cellspacing="0" border="0"
         class="datatable table table-striped table-bordered datatable-style table-hover"
         width="100%" style="width: 100px;">
@@ -94,31 +82,13 @@
       <tbody>
       <?php
         /*----------------- GET PREFERENCE COOKIE -----------------*/
-        //if user clicks "get all BOMS", retrieve all BOMS
-        if(isset($_POST['getall'])) {
+        // Calls the function where the query is set above.
+        getReports($db);
+
+        //Checks our cookie for a preference, then grabs the info from the getReports function
+        // and displays it in the appropriate rows and columns
+        if(isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
           $def = "false";
-          ?>
-          <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
-          <?php
-          getBoms($db);
-        //If user clicks "show system BOMS", display BOM list filtered by default system scope
-        } elseif (isset($_POST['getdef'])) {
-          $def = "true";
-          ?>
-          <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> System BOMS";</script>
-          <?php
-          getBoms($db);
-          getFilterArray($db);
-        } //default if preference cookie is set, display user BOM preferences
-        elseif(isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
-          $def = "false";
-          ?>
-          <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> My BOMS";</script>
-          <?php
-          $prep = rtrim(str_repeat('?,', count(json_decode($_COOKIE[$cookie_name]))), ',');
-          $sql = 'SELECT * FROM sbom WHERE app_id IN ('.$prep.')';
-          $pref = $pdo->prepare($sql);
-          $pref->execute(json_decode($_COOKIE[$cookie_name]));
 
           while($row = $pref->fetch(PDO::FETCH_ASSOC)) {
             echo '<tr>
@@ -129,20 +99,6 @@
               <td>'.$row["total"].'</td>
             </tr>';
           }
-        }//if no preference cookie is set but user clicks "show my BOMS"
-        elseif(isset($_POST['getpref']) && !isset($_COOKIE[$cookie_name])) {
-          $def = "false";
-          ?>
-          <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
-          <?php
-          getBoms($db);
-        }//if no preference cookie is set show all BOMS
-        else {
-          $def = "false";
-          ?>
-          <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
-          <?php
-          getBoms($db);
         }
       ?>
       </tbody>
