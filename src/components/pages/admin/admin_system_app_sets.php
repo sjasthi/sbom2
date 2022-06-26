@@ -30,7 +30,8 @@
     <div class="wrap">
     <h3>Admin --> System App Sets</h3>
     <div id='list'>
-      <p>Select the current System App Set</p>
+      <h4>Select the current System App Set</h4>
+      <br />
       <form enctype="multipart/form-data" method="POST" role="form">
         <select id="current_app_set" name="current_app_set" required>
           <option value="0">Unset System App Set</option>
@@ -50,6 +51,28 @@
         <br />
         <button style="background: #01B0F1; color: white;" type="submit" class="btn btn-default" name="submit" value="submit">Set System App Set</button>
       </form>
+
+      <h4>Delete a System App Set</h4>
+      <br />
+      <form enctype="multipart/form-data" method="POST" role="form">
+        <select id="delete_app_set" name="delete_app_set" required>
+<?php
+  $current_app_sets = $db->prepare('select distinct app_set_id, app_set_name from app_sets');
+  if(!$current_app_sets->execute()) {
+    echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
+  } else {
+    $current_app_sets->bind_result($id, $name);
+    while ($row = $current_app_sets->fetch()) {
+      echo '          <option value="'.$id.'">'.$id." - ".$name.'</option>\n';
+    }
+  }
+?>
+        </select>
+        <br />
+        <br />
+        <button style="background: #01B0F1; color: white;" type="submit" class="btn btn-default" name="submit" value="submit">Delete selected System App Set</button>
+      </form>
+
     </div>
   </body>
 </html>
@@ -58,21 +81,30 @@
 <?php
   if (isset($_POST['current_app_set'])) {
     if ( $_POST['current_app_set']  == '0' ) {
-      $sys_app_set = $db->prepare('update preferences set value = "0" where name = "ACTIVE_APP_SET";');
-      if(!$current_app_sets->execute()) {
-
+      $sys_app_sets = $db->prepare('update preferences set value = "0" where name = "ACTIVE_APP_SET";');
+      if(!$sys_app_sets->execute()) {
+        echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
       } else {
         echo '<p style="background: green; color: white; font-size: 2rem;">Unsetting System App Set</p>';
       }
     } else {
-      $sys_app_set = $db->prepare('update preferences set value = ? where name = "ACTIVE_APP_SET";');
-      $sys_app_set->bind_param('s',$_POST['current_app_set']);
-      if(!$current_app_sets->execute()) {
-
+      $sys_app_sets = $db->prepare('update preferences set value = ? where name = "ACTIVE_APP_SET";');
+      $sys_app_sets->bind_param('s',$_POST['current_app_set']);
+      if(!$sys_app_sets->execute()) {
+        echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
       } else {
         echo '<p style="background: green; color: white; font-size: 2rem;">Setting System App Set to: '.$_POST['current_app_set'].'</p>';
       }
     }
   }
 
+  if (isset($_POST['delete_app_set'])) {
+    $delete_app_sets = $db->prepare('delete from app_sets where app_set_id = ?;');
+    $delete_app_sets->bind_param('s',$_POST['delete_app_set']);
+    if(!$delete_app_sets->execute()) {
+      echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
+    } else {
+      echo '<p style="background: green; color: white; font-size: 2rem;">Deleting System App Set: '.$_POST['delete_app_set'].'</p>';
+    }
+  }
 ?>
