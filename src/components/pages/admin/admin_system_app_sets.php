@@ -73,6 +73,15 @@
         <button style="background: #01B0F1; color: white;" type="submit" class="btn btn-default" name="submit" value="submit">Delete selected System App Set</button>
       </form>
 
+      <h4>Create or replace a System App Set</h4>
+      <br />
+      <form enctype="multipart/form-data" method="POST" role="form">
+        app_set_id: <input type="text" id="new_app_set_id" name="new_app_set_id"><br /><br />
+        app_set_name: <input type="text" id="new_app_set_name" name="new_app_set_name"><br /><br />
+        comma seperated list of app_id: <input type="text" id="new_app_set_app_list" name="new_app_set_app_list"><br /><br />
+        <button style="background: #01B0F1; color: white;" type="submit" class="btn btn-default" name="submit" value="submit">Add or replace System App Set</button>
+      </form>
+
     </div>
   </body>
 </html>
@@ -98,13 +107,17 @@
     }
   }
 
-  if (isset($_POST['delete_app_set'])) {
+  if (isset($_POST['new_app_set_id'])) {
     $delete_app_sets = $db->prepare('delete from app_sets where app_set_id = ?;');
-    $delete_app_sets->bind_param('s',$_POST['delete_app_set']);
+    $delete_app_sets->bind_param('s',$_POST['new_app_set_id']);
     if(!$delete_app_sets->execute()) {
       echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
     } else {
       echo '<p style="background: green; color: white; font-size: 2rem;">Deleting System App Set: '.$_POST['delete_app_set'].'</p>';
     }
+
+
   }
+
+
 ?>
