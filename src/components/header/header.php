@@ -18,7 +18,7 @@
             echo
                 '<li class="search '.checkSelectedTab( "SEARCH" ).'" tabindex="0">
                     <form action="'.$componentsPath.'pages/search/search.php" method="POST">
-                        <input name="searchVal" />';
+                        <input name="searchVal" '.$autoFocus.' />';
             include $assetsPath.'svg/search.svg';
             echo
                     '</form>
