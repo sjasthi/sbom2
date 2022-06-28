@@ -41,7 +41,7 @@
         <a href="<?php echo checkSelectedLeftMenuLink( "BOMAPPSET", "bom_app_set.php" ); ?>">
             <div <?php echo checkSelectedLeftMenu( "BOMAPPSET" ); ?>>
                 <?php include $assetsPath."svg/admin.svg"; ?>
-                <p>BOM Status</p>
+                <p>BOM App Set</p>
             </div>
         </a>
 
