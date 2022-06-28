@@ -1,25 +1,25 @@
 <?php
     /**
-     * Purpose: API module get_where_used.php provides information about the application id,
-     *          application name, and application version given component information.
+     * Purpose: API module get_bom_list.php provides information about the bom list given application information.
      *
-     * Input:   supported input parameters are 'component_name, 'component_id'. Both the
-     *          parameters can be used as a single input or passed as a combined unit.
-     *          component_id = digits only.
-     *          component_name = Alpha,digits, space and certain special characters.
-     *          component_version = digits, space and certain special characters
-     *
-     * SAMPLE URL INPUTS
-     * http://localhost/sbom2/api/get_where_used.php?component_id=779496
-     * http://localhost/sbom2/api/get_where_used.php?component_name=Commons IO
-     * http://localhost/sbom2/api/get_where_used.php?component_name=LT
-     * http://localhost/sbom2/api/get_where_used.php?component_name=General Te&component_version=96.9
-     * http://localhost/sbom2/api/get_where_used.php?component_name=lt&component_version=9.9
+     * Input:   supported input parameters are 'app_name, 'app_id'. 
+     * Both of the parameters can be used as a single input or passed as a combined unit.
+     *          app_id = digits only.
+     *          app_name = Alpha,digits, space and certain special characters.
+     *          app_version = digits, space and certain special characters
+     * 
+     * Sample URL INPUTS:
+     * http://localhost/sbom2/api/get_bom_list.php?app_id=946907896
+     * http://localhost/sbom2/api/get_bom_list.php?app_name=TechIF Adv
+     * http://localhost/sbom2/api/get_bom_list.php?app_name=lt
+     * http://localhost/sbom2/api/get_bom_list.php?app_name=General%20Te&app_version=96.9
+     * http://localhost/sbom2/api/get_bom_list.php?app_name=lt&app_version=9.9
+     * There are ONLY 3 red_app_ids (946907896, 944965237, 76074884) in apps_component table.
      * Output:  The module outputs data as a json object. The json object also includes HTTP
      *          response code and count of rows parameters passed and data name value pairs.
      *
      * Error Conditions: response code of http 400 is generated when system detects an error condition.
-     *                   component_id, component_name, component_version can generate "Invalid request"
+     *                   app_id, app_name, app_version can generate "Invalid request"
      *                   or "Invalid or empty request" for unsupported characters.
      *
      * @author Shahid Iqbal, Isaac Hentges, Nathan Lantaigne-Goetsch, Abdulsalam Geddi
@@ -28,14 +28,14 @@
      */
     require("./apiUtility.php");
 
-    if (isset($_GET['component_name'], $_GET['component_version'])) {
-        $component_name = $_GET['component_name'];
-        $component_version = $_GET['component_version'];
+    if (isset($_GET['app_name'], $_GET['app_version'])) {
+        $app_name = $_GET['app_name'];
+        $app_version = $_GET['app_version'];
 
-        if((!empty($component_name) && preg_match('/^[\d A-Za-z +:-]*$/', $component_name)) &&
-            (!empty($component_version) && preg_match('/^[\d.,_ ]*$/', $component_version))) {
+        if((!empty($app_name) && preg_match('/^[\d A-Za-z +:-]*$/', $app_name)) &&
+            (!empty($app_version) && preg_match('/^[\d.,_ ]*$/', $app_version))) {
             $apiFunctions = new apiUtility();
-            $processor = $apiFunctions->getWhereUsed_name_version($component_name, $component_version);
+            $processor = $apiFunctions->get_bom_list_name_version($app_name, $app_version);
             $data = [];
             $count = 0;
             // Number of rows returned by the query
@@ -45,10 +45,10 @@
                     $data[] = $row;
                 }
             }
-            response(200, $count, $component_name . ", " . $component_version, $data);
+            response(200, $count, $app_name . ", " . $app_version, $data);
         }
 
-        else if (isset($component_name, $component_version) && empty($component_name) && empty($component_version)) {
+        else if (isset($app_name, $app_version) && empty($app_name) && empty($app_version)) {
             invalidResponse("Invalid or Empty input");
         }
 
@@ -57,12 +57,12 @@
         }
     }
 
-    else if (isset($_GET['component_id'])) {
-        $component_id = $_GET['component_id'];
+    else if (isset($_GET['app_id'])) {
+        $app_id = $_GET['app_id'];
 
-        if (!empty($component_id) && preg_match('/^\d*$/', $component_id)) {
+        if (!empty($app_id) && preg_match('/^\d*$/', $app_id)) {
             $apiFunctions = new apiUtility();
-            $processor = $apiFunctions->getWhereUsed_id($component_id);
+            $processor = $apiFunctions->get_bom_list_id($app_id);
             $data = [];
             $count = 0;
             if ($processor->num_rows > 0) {
@@ -71,9 +71,9 @@
                     $data[] = $row;
                 }
             }
-            response(200, $count, $component_id, $data);
+            response(200, $count, $app_id, $data);
         }
-        else if (isset($component_id) && empty($component_id)) {
+        else if (isset($app_id) && empty($app_id)) {
             invalidResponse("Invalid or Empty input");
         }
         else {
@@ -81,12 +81,12 @@
         }
     }
 
-    else if (isset($_GET['component_name'])) {
-        $component_name = $_GET['component_name'];
+    else if (isset($_GET['app_name'])) {
+        $app_name = $_GET['app_name'];
 
-        if(!empty($component_name) && preg_match('/^[\d A-Za-z +:-]*$/', $component_name)) {
+        if(!empty($app_name) && preg_match('/^[\d A-Za-z +:-]*$/', $app_name)) {
             $apiFunctions = new apiUtility();
-            $processor = $apiFunctions->getWhereUsed_name($component_name);
+            $processor = $apiFunctions->get_bom_list_name($app_name);
             $data = [];
             $count = 0;
             if($processor!==false && $processor->num_rows > 0) {
@@ -95,9 +95,9 @@
                     $data[] = $row;
                 }
             }
-            response(200, $count, $component_name, $data);
+            response(200, $count, $app_name, $data);
         }
-        else if (isset($component_name) && empty($component_name)) {
+        else if (isset($app_name) && empty($app_name)) {
             invalidResponse("Invalid or Empty input");
         }
         else {
