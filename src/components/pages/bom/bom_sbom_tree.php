@@ -3,6 +3,11 @@
   $nav_selected = "BOM";
   $left_selected = "SBOMTREE";
   $tabTitle = "SBOM - BOM (Tree)";
+  $bom_app_set_cookie_name = "user_bom_app_set";
+
+  $default_bom_query = "
+    SELECT * FROM applications
+  ";
 
   include "../../../../index.php";
   include "get_scope.php";
@@ -42,8 +47,8 @@
 
   //Display error if user retrieves preferences w/o any cookies set
   global $pref_err;
-  if(isset($_POST['getpref']) && !isset($_COOKIE[$cookie_name])) {
-    $pref_err = "You don't have BOMS saved.";
+  if(isset($_POST['getpref']) && !isset($_COOKIE[$bom_app_set_cookie_name])) {
+    $pref_err = 'You don\'t have BOMS saved. Select some in the <a href="bom_app_set.php">BOM App Set page</a>.';
   }
   echo '<p
   style="font-size: 2.5rem;
@@ -90,14 +95,14 @@
       $parent_c++;
     }
   }
-
   // Function to show applications and their dependencies
-  function displayBomsAsTable($db) {
-    $sql_applications = "
-      SELECT * FROM applications
-    ";
+  function displayBomsAsTable($db, $bom_query='') {
+    global $default_bom_query;
+    if($bom_query == ''){
+      $bom_query = $default_bom_query;
+    }
     $p_id = 1;
-    $query_applications = $db->query($sql_applications);
+    $query_applications = $db->query($bom_query);
     if($query_applications->num_rows > 0){
       while($application = $query_applications->fetch_assoc()){
         $red_app_id = $application["app_id"];
@@ -197,186 +202,36 @@
               <?php
               // getAllBoms($db);
               displayBomsAsTable($db);
-
             }
             //If user clicks "get system BOMS", retrieve all default scope BOMS
             elseif(isset($_POST['getdef'])) {
               ?>
               <script>document.getElementById("scannerHeader").innerHTML = "BOM --> BOM Tree --> System BOMS";</script>
               <?php
-              $def = "true";
-              $sql_parent = "SELECT DISTINCT app_name as name, app_id, app_version as version, app_status as status, color as div_class,
-              CASE WHEN app_name in (select distinct cmp_name from sbom where cmp_version = version and cmp_name = name) THEN 'child' ELSE 'parent' END AS class
-              from sbom
-              group by name, version, status;";
-              getFilterArray($db);
-              $starttime = microtime(true);
-              // getBoms($db, $sql_parent);
               displayBomsAsTable($db);
-              $endtime = microtime(true);
-              $timediff = $endtime - $starttime;
-              echo "Time (sec): $timediff";
-
-            } elseif ($findApp) {
-              $sql_parent = "SELECT DISTINCT app_name as name,
-                              app_version as version,
-                              app_status as status,
-                              '' as cmp_type,
-                              '' as request_step,
-                              '' as request_status,
-                              '' as notes,
-                              color as div_class,
-                              CASE WHEN app_name in (select distinct cmp_name
-                                from sbom where cmp_version = version and cmp_name = name) THEN 'child'
-                              ELSE 'parent'
-                              END AS class
-                              from sbom
-                              where app_id = '".$getAppId."'
-                              group by name, version, status;";
-
-              $starttime = microtime(true);
-              // getBoms($db, $sql_parent);
-              displayBomsAsTable($db);
-              $endtime = microtime(true);
-              $timediff = $endtime - $starttime;
-              echo "Time (sec): $timediff";
-            } else if ($findAppName) {
-              $sql_parent = "SELECT DISTINCT app_name as name,
-                              app_version as version,
-                              app_status as status,
-                              '' as cmp_type,
-                              '' as request_step,
-                              '' as request_status,
-                              '' as notes,
-                              color as div_class,
-                              CASE WHEN app_name in (select distinct cmp_name
-                                from sbom where cmp_version = version and cmp_name = name) THEN 'child'
-                              ELSE 'parent'
-                              END AS class
-                              from sbom
-                              where app_name = '".$getAppName."'
-                              and app_version = '".$getAppVer."'
-                              group by name, version, status;";
-
-              $starttime = microtime(true);
-              // getBoms($db, $sql_parent);
-              displayBomsAsTable($db);
-              $endtime = microtime(true);
-              $timediff = $endtime - $starttime;
-              echo "Time (sec): $timediff";
-
-            }//default if preference cookie is set, display user BOM preferences
-            elseif(isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+            } elseif(isset($_COOKIE[$bom_app_set_cookie_name]) && isset($_POST['getpref'])) {
+              //default if preference cookie is set, display user BOM preferences
                 ?>
               <script>document.getElementById("scannerHeader").innerHTML = "BOM --> BOM Tree --> My BOMS";</script>
               <?php
-              $prep = rtrim(str_repeat('?,', count(json_decode($_COOKIE[$cookie_name]))), ',');
-              $sql = "SELECT DISTINCT app_name as name,
-                app_version as version, app_status as status, color as div_class,
-                CASE WHEN app_name in (select distinct cmp_name
-                  from sbom where cmp_version = version and cmp_name = name) THEN 'child'
-                ELSE 'parent'
-                END AS class from sbom
-                WHERE app_id IN (".$prep.")
-                group by name, version, status;";
+              $prep_cookie_value = rtrim($_COOKIE[$bom_app_set_cookie_name], ',');
+              $sql = "
+                SELECT * FROM applications
+                WHERE app_id IN (".$prep_cookie_value.")
+              ";
+              displayBomsAsTable($db, $sql);
 
-              $pref = $pdo->prepare($sql);
-              $pref->execute(json_decode($_COOKIE[$cookie_name]));
-
-              $p=1;
-              $c=1;
-              $gc=1;
-
-              while($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-                $app_name = $row["name"];
-                $app_version = $row["version"];
-                $class = $row["class"];
-                $app_status = $row["status"];
-                $div_class = $row["div_class"];
-                $p_id = $p;
-                echo "<tbody class= '".$div_class."'>
-                <tr data-tt-id = '".$p_id."' ><td class='text-capitalize'>
-                <div class = 'btn ".$class."' ><span class = 'app_name' style = 'max-width: 160em; white-space: pre-wrap; word-wrap: break-word; word-break: break-all;'>".$app_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
-                <td >".$app_version."</td>
-                <td class='text-capitalize'>".$app_status."</td><td/><td/><td/><td/></tr>";
-                $p++;
-
-                // output data of child
-                $sql_child = "SELECT DISTINCT cmp_name as cmpname, cmp_type, cmp_version as cmpver, request_step,cmp_status, request_status, notes,
-                CASE WHEN cmp_name in (select distinct app_name
-                  from sbom where app_name = cmpname and app_version = cmpver) THEN 'child'
-                ELSE 'grandchild'
-                END AS class
-                  from sbom where app_name = '".$app_name."' and app_version = '".$app_version."' and app_status = '".$app_status."'";
-                $result_child = $db->query($sql_child);
-
-                if ($result_child->num_rows > 0) {
-                  // output data of child
-                  while($row_child = $result_child->fetch_assoc()) {
-                    $cmp_name = $row_child["cmpname"];
-                    $cmp_version = $row_child["cmpver"];
-                    $cmp_status = $row_child["cmp_status"];
-                    $request_step = $row_child["request_step"];
-                    $request_status = $row_child["request_status"];
-                    $cmp_type = $row_child["cmp_type"];
-                    $notes = $row_child["notes"];
-                    $c_class = $row_child["class"];
-                    $c_id=$p_id."-".$c;
-                    echo "<tr data-tt-id = '".$c_id."' data-tt-parent-id='".$p_id."' class = 'component' >
-                    <td class='text-capitalize'><div class = 'btn ".$c_class."'> <span class = 'cmp_name'>".$cmp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
-                    <td class = 'cmp_version'>".$cmp_version."</td>
-                    <td class='text-capitalize'>".$cmp_status."</td>
-                    <td class='text-capitalize'>".$cmp_type."</td>
-                    <td class='text-capitalize'>".$request_status."</td>
-                    <td class='text-capitalize'>".$request_step."</td>
-                    <td class='text-capitalize'>".$notes."</td></tr>";
-                    $c++;
-
-                    // output data of grandchild
-                    $sql_gchild = "SELECT DISTINCT  cmp_name, cmp_type, cmp_version, request_step, cmp_status, request_status, notes, 'grandchild' as class
-                    from sbom
-                    where app_name = '".$cmp_name."' and app_version = '".$cmp_version."' ;";
-
-                    $result_gchild = $db->query($sql_gchild);
-                    if ($result_gchild->num_rows > 0 ) {
-                      // output data of grandchild
-                      while($row_gchild = $result_gchild->fetch_assoc()) {
-                        $gcmp_name = $row_gchild["cmp_name"];
-                        $gcmp_version = $row_gchild["cmp_version"];
-                        $gcmp_status = $row_gchild["cmp_status"];
-                        $grequest_step = $row_gchild["request_step"];
-                        $grequest_status = $row_gchild["request_status"];
-                        $gcmp_type = $row_gchild["cmp_type"];
-                        $gnotes = $row_gchild["notes"];
-                        $gc_class = $row_gchild["class"];
-                        $gc_id=$c_id."-".$gc;
-                        echo "<tr data-tt-id = '".$gc_id."' data-tt-parent-id='".$c_id."' >
-                        <td class='text-capitalize'><div class = 'btn ".$gc_class."'> <span class = 'cmp_name'>".$gcmp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
-                        <td class = 'cmp_version'>".$gcmp_version."</td>
-                        <td class='text-capitalize'>".$gcmp_status."</td>
-                        <td class='text-capitalize'>".$gcmp_type."</td>
-                        <td class='text-capitalize'>".$grequest_status."</td>
-                        <td class='text-capitalize'>".$grequest_step."</td>
-                        <td class='text-capitalize'>".$gnotes."</td></tr>";
-                        $gc++;
-                      }
-                    $result_gchild -> close();
-                    }
-                  }
-                  $result_child -> close();
-                } echo "</tbody>";
-              }
-            }//if no preference cookie is set but user clicks "show my BOMS"
-            elseif(isset($_POST['getpref']) && !isset($_COOKIE[$cookie_name])) {
+            } elseif(isset($_POST['getpref']) && !isset($_COOKIE[$cookie_name])) {
+              //if no preference cookie is set but user clicks "show my BOMS"
               ?>
               <script>document.getElementById("scannerHeader").innerHTML = "BOM --> BOM Tree --> My BOMS";</script>
               <?php
               // getAllBoms($db);
               displayBomsAsTable($db);
-            }//if no preference cookie is set show BOMS in default scope
-            else {
+            } else {
+              //if no preference cookie is set show all Boms
               ?>
-              <script>document.getElementById("scannerHeader").innerHTML = "BOM --> BOM Tree --> My BOMS";</script>
+              <script>document.getElementById("scannerHeader").innerHTML = "BOM --> BOM Tree --> All BOMS";</script>
               <?php
               displayBomsAsTable($db);
              }
