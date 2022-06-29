@@ -2,10 +2,8 @@
   $nav_selected = "BOM";
   $left_selected = "SBOMLIST";
   $tabTitle = "SBOM - BOM (List)";
-  $bom_columns = array("row_id","app_id","app_name","app_version","cmp_id",
-                        "cmp_name","cmp_version","cmp_type","app_status",
-                        "cmp_status","request_id","request_date","request_status",
-                        "request_step","notes","color");
+  $bom_columns = array("app_id","app_name","app_version","app_status","is_eol");
+  $bom_app_set_cookie_name = "user_bom_app_set";
 
   include("bom_functions.php");
   include("get_scope.php");
@@ -21,7 +19,6 @@
 
 
 <?php
-  $cookie_name = 'preference';
   global $pref_err;
 
   /*----------------- FUNCTION TO GET BOMS -----------------*/
@@ -31,8 +28,8 @@
   }
 
   //Display error if user retrieves preferences w/o any cookies set
-  if(isset($_POST['getpref']) && !isset($_COOKIE[$cookie_name])) {
-    $pref_err = "You don't have BOMS saved.";
+  if(isset($_POST['getpref']) && !isset($_COOKIE[$bom_app_set_cookie_name])) {
+    $pref_err = 'You don\'t have BOMS saved. Select some in the <a href="bom_app_set.php">BOM App Set page</a>';
   }
   echo '<p
   style="font-size: 2.5rem;
@@ -60,22 +57,12 @@
         width="100%" style="width: 100px;">
         <thead>
           <tr id="table-first-row">
-            <th>Row ID</th>
-            <th>App ID</th>
-            <th>App Name</th>
-            <th>App Version</th>
-            <th>CMP ID</th>
-            <th>CMP Name</th>
-            <th>CMP Version</th>
-            <th>CMP Type</th>
-            <th>App Status</th>
-            <th>CMP Status</th>
-            <th>Request ID</th>
-            <th>Request Date</th>
-            <th>Request Status</th>
-            <th>Request Step</th>
-            <th>Notes</th>
-            <th>Color</th>
+            <?php
+              global $bom_columns;
+              foreach($bom_columns as $column){
+                echo '<th>'.$column.'</th>';
+              }
+             ?>
           </tr>
         </thead>
       <tbody>
@@ -97,39 +84,19 @@
           getAppList($db);
           getFilterArray($db);
         } //default if preference cookie is set, display user BOM preferences
-        elseif(isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
-          $def = "false";
+        elseif(isset($_COOKIE[$bom_app_set_cookie_name]) && isset($_POST['getpref'])) {
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> My BOMS";</script>
           <?php
-          $prep = rtrim(str_repeat('?,', count(json_decode($_COOKIE[$cookie_name]))), ',');
-          $sql = 'SELECT * FROM sbom WHERE app_id IN ('.$prep.')';
-          $pref = $pdo->prepare($sql);
-          $pref->execute(json_decode($_COOKIE[$cookie_name]));
+          global $bom_columns;
+          $prep_cookie_value = rtrim($_COOKIE[$bom_app_set_cookie_name], ',');
+          $sql = '
+            SELECT * FROM applications WHERE app_id IN ('.$prep_cookie_value.')
+          ';
+          displayAllAppsList($db, $bom_columns, $sql);
 
-          while($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-            echo '<tr>
-              <td>'.$row["row_id"].'</td>
-              <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
-              <td>'.$row["app_name"].'</td>
-              <td>'.$row["app_version"].'</td>
-              <td>'.$row["cmp_id"].' </span> </td>
-              <td>'.$row["cmp_name"].'</td>
-              <td>'.$row["cmp_version"].'</td>
-              <td>'.$row["cmp_type"].' </span> </td>
-              <td>'.$row["app_status"].' </span> </td>
-              <td>'.$row["cmp_status"].' </span> </td>
-              <td>'.$row["request_id"].'</td>
-              <td>'.$row["request_date"].'</td>
-              <td>'.$row["request_status"].'</td>
-              <td>'.$row["request_step"].'</td>
-              <td>'.$row["notes"].' </span> </td>
-              <td>'.$row["requestor"].'</td>
-              <td>'.$row["color"].'</td>
-            </tr>';
-          }
         }//if no preference cookie is set but user clicks "show my BOMS"
-        elseif(isset($_POST['getpref']) && !isset($_COOKIE[$cookie_name])) {
+        elseif(isset($_POST['getpref']) && !isset($_COOKIE[$bom_app_set_cookie_name])) {
           $def = "false";
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
@@ -147,22 +114,12 @@
       </tbody>
       <tfoot>
         <tr>
-          <th>Row ID</th>
-          <th>App ID</th>
-          <th>App Name</th>
-          <th>App Version</th>
-          <th>CMP ID</th>
-          <th>CMP Name</th>
-          <th>CMP Version</th>
-          <th>CMP Type</th>
-          <th>App Status</th>
-          <th>CMP Status</th>
-          <th>Request ID</th>
-          <th>Request Date</th>
-          <th>Request Status</th>
-          <th>Request Step</th>
-          <th>Notes</th>
-          <th>Color</th>
+          <?php
+            global $bom_columns;
+            foreach($bom_columns as $column){
+              echo '<th>'.$column.'</th>';
+            }
+           ?>
         </tr>
       </tfoot>
       </table>

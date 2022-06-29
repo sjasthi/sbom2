@@ -29,7 +29,9 @@
     global $pdo;
     global $DEFAULT_SCOPE_FOR_RELEASES;
 
-    $sql = "SELECT * FROM releases WHERE app_id LIKE ?";
+    $sql = "
+      SELECT * FROM releases WHERE app_id LIKE ?
+    ";
     foreach($DEFAULT_SCOPE_FOR_RELEASES as $currentID){
       $sqlID = $pdo->prepare($sql);
       $sqlID->execute([$currentID]);

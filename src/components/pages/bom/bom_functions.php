@@ -1,9 +1,5 @@
 <?php
 
-$default_bom_query = "
-  SELECT * FROM applications
-";
-
 $sql_applications_query = "
   SELECT * FROM applications
 ";
@@ -59,9 +55,9 @@ function displayComponents($db, $parent_component_query, $parent_table_id) {
 }
 // Function to show applications and their dependencies
 function displayBomsAsTable($db, $bom_query='') {
-  global $default_bom_query;
+  global $sql_applications_query;
   if($bom_query == ''){
-    $bom_query = $default_bom_query;
+    $bom_query = $sql_applications_query;
   }
   $p_id = 1;
   $query_applications = $db->query($bom_query);
@@ -88,11 +84,12 @@ function displayBomsAsTable($db, $bom_query='') {
   }
 }
 
-function displayAllAppsList($db, $app_columns){
-  $bom_app_query = "
-    SELECT * FROM sbom;
-  ";
-  $query_applications = $db->query($bom_app_query);
+function displayAllAppsList($db, $app_columns, $app_query = ''){
+  global $sql_applications_query;
+  if($app_query == ''){
+    $app_query = $sql_applications_query;
+  }
+  $query_applications = $db->query($app_query);
   if($query_applications->num_rows > 0){
     while($row = $query_applications->fetch_assoc()){
       echo '<tr>';
