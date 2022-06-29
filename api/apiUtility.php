@@ -34,8 +34,8 @@
         public function get_bomlines_pending_name_version($app_name, $app_version){
             global $db;
             $sql = "SELECT * FROM apps_components
-                             WHERE app_name = $app_name
-                             AND app_version = $app_version
+                             WHERE app_name LIKE '$app_name%'
+                             AND app_version LIKE '$app_version%'
                              AND status != 'Approved' ";
             return $db->query($sql);
         }
@@ -48,7 +48,7 @@
         public function get_bomlines_pending_name($app_name){
             global $db;
             $sql = "SELECT * FROM apps_components
-                             WHERE app_name = $app_name
+                             WHERE app_name LIKE '$app_name%'
                              AND status != 'Approved' ";
             return $db->query($sql);
         }
