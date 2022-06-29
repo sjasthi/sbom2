@@ -5,23 +5,19 @@
   $tabTitle = "SBOM - BOM (Tree)";
   $bom_app_set_cookie_name = "user_bom_app_set";
 
-  $default_bom_query = "
-    SELECT * FROM applications
-  ";
 
-  include "../../../../index.php";
-  include "get_scope.php";
+
+  include("../../../../index.php");
+  include("get_scope.php");
   include("bom_left_menu.php");
+  include("bom_functions.php");
 
   //Get DB Credentials
   $DB_SERVER = constant('DB_SERVER');
   $DB_NAME = constant('DB_NAME');
   $DB_USER = constant('DB_USER');
   $DB_PASS = constant('DB_PASS');
-  //PDO connection
-  $pdo = new PDO("mysql:host=$DB_SERVER;dbname=$DB_NAME", $DB_USER, $DB_PASS);
-
-  $cookie_name = 'preference';
+  $preference_cookie_name = 'preference';
 
   $def = "false";
   $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
@@ -33,7 +29,9 @@
     global $pdo;
     global $DEFAULT_SCOPE_FOR_RELEASES;
 
-    $sql = "SELECT * FROM releases WHERE app_id LIKE ?";
+    $sql = "
+      SELECT * FROM releases WHERE app_id LIKE ?
+    ";
     foreach($DEFAULT_SCOPE_FOR_RELEASES as $currentID){
       $sqlID = $pdo->prepare($sql);
       $sqlID->execute([$currentID]);
@@ -62,70 +60,6 @@
    display:none;
  }
  </style>
-
-<?php
-  // Function to show the components and their dependencies
-  function displayComponents($db, $parent_component_query, $parent_table_id) {
-    $parent_c = 1;
-    while($component = $parent_component_query->fetch_assoc()){
-      $comp_id = $component["cmpt_id"];
-      $comp_name = $component["cmpt_name"];
-      $comp_version = $component["cmpt_version"];
-      $comp_status = $component["status"];
-      $comp_table_id=$parent_table_id."-".$parent_c;
-
-      $sql_components = "
-        SELECT * FROM apps_components
-        WHERE app_id = '".$comp_id."'
-      ";
-      $query_component_children = $db->query($sql_components);
-      $has_children = $query_component_children->num_rows > 0;
-      $comp_color = ($has_children)?"child":"grandchild";
-      $comp_class = ($has_children)?"yellowComp":"greenComp";
-
-
-      echo "<tr data-tt-id = '".$comp_table_id."' data-tt-parent-id='".$parent_table_id."' class = 'component ".$comp_class."' >
-      <td class='text-capitalize'> <div class = 'btn ".$comp_color."'> <span class = 'cmp_name'>".$comp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
-      <td class = 'cmp_version'>".$comp_version."</td>
-      <td class='text-capitalize'>".$comp_status."</td>";
-
-      if($has_children){
-        displayComponents($db, $query_component_children, $comp_table_id);
-      }
-      $parent_c++;
-    }
-  }
-  // Function to show applications and their dependencies
-  function displayBomsAsTable($db, $bom_query='') {
-    global $default_bom_query;
-    if($bom_query == ''){
-      $bom_query = $default_bom_query;
-    }
-    $p_id = 1;
-    $query_applications = $db->query($bom_query);
-    if($query_applications->num_rows > 0){
-      while($application = $query_applications->fetch_assoc()){
-        $red_app_id = $application["app_id"];
-        $app_name = $application["app_name"];
-        $app_version = $application["app_version"];
-        $app_status = $application["app_status"];
-        echo "<tbody class= 'redApp'>
-        <tr data-tt-id = '".$p_id."' ><td class='text-capitalize'>
-        <div class = 'btn parent' ><span class = 'app_name' style = 'max-width: 160em; white-space: pre-wrap; word-wrap: break-word; word-break: break-all;'>".$app_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
-        <td >".$app_version."</td><td class='text-capitalize'>".$app_status."</td><td/><td>".$red_app_id."<td/><td/><td/></tr>";
-
-        $sql_components = "
-          SELECT * FROM apps_components
-          WHERE app_id = '".$red_app_id."'
-        ";
-        $query_components = $db->query($sql_components);
-        displayComponents($db, $query_components, $p_id);
-        $query_components->close();
-        $p_id++;
-      }
-    }
-  }
-?>
 
 
 <div class="right-content">
@@ -221,7 +155,7 @@
               ";
               displayBomsAsTable($db, $sql);
 
-            } elseif(isset($_POST['getpref']) && !isset($_COOKIE[$cookie_name])) {
+            } elseif(isset($_POST['getpref']) && !isset($_COOKIE[$preference_cookie_name])) {
               //if no preference cookie is set but user clicks "show my BOMS"
               ?>
               <script>document.getElementById("scannerHeader").innerHTML = "BOM --> BOM Tree --> My BOMS";</script>
