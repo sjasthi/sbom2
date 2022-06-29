@@ -82,7 +82,6 @@
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> System BOMS";</script>
           <?php
           getAppList($db);
-          getFilterArray($db);
         } //default if preference cookie is set, display user BOM preferences
         elseif(isset($_COOKIE[$bom_app_set_cookie_name]) && isset($_POST['getpref'])) {
           ?>
