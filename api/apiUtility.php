@@ -200,7 +200,7 @@
 
         public function get_bom_list_id($app_id) {
             global $db;
-            $sql = "SELECT * FROM apps_components WHERE red_app_id =  $app_id";
+            $sql = "SELECT * FROM apps_components WHERE app_id =  $app_id";
             return $db->query($sql);
         }
 
@@ -240,7 +240,7 @@
 
         public function get_bom_list_unique_id($app_id) {
             global $db;
-            $sql = "SELECT DISTINCT * FROM apps_components WHERE app_id =  $app_id";
+            $sql = "SELECT DISTINCT * FROM apps_components WHERE app_id =  $app_id GROUP BY `cmpt_name`";
             return $db->query($sql);
         }
 
@@ -252,7 +252,7 @@
          */
         public function get_bom_list_unique_name($app_name) {
             global $db;
-            $sql = "SELECT DISTINCT * FROM apps_components WHERE app_name LIKE '%$app_name%'";
+            $sql = "SELECT DISTINCT * FROM apps_components WHERE app_name LIKE '%$app_name%' GROUP BY `cmpt_name`";
             return $db->query($sql);
         }
 
@@ -265,8 +265,10 @@
          */
         public function get_bom_list_unique_name_version($app_name, $app_version) {
             global $db;
-            $sql = "SELECT DISTINCT * FROM apps_components 
-                                   WHERE app_name LIKE '%$app_name%' AND app_version = '$app_version'";
+            $sql = "SELECT DISTINCT * 
+                    FROM apps_components 
+                    WHERE app_name LIKE '%$app_name%' AND app_version = '$app_version' 
+                    GROUP BY `cmpt_name`";
             return $db->query($sql);
         }
 
@@ -280,7 +282,13 @@
 
         public function get_bom_list_duplicate_id($app_id) {
             global $db;
-            $sql = "SELECT DISTINCT * FROM apps_components WHERE app_id =  $app_id";
+            $sql = "SELECT * 
+                    FROM apps_components 
+                    WHERE app_id = $app_id AND cmpt_name IN    (SELECT `cmpt_name` 
+                            FROM `apps_components` 
+                            WHERE app_id = $app_id 
+                            GROUP BY `cmpt_name` 
+                            HAVING COUNT(`cmpt_name`) > 1) ORDER BY `cmpt_name`";
             return $db->query($sql);
         }
 
@@ -292,7 +300,15 @@
          */
         public function get_bom_list_duplicate_name($app_name) {
             global $db;
-            $sql = "SELECT DISTINCT * FROM apps_components WHERE app_name LIKE '%$app_name%'";
+            $sql = "SELECT * 
+                    FROM apps_components 
+                    WHERE app_name LIKE '%$app_name%' AND        cmpt_name IN
+                            (SELECT `cmpt_name` 
+                            FROM `apps_components` 
+                            WHERE app_name LIKE         '%$app_name%' 
+                            GROUP BY `cmpt_name` 
+                            HAVING COUNT(`cmpt_name`) > 1)
+                            ORDER BY `cmpt_name`";
             return $db->query($sql);
         }
 
@@ -305,8 +321,16 @@
          */
         public function get_bom_list_duplicate_name_version($app_name, $app_version) {
             global $db;
-            $sql = "SELECT DISTINCT * FROM apps_components 
-                                   WHERE app_name LIKE '%$app_name%' AND app_version = '$app_version'";
+            $sql = "SELECT * 
+                    FROM apps_components 
+                    WHERE app_name LIKE '%$app_name%' 
+                    AND   app_version = '$app_version' AND   cmpt_name IN
+                            (SELECT `cmpt_name` 
+                            FROM `apps_components` 
+                            WHERE app_name LIKE '%$app_name%' AND app_version = '$app_version' 
+                            GROUP BY `cmpt_name` 
+                            HAVING COUNT(`cmpt_name`) > 1)
+                            ORDER BY `cmpt_name`";
             return $db->query($sql);
         }
 
