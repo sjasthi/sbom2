@@ -25,28 +25,9 @@
   global $pref_err;
 
   /*----------------- FUNCTION TO GET BOMS -----------------*/
-  function getBoms($db) {
+  function getAppList($db) {
     global $bom_columns;
     displayAllAppsList($db, $bom_columns);
-  }
-
-  function getFilterArray($db) {
-    global $scopeArray;
-    global $pdo;
-    global $DEFAULT_SCOPE_FOR_RELEASES;
-
-    $sql = "
-      SELECT * FROM releases WHERE app_id LIKE ?
-      ";
-    foreach($DEFAULT_SCOPE_FOR_RELEASES as $currentID){
-      $sqlID = $pdo->prepare($sql);
-      $sqlID->execute([$currentID]);
-      if ($sqlID->rowCount() > 0) {
-        while($row = $sqlID->fetch(PDO::FETCH_ASSOC)){
-          array_push($scopeArray, $row["app_id"]);
-        }
-      }
-    }
   }
 
   //Display error if user retrieves preferences w/o any cookies set
@@ -106,14 +87,14 @@
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
           <?php
-          getBoms($db);
+          getAppList($db);
         //If user clicks "show system BOMS", display BOM list filtered by default system scope
         } elseif (isset($_POST['getdef'])) {
           $def = "true";
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> System BOMS";</script>
           <?php
-          getBoms($db);
+          getAppList($db);
           getFilterArray($db);
         } //default if preference cookie is set, display user BOM preferences
         elseif(isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
@@ -153,14 +134,14 @@
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
           <?php
-          getBoms($db);
+          getAppList($db);
         }//if no preference cookie is set show all BOMS
         else {
           $def = "false";
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
           <?php
-          getBoms($db);
+          getAppList($db);
         }
       ?>
       </tbody>
