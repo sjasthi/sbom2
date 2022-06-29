@@ -2,8 +2,13 @@
   $nav_selected = "BOM";
   $left_selected = "SBOMLIST";
   $tabTitle = "SBOM - BOM (List)";
+  $bom_columns = array("row_id","app_id","app_name","app_version","cmp_id",
+                        "cmp_name","cmp_version","cmp_type","app_status",
+                        "cmp_status","request_id","request_date","request_status",
+                        "request_step","notes","color");
 
-  include "get_scope.php";
+  include("bom_functions.php");
+  include("get_scope.php");
   include("../../../../index.php");
   include("bom_left_menu.php");
 
@@ -21,37 +26,8 @@
 
   /*----------------- FUNCTION TO GET BOMS -----------------*/
   function getBoms($db) {
-    $sql = "SELECT * from sbom;";
-    $result = $db->query($sql);
-
-    if ($result->num_rows > 0) {
-      // output data of each row
-      while($row = $result->fetch_assoc()) {
-        echo '<tr>
-          <td>'.$row["row_id"].'</td>
-          <td><a class="btn" href="bom_sbom_tree_v2.php?id='.$row["app_id"].'">'.$row["app_id"].' </a> </td>
-          <td>'.$row["app_name"].'</td>
-          <td>'.$row["app_version"].'</td>
-          <td>'.$row["cmp_id"].' </span> </td>
-          <td>'.$row["cmp_name"].'</td>
-          <td>'.$row["cmp_version"].'</td>
-          <td>'.$row["cmp_type"].' </span> </td>
-          <td>'.$row["app_status"].' </span> </td>
-          <td>'.$row["cmp_status"].' </span> </td>
-          <td>'.$row["request_id"].'</td>
-          <td>'.$row["request_date"].'</td>
-          <td>'.$row["request_status"].'</td>
-          <td>'.$row["request_step"].'</td>
-          <td>'.$row["notes"].' </span> </td>
-          <td>'.$row["requestor"].'</td>
-          <td>'.$row["color"].'</td>
-        </tr>';
-      }//end while
-    }//end if
-    else {
-      echo "0 results";
-    }//end else
-    $result->close();
+    global $bom_columns;
+    displayAllAppsList($db, $bom_columns);
   }
 
   function getFilterArray($db) {
@@ -59,7 +35,9 @@
     global $pdo;
     global $DEFAULT_SCOPE_FOR_RELEASES;
 
-    $sql = "SELECT * FROM releases WHERE app_id LIKE ?";
+    $sql = "
+      SELECT * FROM releases WHERE app_id LIKE ?
+      ";
     foreach($DEFAULT_SCOPE_FOR_RELEASES as $currentID){
       $sqlID = $pdo->prepare($sql);
       $sqlID->execute([$currentID]);
@@ -116,7 +94,6 @@
             <th>Request Status</th>
             <th>Request Step</th>
             <th>Notes</th>
-            <th>Requester</th>
             <th>Color</th>
           </tr>
         </thead>
@@ -204,7 +181,6 @@
           <th>Request Status</th>
           <th>Request Step</th>
           <th>Notes</th>
-          <th>Requester</th>
           <th>Color</th>
         </tr>
       </tfoot>
