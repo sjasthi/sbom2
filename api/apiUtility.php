@@ -9,6 +9,54 @@
 
     class apiUtility
     {
+
+        // Begin get_bomlines_pending functions
+        /**
+         * @param $app_id
+         *
+         * @return bool|mysqli_result
+         */
+        public function get_bomlines_pending_id($app_id){
+            global $db;
+            $sql = "SELECT * FROM apps_components
+                             WHERE app_id = $app_id
+                             AND status != 'Approved' ";
+            return $db->query($sql);
+        }
+
+
+        /**
+         * @param $app_name
+         * @param $app_version
+         *
+         * @return bool|mysqli_result
+         */
+        public function get_bomlines_pending_name_version($app_name, $app_version){
+            global $db;
+            $sql = "SELECT * FROM apps_components
+                             WHERE app_name = $app_name
+                             AND app_version = $app_version
+                             AND status != 'Approved' ";
+            return $db->query($sql);
+        }
+
+         /**
+         * @param app_name
+         *
+         * @return bool|mysqli_result
+         */
+        public function get_bomlines_pending_name($app_name){
+            global $db;
+            $sql = "SELECT * FROM apps_components
+                             WHERE app_name = $app_name
+                             AND status != 'Approved' ";
+            return $db->query($sql);
+        }
+
+
+
+
+
         // Begin is_safe functions
         /**
          * @param $component_id
