@@ -9,11 +9,11 @@
      *          app_version = digits, space and certain special characters
      * 
      * Sample URL INPUTS:
-     * http://localhost/sbom2/api/get_bom_list.php?app_id=946907896
-     * http://localhost/sbom2/api/get_bom_list.php?app_name=TechIF Adv
-     * http://localhost/sbom2/api/get_bom_list.php?app_name=lt
+     * http://localhost/sbom2/api/get_bom_list.php?app_id=78784236
+     * http://localhost/sbom2/api/get_bom_list.php?app_name=General Te
+     * http://localhost/sbom2/api/get_bom_list.php?app_name=son
      * http://localhost/sbom2/api/get_bom_list.php?app_name=General%20Te&app_version=96.9
-     * http://localhost/sbom2/api/get_bom_list.php?app_name=lt&app_version=9.9
+     * http://localhost/sbom2/api/get_bom_list.php?app_name=TE&app_version=96.9
      * There are ONLY 3 red_app_ids (946907896, 944965237, 76074884) in apps_component table.
      * Output:  The module outputs data as a json object. The json object also includes HTTP
      *          response code and count of rows parameters passed and data name value pairs.
