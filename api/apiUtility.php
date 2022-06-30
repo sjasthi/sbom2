@@ -212,6 +212,7 @@
         }
 
         /**
+        Get the application owner given an app id
          * @param $app_id
          *
          * @return bool|mysqli_result
@@ -226,6 +227,7 @@
         }
 
         /**
+        Get the application owner given an app name
          * @param $app_name
          *
          * @return bool|mysqli_result
@@ -238,6 +240,49 @@
             return $db->query($sql);
         }
 
+        /**
+        Get the requester given an component id
+         * @param $app_id
+         *
+         * @return bool|mysqli_result
+         */
+        public function get_owner_component_id($component_id) {
+            global $db;
+            $sql = "SELECT requester 
+            FROM apps_components 
+            WHERE cmpt_id = '$component_id'";
+            return $db->query($sql);
+        }
+
+        /**
+        Get the requester given an component name
+         * @param $app_name
+         *
+         * @return bool|mysqli_result
+         */
+        public function get_owner_component_name($component_name) {
+            global $db;
+            $sql = "SELECT requester 
+            FROM apps_components 
+            WHERE cmpt_name = '$component_name'";
+            return $db->query($sql);
+        }
+
+
+        /**
+        Get the requester given an component version
+         * @param $app_name
+         *
+         * @return bool|mysqli_result
+         */
+        public function get_owner_component_version($component_version) {
+            global $db;
+            $sql = "SELECT requester 
+            FROM apps_components 
+            WHERE cmpt_version = '$component_version'";
+            return $db->query($sql);
+        }
+
         // Begin get_bom_list functions
         /**
          * get_bom_list returns rows based on red_app_id parameter.
@@ -245,7 +290,6 @@
          *
          * @return bool|mysqli_result
          */
-
         public function get_bom_list_id($app_id) {
             global $db;
             $sql = "SELECT * FROM apps_components WHERE app_id =  $app_id";
