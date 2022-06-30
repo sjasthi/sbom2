@@ -16,6 +16,11 @@
      *                   component_id, component_name, component_version can generate "Invalid request"
      *                   or "Invalid or empty request" for unsupported characters.
      *
+     * Sample URL INPUTS:
+     * http://localhost/sbom2/api/is_safe.php?component_id=77960664
+     * http://localhost/sbom2/api/is_safe.php?component_name=kassandra%20HttpClient
+     * http://localhost/sbom2/api/is_safe.php?component_name=kassandra%20HttpClient&component_version=4.5.96%20%289%29
+     *
      * @author Shahid Iqbal, Isaac Hentges, Nathan Lantaigne-Goetsch, Abdulsalam Geddi
      *
      * The apiUtility class is for various helper functions for the php pages.
@@ -27,7 +32,7 @@
         $component_version = $_GET['component_version'];
 
         if((!empty($component_name) && preg_match('/^[\d A-Za-z +:-]*$/', $component_name)) &&
-            (!empty($component_version) && preg_match('/^[\d.,_ ]*$/', $component_version))) {
+            (!empty($component_version) && preg_match('/^[\d\/A-Za-z\-.,_)( ]*$/', $component_version))) {
             $apiFunctions = new apiUtility();
             $processor = $apiFunctions->is_safe_name_version($component_name, $component_version);
             $data = [];

@@ -9,18 +9,19 @@
      *          component_name = Alpha,digits, space and certain special characters.
      *          component_version = digits, space and certain special characters
      *
-     * SAMPLE URL INPUTS
-     * http://localhost/sbom2/api/get_where_used.php?component_id=779496
-     * http://localhost/sbom2/api/get_where_used.php?component_name=Commons IO
-     * http://localhost/sbom2/api/get_where_used.php?component_name=LT
-     * http://localhost/sbom2/api/get_where_used.php?component_name=General Te&component_version=96.9
-     * http://localhost/sbom2/api/get_where_used.php?component_name=lt&component_version=9.9
      * Output:  The module outputs data as a json object. The json object also includes HTTP
      *          response code and count of rows parameters passed and data name value pairs.
      *
      * Error Conditions: response code of http 400 is generated when system detects an error condition.
      *                   component_id, component_name, component_version can generate "Invalid request"
      *                   or "Invalid or empty request" for unsupported characters.
+     *
+     * Sample URL INPUTS:
+     * http://localhost/sbom2/api/get_where_used.php?component_id=779496
+     * http://localhost/sbom2/api/get_where_used.php?component_name=Commons IO
+     * http://localhost/sbom2/api/get_where_used.php?component_name=LT
+     * http://localhost/sbom2/api/get_where_used.php?component_name=General Te&component_version=96.9
+     * http://localhost/sbom2/api/get_where_used.php?component_name=lt&component_version=9.9
      *
      * @author Shahid Iqbal, Isaac Hentges, Nathan Lantaigne-Goetsch, Abdulsalam Geddi
      *
@@ -33,7 +34,7 @@
         $component_version = $_GET['component_version'];
 
         if((!empty($component_name) && preg_match('/^[\d A-Za-z +:-]*$/', $component_name)) &&
-            (!empty($component_version) && preg_match('/^[\d.,_ ]*$/', $component_version))) {
+            (!empty($component_version) && preg_match('/^[\d\/A-Za-z\-.,_)( ]*$/', $component_version))) {
             $apiFunctions = new apiUtility();
             $processor = $apiFunctions->getWhereUsed_name_version($component_name, $component_version);
             $data = [];

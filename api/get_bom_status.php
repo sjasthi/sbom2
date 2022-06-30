@@ -43,12 +43,6 @@
         $processor = $apiFunctions->get_bom_status_name_version($app_name, $app_version);
         $data = [];
         $count = 0;
-        if($processor->num_rows > 0) {
-            $count = $processor->num_rows;
-            while($row  = $processor->fetch_assoc()){
-                $data[] = $row;
-            }
-        }
         response(200, $count, $app_name . ", " . $app_version, $data);
     }
 
@@ -69,14 +63,6 @@
         $processor = $apiFunctions->get_bom_status_id($app_id);
         $data = [];
         $count = 0;
-        if ($processor->num_rows > 0) {
-            $count = $processor->num_rows;
-            while ($row = $processor->fetch_assoc()) {
-                $data[] = $row;
-                
-            }
-        
-        }
         response(200, $count, $app_id, $data);
     }
     else if (isset($app_id) && empty($app_id)) {
@@ -95,12 +81,6 @@ else if (isset($_GET['app_name'])) {
         $processor = $apiFunctions->get_bom_status_name($app_name);
         $data = [];
         $count = 0;
-        if($processor!==false && $processor->num_rows > 0) {
-            $count = $processor->num_rows;
-            while($row  = $processor->fetch_assoc()){
-                $data[] = $row;
-            }
-        }
         response(200, $count, $app_name, $data);
     }
     else if (isset($app_name) && empty($app_name)) {
