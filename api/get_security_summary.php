@@ -25,14 +25,14 @@
     /**
      *      get_security_summary with component_id, component_name, component_version
      */
-    if (isset($_GET['component_name'], $_GET['component_version'])) {
-        $component_name = $_GET['component_name'];
+    if (isset($_GET['component_id'], $_GET['component_version'])) {
+        $component_id = $_GET['component_id'];
         $component_version = $_GET['component_version'];
 
-        if((!empty($component_name) && preg_match('/^[\d A-Za-z +:-]*$/', $component_name)) &&
-            (!empty($component_version) && preg_match('/^[\d-.,_v ]*$/', $component_version))) {
+        if((!empty($component_id) && preg_match('/^[\d A-Za-z +:-]*$/', $component_id)) &&
+            (!empty($component_version) && preg_match('/^[\d\/A-Za-z\-.,_)( ]*$/', $component_version))) {
             $apiFunctions = new apiUtility();
-            $processor = $apiFunctions->get_security_summary_id_version($component_name, $component_version);
+            $processor = $apiFunctions->get_security_summary_id_version($component_id, $component_version);
             $data = [];
             $count = 0;
             if($processor->num_rows > 0) {
@@ -41,7 +41,7 @@
                     $data[] = $row;
                 }
             }
-            response(200, $count, $component_name . ", " . $component_version, $data);
+            response(200, $count, $component_id . ", " . $component_version, $data);
         }
 
         else if (isset($component_name, $component_version) && empty($component_name) && empty($component_version)) {
@@ -104,7 +104,7 @@
     /**
      *      get_security_summary with app_id, app_name, app_version
      */
-    if (isset($_GET['app_name'], $_GET['app_version'])) {
+    else if (isset($_GET['app_name'], $_GET['app_version'])) {
         $app_name = $_GET['app_name'];
         $app_version = $_GET['app_version'];
 
