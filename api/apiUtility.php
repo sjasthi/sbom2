@@ -10,6 +10,68 @@
     class apiUtility
     {
 
+        // Begin get_bomlines_status functions
+        /**
+         * @param $app_id
+         *
+         * @return bool|mysqli_result
+         */
+        public function get_bom_status_id($app_id){
+            global $db;
+            $sql = "SELECT status FROM apps_components
+                                                WHERE app_id = $app_id
+                                                AND status != 'Approved' ";
+            $result= $db->query($sql);
+            if ($result->num_rows > 0) {
+                echo "Status Open";
+            }
+                else {
+                    echo "Status Approved";
+        }
+    }
+
+
+        /**
+         * @param $app_name
+         * @param $app_version
+         *
+         * @return bool|mysqli_result
+         */
+        public function get_bom_status_name_version($app_name, $app_version){
+            global $db;
+            $sql = "SELECT status FROM apps_components
+                             WHERE app_name LIKE '$app_name%'
+                             AND app_version LIKE '$app_version%'
+                             AND status != 'Approved' ";
+            $result= $db->query($sql);
+            if ($result->num_rows > 0) {
+                echo "Status Open";
+            }
+                else {
+                    echo "Status Approved";
+        }
+        }
+
+         /**
+         * @param app_name
+         *
+         * @return bool|mysqli_result
+         */
+        public function get_bom_status_name($app_name){
+            global $db;
+            $sql = "SELECT status FROM apps_components
+                             WHERE app_name LIKE '$app_name%'
+                             AND status != 'Approved' ";
+            $result= $db->query($sql);
+            if ($result->num_rows > 0) {
+                echo "Status Open";
+            }
+                else {
+                    echo "Status Approved";
+        }
+        }
+        
+
         // Begin get_bomlines_pending functions
         /**
          * @param $app_id
