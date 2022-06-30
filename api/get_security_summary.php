@@ -16,6 +16,15 @@
      *                   component_id, component_name, component_version can generate "Invalid request"
      *                   or "Invalid or empty request" for unsupported characters.
      *
+     * Sample URL INPUTS:
+     * http://localhost/sbom2/api/get_security_summary.php?component_id=7023876
+     * http://localhost/sbom2/api/get_security_summary.php?component_name=apa
+     * http://localhost/sbom2/api/get_security_summary.php?component_id=7076759&component_version=7.9%20%289%29
+     *
+     * http://localhost/sbom2/api/get_security_summary.php?app_name=General
+     * http://localhost/sbom2/api/get_security_summary.php?app_id=76074884
+     * http://localhost/sbom2/api/get_security_summary.php?app_name=General&app_version=96.9
+     *
      * @author Shahid Iqbal, Isaac Hentges, Nathan Lantaigne-Goetsch, Abdulsalam Geddi
      *
      * The apiUtility class is for various helper functions for the php pages.

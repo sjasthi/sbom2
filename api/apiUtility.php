@@ -54,9 +54,6 @@
         }
 
 
-
-
-
         // Begin is_safe functions
         /**
          * @param $component_id
@@ -80,7 +77,7 @@
         public function is_safe_name_version($component_name, $component_version) {
             global $db;
             $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components 
-                                                                       WHERE cmpt_name = '$component_name%' 
+                                                                       WHERE cmpt_name LIKE '$component_name%' 
                                                                        AND cmpt_version = '$component_version' 
                                                                        AND issue_count = 0";
             return $db->query($sql);

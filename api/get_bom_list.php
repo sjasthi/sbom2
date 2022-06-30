@@ -7,13 +7,7 @@
      *          app_id = digits only.
      *          app_name = Alpha,digits, space and certain special characters.
      *          app_version = digits, space and certain special characters
-     * 
-     * Sample URL INPUTS:
-     * http://localhost/sbom2/api/get_bom_list.php?app_id=78784236
-     * http://localhost/sbom2/api/get_bom_list.php?app_name=General Te
-     * http://localhost/sbom2/api/get_bom_list.php?app_name=son
-     * http://localhost/sbom2/api/get_bom_list.php?app_name=General%20Te&app_version=96.9
-     * http://localhost/sbom2/api/get_bom_list.php?app_name=TE&app_version=96.9
+     *
      * There are ONLY 3 red_app_ids (946907896, 944965237, 76074884) in apps_component table.
      * Output:  The module outputs data as a json object. The json object also includes HTTP
      *          response code and count of rows parameters passed and data name value pairs.
@@ -21,6 +15,13 @@
      * Error Conditions: response code of http 400 is generated when system detects an error condition.
      *                   app_id, app_name, app_version can generate "Invalid request"
      *                   or "Invalid or empty request" for unsupported characters.
+     *
+     * Sample URL INPUTS:
+     * http://localhost/sbom2/api/get_bom_list.php?app_id=78784236
+     * http://localhost/sbom2/api/get_bom_list.php?app_name=General Te
+     * http://localhost/sbom2/api/get_bom_list.php?app_name=son
+     * http://localhost/sbom2/api/get_bom_list.php?app_name=General%20Te&app_version=96.9
+     * http://localhost/sbom2/api/get_bom_list.php?app_name=TE&app_version=96.9
      *
      * @author Shahid Iqbal, Isaac Hentges, Nathan Lantaigne-Goetsch, Abdulsalam Geddi
      *
