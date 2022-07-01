@@ -71,7 +71,6 @@
 
     <div class="wrap">
       <h3  id = scannerHeader style = "color: #01B0F1;">Applications --> Applications List </h3>
-
       <!-- Form to retrieve user preference -->
       <form id='getpref-form' name='getpref-form' method='post' action='' style='display: inline;'>
         <button type='submit' name='getpref' value='submit'>Show My Applications</button>
@@ -118,6 +117,7 @@
           elseif(isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
             $def = "false";
             ?>
+
             <script>document.getElementById("scannerHeader").innerHTML = "Applications --> Applications List --> My Applications";</script>
             <?php
             $prep = rtrim(str_repeat('?,', count(json_decode($_COOKIE[$cookie_name]))), ',');

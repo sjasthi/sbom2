@@ -16,21 +16,6 @@
             </div>
         </a>
 
-        <a href="<?php echo checkSelectedLeftMenuLink( "SBOMTREE2", "bom_sbom_tree_v2.php" ); ?>">
-            <div <?php echo checkSelectedLeftMenu( "SBOMTREE2" ); ?>>
-                <?php include $assetsPath."svg/treeV2.svg"; ?>
-                <p>BOM Tree V2</p>
-            </div>
-        </a>
-
-        <!-- // changed to v3 10-26-2020 -->
-        <a href="<?php echo checkSelectedLeftMenuLink( "SBOMTREE3", "bom_sbom_tree_v3.php" ); ?>">
-            <div <?php echo checkSelectedLeftMenu( "SBOMTREE3" ); ?>>
-                <?php include $assetsPath."svg/treeV2.svg"; ?>
-                <p>BOM Tree V3</p>
-            </div>
-        </a>
-
         <a href="<?php echo checkSelectedLeftMenuLink( "REPORTSPIECHART", "bom_pieChart.php" ); ?>">
             <div <?php echo checkSelectedLeftMenu( "REPORTSPIECHART" ); ?>>
                 <?php include $assetsPath."svg/pieChart.svg"; ?>
@@ -49,6 +34,14 @@
             <div <?php echo checkSelectedLeftMenu( "BOMSTATUS" ); ?>>
                 <?php include $assetsPath."svg/status.svg"; ?>
                 <p>BOM Status</p>
+            </div>
+        </a>
+
+        <!--  -->
+        <a href="<?php echo checkSelectedLeftMenuLink( "BOMAPPSET", "bom_app_set.php" ); ?>">
+            <div <?php echo checkSelectedLeftMenu( "BOMAPPSET" ); ?>>
+                <?php include $assetsPath."svg/admin.svg"; ?>
+                <p>BOM App Set</p>
             </div>
         </a>
 
