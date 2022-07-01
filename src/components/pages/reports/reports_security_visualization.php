@@ -6,6 +6,7 @@
 
     include("../../../../index.php");
     include("reports_left_menu.php");
+
 ?>
 
 <?php
@@ -14,20 +15,21 @@
 
   /*----------------- FUNCTION TO GET BOMS -----------------*/
   function getReports($db) {
-    $sql = "SELECT app_name, app_version, SUM(CASE WHEN license NOT LIKE '%Commercial%' THEN 1 ELSE 0 END) as oss_count, SUM(CASE WHEN license LIKE '%Commercial%' THEN 1 ELSE 0 END) as commercial_count, COUNT(license) as total
-    FROM apps_components
-    GROUP BY app_name;";
+    $sql = "SELECT red_app_id,app_name, app_version, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END) 
+    as num_issue, SUM(issue_count) as total_issue_count 
+    FROM apps_components 
+    GROUP BY red_app_id;";
     $result = $db->query($sql);
 
     if ($result->num_rows > 0) {
       // output data of each row
       while($row = $result->fetch_assoc()) {
         echo '<tr>
+          <td>'.$row["red_app_id"].'</td>
           <td>'.$row["app_name"].'</td>
-          <td>'.$row["app_version"].'</td>
-          <td>'.$row["oss_count"].' </span> </td>
-          <td>'.$row["commercial_count"].'</td>
-          <td>'.$row["total"].'</td>
+          <td>'.$row["app_version"].' </span> </td>
+          <td>'.$row["num_issue"].'</td>
+          <td>'.$row["total_issue_count"].'</td>
         </tr>';
       }//end while
     }//end if
@@ -66,17 +68,19 @@
 ?>
 
     <div class="wrap">
-      <h3  id = scannerHeader style = "color: #01B0F1;">Reports --> FOSS Count </h3>
+      <h3  id = scannerHeader style = "color: #01B0F1;">REPORT --> Security Visualization </h3>
       <table id="info" cellpadding="0" cellspacing="0" border="0"
         class="datatable table table-striped table-bordered datatable-style table-hover"
         width="100%" style="width: 100px;">
         <thead>
           <tr id="table-first-row">
+          
+            <th>Red App ID</th>
             <th>App Name</th>
             <th>App Version</th>
-            <th>OSS Count</th>
-            <th>Commercial Count</th>
-            <th>Total</th>
+            <th>Componnent With Issue</th>
+            <th>Total Issue Count</th>
+
           </tr>
         </thead>
       <tbody>
@@ -92,11 +96,11 @@
 
           while($row = $pref->fetch(PDO::FETCH_ASSOC)) {
             echo '<tr>
-              <td>'.$row["app_name"].'</td>
-              <td>'.$row["app_version"].'</td>
-              <td>'.$row["oss_count"].' </span> </td>
-              <td>'.$row["compenents_count"].'</td>
-              <td>'.$row["total"].'</td>
+            <td>'.$row["red_app_id"].'</td>
+            <td>'.$row["app_name"].'</td>
+            <td>'.$row["app_version"].' </span> </td>
+            <td>'.$row["num_issue"].'</td>
+            <td>'.$row["total_issue_count"].'</td>
             </tr>';
           }
         }
@@ -104,11 +108,12 @@
       </tbody>
       <tfoot>
         <tr>
-          <th>App Name</th>
-          <th>App Version</th>
-          <th>OSS Count</th>
-          <th>Commercial Count</th>
-          <th>Total</th>
+        <th>Red App ID</th>
+        <th>App Name</th>
+        <th>App Version</th>
+        <th>Componnent With Issue</th>
+        <th>Total Issue Count</th>
+          
         </tr>
       </tfoot>
       </table>
@@ -176,4 +181,5 @@
 
     $('.table-container').doubleScroll(); // assign a double scroll to this class
     } );
+   
   </script>

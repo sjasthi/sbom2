@@ -40,8 +40,17 @@
         <a href="<?php echo checkSelectedLeftMenuLink( "REPORTSOWNERSHIP", "reports_ownership.php" ); ?>">
             <div <?php echo checkSelectedLeftMenu( "REPORTSOWNERSHIP" ); ?>>
                 <?php include $assetsPath."svg/copyright.svg"; ?>
-                <p> Reports (Ownership) </p>
+                <p> Ownership </p>
             </div>
         </a>
+
+        <a href="<?php echo checkSelectedLeftMenuLink( "REPORTSSECURITY", "reports_security_visualization.php" ); ?>">
+            <div <?php echo checkSelectedLeftMenu( "REPORTSSECURITY" ); ?>>
+                <?php include $assetsPath."svg/security.svg"; ?>
+                <p> Security Visualization </p>
+            </div>    
+
+        </a> 
+              
     </div>
 </div>
