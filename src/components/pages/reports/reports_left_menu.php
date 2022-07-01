@@ -35,8 +35,13 @@
                 <?php include $assetsPath."svg/multiple.svg"; ?>
                 <p> Multiple Versions </p>
             </div>
+	  </a>
+	  <a href="<?php echo checkSelectedLeftMenuLink( "REPORTSSECURITY", "reports_security.php" ); ?>">
+            <div <?php echo checkSelectedLeftMenu( "REPORTSSECURITY" ); ?>>
+                <?php include $assetsPath."svg/copyright.svg"; ?>
+                <p> Reports (Security) </p>		
+            </div>
         </a>
-
         <a href="<?php echo checkSelectedLeftMenuLink( "REPORTSOWNERSHIP", "reports_ownership.php" ); ?>">
             <div <?php echo checkSelectedLeftMenu( "REPORTSOWNERSHIP" ); ?>>
                 <?php include $assetsPath."svg/copyright.svg"; ?>

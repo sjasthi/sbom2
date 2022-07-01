@@ -1,13 +1,18 @@
 <?php
+  error_reporting(0);
   $nav_selected = "APPLICATIONS";
   $left_selected = "APPLICATIONS";
   $tabTitle = "SBOM - Applications";
 
+  include "../bom/get_scope.php";
   include("../../../../index.php");
+
+  $def = "false";
+  $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
+  $scopeArray = array();
 
   require_once('../bom/calculate_color.php');
 ?>
-
 
 <?php
   $cookie_name = 'preference';
@@ -65,8 +70,7 @@
 ?>
 
     <div class="wrap">
-      <h3  id = scannerHeader style = "color: #000000 ;">Scanner --> Software BOM </h3>
-
+      <h3  id = scannerHeader style = "color: #01B0F1;">Applications --> Applications List </h3>
       <!-- Form to retrieve user preference -->
       <form id='getpref-form' name='getpref-form' method='post' action='' style='display: inline;'>
         <button type='submit' name='getpref' value='submit'>Show My Applications</button>
@@ -84,11 +88,11 @@
           width="100%" style="width: 100px;">
           <thead>
             <tr id="table-first-row">
-              <th>App ID</th>
-              <th>App Name</th>
-              <th>App Version</th>
-              <th>App Status</th>
-              <th>App EOL</th>
+            <th>App ID</th>
+            <th>App Name</th>
+            <th>App Version</th>
+            <th>App Status</th>
+            <th>EOL</th>
             </tr>
           </thead>
         <tbody>
@@ -98,14 +102,14 @@
           if(isset($_POST['getall'])) {
             $def = "false";
             ?>
-            <script>document.getElementById("scannerHeader").innerHTML = "Application --> Software Application --> All Applications";</script>
+            <script>document.getElementById("scannerHeader").innerHTML = "Applications --> Applications List --> All Applications";</script>
             <?php
             getBoms($db);
           //If user clicks "show system BOMS", display BOM list filtered by default system scope
           } elseif (isset($_POST['getdef'])) {
             $def = "true";
             ?>
-            <script>document.getElementById("scannerHeader").innerHTML = "Application --> Software Application --> System Applications";</script>
+            <script>document.getElementById("scannerHeader").innerHTML = "Applications --> Applications List --> System Applications";</script>
             <?php
             getBoms($db);
             getFilterArray($db);
@@ -113,7 +117,8 @@
           elseif(isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
             $def = "false";
             ?>
-            <script>document.getElementById("scannerHeader").innerHTML = "Application --> Software Application --> My Applications";</script>
+
+            <script>document.getElementById("scannerHeader").innerHTML = "Applications --> Applications List --> My Applications";</script>
             <?php
             $prep = rtrim(str_repeat('?,', count(json_decode($_COOKIE[$cookie_name]))), ',');
             $sql = 'SELECT * FROM applications WHERE app_id IN ('.$prep.')';
@@ -126,21 +131,21 @@
               <td>'.$row["app_name"].'</td>
               <td>'.$row["app_version"].'</td>
               <td>'.$row["app_status"].' </span> </td>
-              <td>'.$row["is_eol"].'</td>  
+              <td>'.$row["is_eol"].'</td>
               </tr>';
             }
           }//if no preference cookie is set but user clicks "show my BOMS"
           elseif(isset($_POST['getpref']) && !isset($_COOKIE[$cookie_name])) {
             $def = "false";
             ?>
-            <script>document.getElementById("scannerHeader").innerHTML = "Application --> Software Application --> All Applications";</script>
+            <script>document.getElementById("scannerHeader").innerHTML = "Applications --> Applications List --> All Applications";</script>
             <?php
             getBoms($db);
           }//if no preference cookie is set show all BOMS
           else {
             $def = "false";
             ?>
-            <script>document.getElementById("scannerHeader").innerHTML = "Application --> Software Application --> All Applications";</script>
+            <script>document.getElementById("scannerHeader").innerHTML = "Applications --> Applications List --> All Applications";</script>
             <?php
             getBoms($db);
           }
@@ -148,11 +153,11 @@
         </tbody>
         <tfoot>
           <tr>
-            <th>App ID</th>
-            <th>App Name</th>
-            <th>App Version</th>
-            <th>APP Status</th>
-            <th>APP EOL</th>
+          <th>App ID</th>
+          <th>App Name</th>
+          <th>App Version</th>
+          <th>App Status</th>
+          <th>EOL</th>
           </tr>
         </tfoot>
         </table>
