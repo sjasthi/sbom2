@@ -124,7 +124,7 @@
          */
         public function is_safe_id($component_id) {
             global $db;
-            $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components 
+            $sql = "SELECT DISTINCT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components 
                                                                        WHERE cmpt_id = $component_id 
                                                                        AND issue_count = 0";
             return $db->query($sql);
@@ -138,7 +138,7 @@
          */
         public function is_safe_name_version($component_name, $component_version) {
             global $db;
-            $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components 
+            $sql = "SELECT DISTINCT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components 
                                                                        WHERE cmpt_name LIKE '$component_name%' 
                                                                        AND cmpt_version = '$component_version' 
                                                                        AND issue_count = 0";
@@ -152,7 +152,7 @@
          */
         public function is_safe_name($component_name) {
             global $db;
-            $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components WHERE cmpt_name LIKE '$component_name%' 
+            $sql = "SELECT DISTINCT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components WHERE cmpt_name LIKE '$component_name%' 
                                                                                               AND issue_count = 0";
             return $db->query($sql);
         }
@@ -166,7 +166,7 @@
         public function get_security_summary_id($component_id) {
             global $db;
             $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, monitoring_id, monitoring_digest, issue_count FROM apps_components 
-                                                                       WHERE cmpt_id = $component_id";
+                                                                       WHERE cmpt_id = $component_id AND issue_count > 0";
             return $db->query($sql);
         }
 
@@ -180,7 +180,8 @@
             global $db;
             $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, monitoring_id, monitoring_digest, issue_count FROM apps_components 
                                                                        WHERE cmpt_id = '$component_id' 
-                                                                       AND cmpt_version = '$component_version'";
+                                                                       AND cmpt_version = '$component_version'
+                                                                       AND issue_count > 0";
             return $db->query($sql);
         }
 
@@ -191,7 +192,8 @@
          */
         public function get_security_summary_name($component_name) {
             global $db;
-            $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, monitoring_id, monitoring_digest, issue_count FROM apps_components WHERE cmpt_name LIKE '$component_name%'";
+            $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, monitoring_id, monitoring_digest, issue_count FROM apps_components WHERE cmpt_name LIKE '$component_name%'
+                                                                                                                                AND issue_count > 0";
             return $db->query($sql);
         }
 

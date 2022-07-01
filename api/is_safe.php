@@ -21,6 +21,8 @@
      * http://localhost/sbom2/api/is_safe.php?component_name=kassandra%20HttpClient
      * http://localhost/sbom2/api/is_safe.php?component_name=kassandra%20HttpClient&component_version=4.5.96%20%289%29
      *
+     * http://localhost/sbom2/api/is_safe.php?component_name=Commons IO&component_version=7.5
+     *
      * @author Shahid Iqbal, Isaac Hentges, Nathan Lantaigne-Goetsch, Abdulsalam Geddi
      *
      * The apiUtility class is for various helper functions for the php pages.
@@ -40,8 +42,11 @@
             if($processor->num_rows > 0) {
                 $count = $processor->num_rows;
                 while($row  = $processor->fetch_assoc()){
-                    $data[] = $row;
+                    $data = 'True';
                 }
+            }
+            else {
+                $data = 'False';
             }
             response(200, $count, $component_name . ", " . $component_version, $data);
         }
@@ -66,8 +71,11 @@
             if ($processor->num_rows > 0) {
                 $count = $processor->num_rows;
                 while ($row = $processor->fetch_assoc()) {
-                    $data[] = $row;
+                    $data = 'True';
                 }
+            }
+            else {
+                $data = 'False';
             }
             response(200, $count, $component_id, $data);
         }
@@ -90,8 +98,11 @@
             if($processor!==false && $processor->num_rows > 0) {
                 $count = $processor->num_rows;
                 while($row  = $processor->fetch_assoc()){
-                    $data[] = $row;
+                    $data[] = 'True';
                 }
+            }
+            else {
+                $data = 'False';
             }
             response(200, $count, $component_name, $data);
         }
