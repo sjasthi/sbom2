@@ -69,7 +69,7 @@
 ?>
 
     <div class="wrap">
-      <h3  id = scannerHeader style = "color: #01B0F1;">Reports --> ISSUE Count </h3>
+      <h3  id = scannerHeader style = "color: #01B0F1;">Reports --> Security Issue </h3>
       <table id="info" cellpadding="0" cellspacing="0" border="0"
         class="datatable table table-striped table-bordered datatable-style table-hover"
         width="100%" style="width: 100px;">
