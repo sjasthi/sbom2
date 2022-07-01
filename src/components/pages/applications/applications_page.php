@@ -65,7 +65,7 @@
 ?>
 
     <div class="wrap">
-      <h3  id = scannerHeader style = "color: #900C3F ;">Scanner --> Software BOM </h3>
+      <h3  id = scannerHeader style = "color: #000000 ;">Scanner --> Software BOM </h3>
 
       <!-- Form to retrieve user preference -->
       <form id='getpref-form' name='getpref-form' method='post' action='' style='display: inline;'>
