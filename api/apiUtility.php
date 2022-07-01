@@ -19,14 +19,14 @@
         public function get_bom_status_id($app_id){
             global $db;
             $sql = "SELECT status FROM apps_components
-                                                WHERE app_id = $app_id
-                                                AND status != 'Approved' ";
+                                  WHERE app_id = $app_id
+                                  AND status != 'Approved' ";
             $result= $db->query($sql);
             if ($result->num_rows > 0) {
                 echo "Status Open";
             }
                 else {
-                    echo "Status Approved";
+                echo "Status Approved";
         }
     }
 
@@ -40,9 +40,9 @@
         public function get_bom_status_name_version($app_name, $app_version){
             global $db;
             $sql = "SELECT status FROM apps_components
-                             WHERE app_name LIKE '$app_name%'
-                             AND app_version LIKE '$app_version%'
-                             AND status != 'Approved' ";
+                                  WHERE app_name LIKE '$app_name%'
+                                  AND app_version LIKE '$app_version%'
+                                  AND status != 'Approved' ";
             $result= $db->query($sql);
             if ($result->num_rows > 0) {
                 echo "Status Open";
@@ -60,8 +60,8 @@
         public function get_bom_status_name($app_name){
             global $db;
             $sql = "SELECT status FROM apps_components
-                             WHERE app_name LIKE '$app_name%'
-                             AND status != 'Approved' ";
+                                  WHERE app_name LIKE '$app_name%'
+                                  AND status != 'Approved' ";
             $result= $db->query($sql);
             if ($result->num_rows > 0) {
                 echo "Status Open";

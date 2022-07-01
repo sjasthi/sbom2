@@ -25,6 +25,8 @@
      * http://localhost/sbom2/api/get_bomlines_pending.php?app_name=General%20ED&app_version=7.7.0.9
      * http://localhost/sbom2/api/get_bomlines_pending.php?app_name=General%20ED
      * http://localhost/sbom2/api/get_bomlines_pending.php?app_id=49823779
+     * http://localhost/sbom2/api/get_bomlines_pending.php?app_name=LTS JSON L Doesnt return anything because it is in approved status
+     * 
      * 
      */
 
