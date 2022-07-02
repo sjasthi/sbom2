@@ -37,14 +37,6 @@
             </div>
         </a>
 
-        <!--  -->
-        <a href="<?php echo checkSelectedLeftMenuLink( "BOMAPPSET", "bom_app_set.php" ); ?>">
-            <div <?php echo checkSelectedLeftMenu( "BOMAPPSET" ); ?>>
-                <?php include $assetsPath."svg/admin.svg"; ?>
-                <p>BOM App Set</p>
-            </div>
-        </a>
-
         <a href="<?php echo checkSelectedLeftMenuLink( "OUTOFSYNCBOMLIST", "bom_out_of_sync_bom_list.php" ); ?>">
             <div <?php echo checkSelectedLeftMenu( "OUTOFSYNCBOMLIST" ); ?>>
                 <?php include $assetsPath."svg/outOfSync.svg"; ?>

@@ -3,7 +3,6 @@
   $left_selected = "SBOMLIST";
   $tabTitle = "SBOM - BOM (List)";
   $bom_columns = array("app_id","app_name","app_version","app_status","is_eol");
-  $bom_app_set_cookie_name = "user_bom_app_set";
 
   include("bom_functions.php");
   include("../../../../index.php");

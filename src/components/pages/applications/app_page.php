@@ -1,7 +1,6 @@
 <?php
   $nav_selected = "APPLICATIONS";
   $tabTitle = "SBOM - APPLICATIONS";
-  $bom_app_set_cookie_name = "user_bom_app_set";
   $app_checkbox_name = "checkboxApps";
 
   include("../../../../index.php");
