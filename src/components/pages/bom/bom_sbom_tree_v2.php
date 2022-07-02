@@ -4,7 +4,6 @@
   $tabTitle = "SBOM - BOM (Tree V2)";
 
   include("../../../../index.php");
-  include "get_scope.php";
   include("bom_left_menu.php");
 
   //Get DB Credentials
@@ -76,7 +75,7 @@
   text-align: center;
   background-color: red;
   color: white;">'.$pref_err.'</p>';
-  
+
  ?>
 
 <style>
@@ -157,7 +156,7 @@
           $querylog = $sql_child."\r\n";
           error_log($querylog, 3, $logfile);
         }
-        
+
         if ($result_child->num_rows > 0) {
           // output data of child
           while($row_child = $result_child->fetch_assoc()) {
@@ -220,7 +219,7 @@
                   error_log($gchildlog, 3, $logfile);
                 }
                 */
-                
+
                 echo "<tr data-tt-id = '".$gc_id."' data-tt-parent-id='".$c_id."' >
                 <td class='text-capitalize'> <div class = 'btn ".$gc_class."'> <span class = 'cmp_name'>".$gcmp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
                 <td class = 'cmp_version'>".$gcmp_version."</td>
@@ -250,9 +249,9 @@
   function getAllBoms($db) {
     $sql_parent = "SELECT DISTINCT app_name as name,
       app_version as version, app_status as status, color as div_class,
-      CASE WHEN color = 'yellow' THEN 'child' 
-      ELSE 'parent' 
-      END AS class from sbom 
+      CASE WHEN color = 'yellow' THEN 'child'
+      ELSE 'parent'
+      END AS class from sbom
       GROUP BY name, version, status";
 
       $starttime = microtime(true);

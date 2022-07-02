@@ -6,7 +6,6 @@
   $bom_app_set_cookie_name = "user_bom_app_set";
 
   include("bom_functions.php");
-  include("get_scope.php");
   include("../../../../index.php");
   include("bom_left_menu.php");
 

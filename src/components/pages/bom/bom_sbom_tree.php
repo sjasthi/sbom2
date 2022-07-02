@@ -8,7 +8,6 @@
 
 
   include("../../../../index.php");
-  include("get_scope.php");
   include("bom_left_menu.php");
   include("bom_functions.php");
 

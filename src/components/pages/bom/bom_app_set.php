@@ -5,7 +5,6 @@
   $bom_app_set_cookie_name = "user_bom_app_set";
   $app_checkbox_name = "checkboxApps";
 
-  include("get_scope.php");
   include("../../../../index.php");
   include("bom_left_menu.php");
   include("bom_functions.php");

@@ -1,5 +1,29 @@
 <?php
 
+function getScope ($db){
+    $sql = "SELECT * FROM preferences WHERE name = 'SYSTEM_BOMS';";
+    $result = $db->query($sql);
+    $output = array('NULL');
+
+    // output data of each row
+    if ($result->num_rows > 0) {
+      $row = $result->fetch_assoc();
+      $prefString = $row["value"];
+
+      if(!empty(trim($prefString))){
+        $output = explode(",", $prefString);
+      }
+    }
+
+    foreach($output as &$value){
+      $value = "%$value%";
+    }
+
+    $result->close();
+
+    return $output;
+}
+
 function url_for($script_path) {
   // add the leading '/' if not present
   if($script_path[0] != '/') {
@@ -59,7 +83,7 @@ function display_errors($errors=array()) {
 }
 
 //------------------------------------------------------------------------
-//	Used to convert a user-created URL into an embeddable URL.  
+//	Used to convert a user-created URL into an embeddable URL.
 //	Example: The typical URL pasted in from users will look like this: https://www.youtube.com/watch?v=CgSs3OvTnUQ
 // 			 But this will not work in an embedded iFrame and so must be converted to: https://www.youtube.com/embed/CgSs3OvTnUQ
 //
@@ -70,14 +94,14 @@ function mangleurl($url, $urltype = "") {
 	$urlchunks = parse_url(trim($url));
 
 	if (DEBUG_MODE == 'ONxx') {
-		echo 'DEBUG MODE: ' . dirname(__FILE__).'.mangleurl()<br/>'; 
+		echo 'DEBUG MODE: ' . dirname(__FILE__).'.mangleurl()<br/>';
 		echo var_dump($url) . '<br/>';
 		echo var_dump($urlchunks) . '<br/>';
 		echo '<br/>';
 		}
-	
+
 	$baseurl = $url;		// in case we don't need to do anything, send back what we were given
-	
+
 	if (strpos(strtolower($urlchunks['host']), 'youtube') > 0) {
 	    $baseurl = $urlchunks['scheme']."://".$urlchunks['host']."/embed/";
 		if (strtolower(substr($urlchunks['query'], 0, 2)) == "v=") {
@@ -86,7 +110,7 @@ function mangleurl($url, $urltype = "") {
 		else {
 			$youtubeid = $urlchunks['query'];
 		}
-		
+
 		return $baseurl.$youtubeid;
 	}
 
@@ -95,7 +119,7 @@ function mangleurl($url, $urltype = "") {
 			$baseurl  = $urlchunks['scheme']."://".$urlchunks['host']."/thumbnail?";
 			$baseurl .= $urlchunks['query'].'&sz=w400-h400';
 		}
-		else {		
+		else {
 			$baseurl = 'https://docs.google.com/document/d/' . substr($urlchunks['query'], 3) . '/edit';
 		}
 	}
@@ -114,11 +138,11 @@ function handlemultipleitems($item) {
 	$urlarray = explode(';',$item);
 
 	// if (DEBUG_MODE == 'ON') {
-		// echo 'DEBUG MODE: ' . dirname(__FILE__).'.handlemultipleitems()<br/>'; 
+		// echo 'DEBUG MODE: ' . dirname(__FILE__).'.handlemultipleitems()<br/>';
 		// echo var_dump($urlarray);
 		// echo '<br/>';
 		// }
-			
+
 	return $urlarray;
 }
 
@@ -133,18 +157,18 @@ function countitems($item) {
 	$ctr = 0;
 
 	 // if (DEBUG_MODE == 'ON') {
-		// echo 'DEBUG MODE: ' . dirname(__FILE__).'.countitems()<br/>'; 
+		// echo 'DEBUG MODE: ' . dirname(__FILE__).'.countitems()<br/>';
 		// echo var_dump($urlarray);
 		// echo count($urlarray);
 		// echo '<br/>';
 		// }
-			
+
 	foreach ($urlarray as $subitem) {
 		if (trim($subitem) != '') {
 			$ctr += 1;
 		}
 	}
-		
+
 	return $ctr;
 }
 
@@ -164,8 +188,8 @@ function countitems($item) {
 	if (!isset($_SESSION['logged_in'])) {return false;}
 	if (!isset($_SESSION['role'])) {return false;}
     return ($_SESSION['logged_in'] == true and $_SESSION['role'] == 'SUPER-ADMIN');
-  }  
-  
+  }
+
   function is_admin() {
     // Having a admin_id in the session serves a dual-purpose:
     // - Its presence indicates the admin is logged in.
@@ -174,8 +198,8 @@ function countitems($item) {
 	if (!isset($_SESSION['role'])) {return false;}
 	if (is_super_admin() == true) {return true;}
     return ($_SESSION['logged_in'] == true and $_SESSION['role'] == 'ADMIN');
-  }  
-  
+  }
+
   function is_user() {
     // Having a admin_id in the session serves a dual-purpose:
     // - Its presence indicates the admin is logged in.
@@ -188,7 +212,7 @@ function countitems($item) {
 		return true;
 		}
     return ($_SESSION['logged_in'] == true and $_SESSION['role'] == 'USER');
-  }  
+  }
 
 
 function show_flash_message() {
