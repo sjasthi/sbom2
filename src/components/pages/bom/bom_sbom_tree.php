@@ -3,12 +3,10 @@
   $nav_selected = "BOM";
   $left_selected = "SBOMTREE";
   $tabTitle = "SBOM - BOM (Tree)";
-  $bom_app_set_cookie_name = "user_bom_app_set";
 
 
 
   include("../../../../index.php");
-  include("get_scope.php");
   include("bom_left_menu.php");
   include("bom_functions.php");
 
@@ -43,16 +41,7 @@
     }
   }
 
-  //Display error if user retrieves preferences w/o any cookies set
-  global $pref_err;
-  if(isset($_POST['getpref']) && !isset($_COOKIE[$bom_app_set_cookie_name])) {
-    $pref_err = 'You don\'t have BOMS saved. Select some in the <a href="bom_app_set.php">BOM App Set page</a>.';
-  }
-  echo '<p
-  style="font-size: 2.5rem;
-  text-align: center;
-  background-color: red;
-  color: white;">'.$pref_err.'</p>';
+  checkUserAppsetCookie();
  ?>
 
 <style>
