@@ -70,7 +70,7 @@
         /*----------------- GET PREFERENCE COOKIE -----------------*/
         //if user clicks "get all BOMS", retrieve all BOMS
         if(isset($_POST['getall'])) {
-          $def = "false";
+          //$def = "false";
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
           <?php
@@ -88,7 +88,6 @@
             $is_set_results = $is_set_sql->get_result();
             $is_set_rows = $is_set_results->fetch_all(MYSQLI_ASSOC);
             if ( 0 < count($is_set_rows)) {
-              echo "<h1>WOO HOO!</h1>";
               $system_dbom_sql = 'SELECT * FROM applications WHERE app_id in ( SELECT app_id FROM app_sets WHERE app_set_id in ( SELECT value FROM preferences WHERE name = "ACTIVE_APP_SET" ));';
               displayAllAppsList($db, $bom_columns, $system_dbom_sql);
             } else {
@@ -108,14 +107,14 @@
           displayAllAppsList($db, $bom_columns, $sql);
         } elseif(isset($_POST['getpref']) && !isset($_COOKIE[$bom_app_set_cookie_name])) {
           //if no preference cookie is set but user clicks "show my BOMS"
-          $def = "false";
+          //$def = "false";
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
           <?php
           getAppList($db);
         }//if no preference cookie is set show all BOMS
         else {
-          $def = "false";
+          //$def = "false";
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
           <?php

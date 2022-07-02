@@ -139,10 +139,24 @@
             }
             //If user clicks "get system BOMS", retrieve all default scope BOMS
             elseif(isset($_POST['getdef'])) {
+              $is_set_sql = $db->prepare('SELECT value FROM preferences WHERE name = "ACTIVE_APP_SET"');
+              if(!$is_set_sql->execute()) {
+                displayBomsAsTable($db);
+              } else {
+                $is_set_results = $is_set_sql->get_result();
+                $is_set_rows = $is_set_results->fetch_all(MYSQLI_ASSOC);
+                if ( 0 < count($is_set_rows)) {
+                  $system_dbom_sql = 'SELECT * FROM applications WHERE app_id in ( SELECT app_id FROM app_sets WHERE app_set_id in ( SELECT value FROM preferences WHERE name = "ACTIVE_APP_SET" ));';
+                  displayBomsAsTable($db, $system_dbom_sql);
+                } else {
+                  displayBomsAsTable($db);
+                }
+              }
+
               ?>
               <script>document.getElementById("scannerHeader").innerHTML = "BOM --> BOM Tree --> System BOMS";</script>
               <?php
-              displayBomsAsTable($db);
+              //displayBomsAsTable($db, $sql);
             } elseif(isset($_COOKIE[$bom_app_set_cookie_name]) && isset($_POST['getpref'])) {
               //default if preference cookie is set, display user BOM preferences
                 ?>
