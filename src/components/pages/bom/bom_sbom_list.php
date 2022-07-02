@@ -25,7 +25,7 @@
     displayAllAppsList($db, $bom_columns);
   }
 
-checkUserAppsetCookie();
+  checkUserAppsetCookie();
 ?>
 
     <div class="wrap">
@@ -45,16 +45,16 @@ checkUserAppsetCookie();
       <table id="info" cellpadding="0" cellspacing="0" border="0"
         class="datatable table table-striped table-bordered datatable-style table-hover"
         width="100%" style="width: 100px;">
-        <thead>
-          <tr id="table-first-row">
-            <?php
-              global $bom_columns;
-              foreach($bom_columns as $column){
-                echo '<th>'.$column.'</th>';
-              }
-             ?>
-          </tr>
-        </thead>
+      <thead>
+        <tr id="table-first-row">
+          <?php
+            global $bom_columns;
+            foreach($bom_columns as $column){
+              echo '<th>'.$column.'</th>';
+            }
+           ?>
+        </tr>
+      </thead>
       <tbody>
       <?php
         /*----------------- GET PREFERENCE COOKIE -----------------*/
@@ -79,7 +79,8 @@ checkUserAppsetCookie();
           <?php
           global $bom_columns;
           $sql = '
-            SELECT * FROM applications WHERE app_id IN ('.get_user_appset_cookie_string().')
+            SELECT * FROM applications
+            WHERE app_id IN ('.get_user_appset_cookie_string().')
           ';
           displayAllAppsList($db, $bom_columns, $sql);
 

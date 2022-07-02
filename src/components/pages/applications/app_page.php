@@ -1,13 +1,14 @@
 <?php
-  $nav_selected = "APPLICATIONS";
-  $tabTitle = "SBOM - APPLICATIONS";
-  $app_checkbox_name = "checkboxApps";
 
-  include("../../../../index.php");
-  include("app_functions.php");
+$nav_selected = "APPLICATIONS";
+$tabTitle = "SBOM - APPLICATIONS";
+$app_checkbox_name = "checkboxApps";
 
-  global $db;
-  $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
+include("../../../../index.php");
+include("app_functions.php");
+
+global $db;
+$DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
 
 ?>
 
@@ -26,31 +27,37 @@
         </thead>
         <tbody>
           <?php
-            showAppsAsChecklist($db)
+          showAppsAsChecklist($db)
           ?>
         </tbody>
       </table>
     </fieldset>
-    <button type="submit" name="submit">Set Apps</button>
+    <button type="submit" name="user_submit">Set Apps</button>
     <?php
-      if($_SESSION['admin']){
-        echo '<button type="submit" name="system_submit">Set System Apps</button>';
-      }
-     ?>
+    if($_SESSION['admin']){
+      echo '<button type="submit" name="system_submit">Set System Apps</button>';
+    }
+    ?>
   </form>
   <?php
-    if(isset($_POST['submit'])){
-      isset($_POST[$app_checkbox_name]) ? $apps = $_POST[$app_checkbox_name] : $apps = [];
-      setUserAppSetCookies($apps);
+  isset($_POST[$app_checkbox_name]) ? $apps = $_POST[$app_checkbox_name] : $apps = [];
+
+  if(isset($_POST['user_submit'])){
+    setUserAppSetCookies($apps);
+  }
+  if($_SESSION['admin'] && isset($_POST['system_submit'])){
+    if(setSystemAppSet($db, implode(',', $apps))){
+      echo '<p style="background: green; color: white; font-size: 2rem;">Set system app set.</p>';
     }
-   ?>
+  }
+  ?>
   <script type="text/javascript">
-    $('#check-all').click(function(){
-      if($('#check-all')[0].checked){
-        $('.appCheckbox').prop('checked', true);
-      } else {
-        $('.appCheckbox').prop('checked', false);
-      }
-    });
+  $('#check-all').click(function(){
+    if($('#check-all')[0].checked){
+      $('.appCheckbox').prop('checked', true);
+    } else {
+      $('.appCheckbox').prop('checked', false);
+    }
+  });
   </script>
 </div>

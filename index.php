@@ -4,7 +4,7 @@
   require_once( 'src/db/connect.php' );
   // variables
   include "src/components/_shared/pathVariables.php";
-  // cookie variables
+  // cookie functions
   include("src/components/_shared/cookie_functions.php");
   // custom functions
   include "src/components/_shared/functions.php";
