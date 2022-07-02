@@ -41,16 +41,7 @@
     }
   }
 
-  //Display error if user retrieves preferences w/o any cookies set
-  global $pref_err;
-  if(isset($_POST['getpref']) && !isset($_COOKIE[$bom_app_set_cookie_name])) {
-    $pref_err = 'You don\'t have BOMS saved. Select some in the <a href="../applications/app_page.php">BOM App Set page</a>.';
-  }
-  echo '<p
-  style="font-size: 2.5rem;
-  text-align: center;
-  background-color: red;
-  color: white;">'.$pref_err.'</p>';
+  checkUserAppsetCookie();
  ?>
 
 <style>

@@ -25,15 +25,7 @@
     displayAllAppsList($db, $bom_columns);
   }
 
-  //Display error if user retrieves preferences w/o any cookies set
-  if(isset($_POST['getpref']) && !isset($_COOKIE[$bom_app_set_cookie_name])) {
-    $pref_err = 'You don\'t have BOMS saved. Select some in the <a href="bom_app_set.php">BOM App Set page</a>';
-  }
-  echo '<p
-  style="font-size: 2.5rem;
-  text-align: center;
-  background-color: red;
-  color: white;">'.$pref_err.'</p>'
+checkUserAppsetCookie();
 ?>
 
     <div class="wrap">
@@ -73,22 +65,21 @@
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
           <?php
           getAppList($db);
-        //If user clicks "show system BOMS", display BOM list filtered by default system scope
         } elseif (isset($_POST['getdef'])) {
+          //If user clicks "show system BOMS", display BOM list filtered by default system scope
           $def = "true";
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> System BOMS";</script>
           <?php
           getAppList($db);
-        } //default if preference cookie is set, display user BOM preferences
-        elseif(isset($_COOKIE[$bom_app_set_cookie_name]) && isset($_POST['getpref'])) {
+        } elseif (isset($_COOKIE[$bom_app_set_cookie_name]) && isset($_POST['getpref'])) {
+          //default if preference cookie is set, display user BOM preferences
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> My BOMS";</script>
           <?php
           global $bom_columns;
-          $prep_cookie_value = rtrim($_COOKIE[$bom_app_set_cookie_name], ',');
           $sql = '
-            SELECT * FROM applications WHERE app_id IN ('.$prep_cookie_value.')
+            SELECT * FROM applications WHERE app_id IN ('.get_user_appset_cookie_string().')
           ';
           displayAllAppsList($db, $bom_columns, $sql);
 

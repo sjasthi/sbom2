@@ -1,27 +1,5 @@
 <?php
 
-$sql_applications_query = "
-  SELECT * FROM applications
-";
-
-function showAppsAsChecklist($db){
-  global $app_checkbox_name;
-  global $sql_applications_query;
-
-  $option_id = 1;
-  $query_applications = $db->query($sql_applications_query);
-  if($query_applications->num_rows > 0){
-    while($application = $query_applications->fetch_assoc()){
-      echo '<tr>';
-      echo '<td><input class="appCheckbox" name="'.$app_checkbox_name.'[]" id="checkbox'.$option_id.'" value="'.$application["app_id"].'" style="width:20px;height:20px;" type="checkbox"></td>';
-      echo '<td>'.$application["app_name"].'</td>';
-      echo '<td>'.$application["app_id"].'</td>';
-      echo '</tr>';
-      $option_id++;
-    }
-  }
-}
-
 // Function to show the BOM components and their dependencies
 function displayComponents($db, $parent_component_query, $parent_table_id) {
   $parent_c = 1;
@@ -99,6 +77,19 @@ function displayAllAppsList($db, $app_columns, $app_query = ''){
       echo '</tr>';
     }
   }
+}
 
+//Display error if user retrieves preferences w/o any cookies set
+function checkUserAppsetCookie(){
+  global $pref_err, $bom_app_set_cookie_name;
+  if(isset($_POST['getpref']) && !isset($_COOKIE[$bom_app_set_cookie_name])) {
+    global $appPagePath;
+    $pref_err = 'You don\'t have BOMS saved. Select some in the <a href="'.$appPagePath.'">BOM Appset page</a>';
+  }
+  echo '<p
+  style="font-size: 2.5rem;
+  text-align: center;
+  background-color: red;
+  color: white;">'.$pref_err.'</p>';
 }
 ?>

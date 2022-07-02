@@ -4,30 +4,11 @@
   $app_checkbox_name = "checkboxApps";
 
   include("../../../../index.php");
-  include("../bom/bom_functions.php");
+  include("app_functions.php");
 
   global $db;
   $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
 
-  function userFormSubmit(){
-    if(isset($_POST['submit'])){
-      return true;
-    }
-    return false;
-  }
-
-  function setUserAppSetCookies($apps){
-    global $bom_app_set_cookie_name;
-    $app_string = '';
-    if(isset($apps) && count($apps) != 0){
-      foreach($apps as $checked_item) {
-        // echo $checked_item;
-        $app_string = $app_string . $checked_item.',';
-      }
-    }
-    setcookie($bom_app_set_cookie_name, $app_string, 2147483647, "/");
-    echo $app_string;
-  }
 ?>
 
 <div class="wrap">
@@ -44,14 +25,21 @@
           </tr>
         </thead>
         <tbody>
-          <?php showAppsAsChecklist($db) ?>
+          <?php
+            showAppsAsChecklist($db)
+          ?>
         </tbody>
       </table>
     </fieldset>
     <button type="submit" name="submit">Set Apps</button>
+    <?php
+      if($_SESSION['admin']){
+        echo '<button type="submit" name="system_submit">Set System Apps</button>';
+      }
+     ?>
   </form>
   <?php
-    if(userFormSubmit()){
+    if(isset($_POST['submit'])){
       isset($_POST[$app_checkbox_name]) ? $apps = $_POST[$app_checkbox_name] : $apps = [];
       setUserAppSetCookies($apps);
     }

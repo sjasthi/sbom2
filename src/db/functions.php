@@ -1,5 +1,9 @@
 <?php
 
+$sql_applications_query = "
+  SELECT * FROM applications
+";
+
 function getScope ($db){
     $sql = "SELECT * FROM preferences WHERE name = 'SYSTEM_BOMS';";
     $result = $db->query($sql);

@@ -5,7 +5,7 @@
   // variables
   include "src/components/_shared/pathVariables.php";
   // cookie variables
-  include("src/components/_shared/cookie_variables.php");
+  include("src/components/_shared/cookie_functions.php");
   // custom functions
   include "src/components/_shared/functions.php";
   // scripts
