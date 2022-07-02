@@ -1,7 +1,6 @@
 <?php
-  $nav_selected = "BOM";
-  $left_selected = "BOMAPPSET";
-  $tabTitle = "SBOM - BOM (APPSET)";
+  $nav_selected = "APPLICATIONS";
+  $tabTitle = "SBOM - APPLICATIONS";
   $bom_app_set_cookie_name = "user_bom_app_set";
   $app_checkbox_name = "checkboxApps";
 
@@ -33,8 +32,8 @@
 ?>
 
 <div class="wrap">
-  <h3>BOM --> APP Sets.</h3>
-  <form class="appSetForm" action="bom_app_set.php" method="POST">
+  <h3>Applications</h3>
+  <form class="appSetForm" action="app_page.php" method="POST">
     <fieldset>
       <legend>Select BOM Apps:</legend>
       <table class="datatable table">

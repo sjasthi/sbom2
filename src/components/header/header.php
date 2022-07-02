@@ -32,9 +32,9 @@
                         '<h2> RELEASES </h2>
                     </li>
                 </a>';
-            
+
             echo
-                '<a href="'.checkSelectedLink( "APPLICATIONS", $componentsPath.'pages/applications/applications_page.php' ).'">
+                '<a href="'.checkSelectedLink( "APPLICATIONS", $componentsPath.'pages/applications/app_page.php' ).'">
                     <li class="'.checkSelectedTab( "APPLICATIONS" ).'">';
             include $assetsPath.'svg/applications.svg';
             echo
@@ -42,7 +42,7 @@
                     </li>
                 </a>';
 
-            echo 
+            echo
                 '<a href="'.checkSelectedLink( "BOM", $componentsPath.'pages/bom/bom_sbom_list.php' ).'">
                     <li class="'.checkSelectedTab( "BOM" ).'">';
             include $assetsPath.'svg/bom.svg';
@@ -59,7 +59,7 @@
                         '<h2> OWNERSHIP </h2>
                     </li>
                 </a>';
-            
+
             echo
                 '<a href="'.checkSelectedLink( "SETUP", $componentsPath.'pages/setup/setup_system_preference.php' ).'">
                     <li class="'.checkSelectedTab( "SETUP" ).'">';
@@ -99,7 +99,7 @@
             }
 
             if( isset( $_SESSION['login_user'] ) ) { // logout will never have a selected state.
-                echo 
+                echo
                     '<a href="'.$componentsPath.'pages/login/logout.php">
                         <li>';
                 include $assetsPath.'svg/logout.svg';
