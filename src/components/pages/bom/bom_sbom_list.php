@@ -11,8 +11,6 @@
   $def = "false";
   $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
   $scopeArray = array();
-
-  require_once('calculate_color.php');
 ?>
 
 

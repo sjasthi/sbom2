@@ -173,7 +173,7 @@ function drawBarChart(queryArray){
     </div>
 <?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
-if ($_COOKIE['app_status_cookie']!= null) {
+if (isset($_COOKIE['app_status_cookie'])) {
     $appStatusSelection = $_COOKIE['app_status_cookie'];
     //$sql = "SELECT DISTINCT app_name, app_version, app_status from sbom union SELECT DISTINCT cmp_name, cmp_version, cmp_status from sbom;";
     $sql = "SELECT DISTINCT app_name, app_version, app_status from sbom;";
@@ -221,7 +221,7 @@ if ($_COOKIE['app_status_cookie']!= null) {
 
 
                 </table>";
-    }elseif($_COOKIE['cmp_status_cookie']!= null) {
+    }elseif(isset($_COOKIE['cmp_status_cookie'])) {
         $cmpStatusSelection = $_COOKIE['cmp_status_cookie'];
         $sql = "SELECT DISTINCT  cmp_name, cmp_version, cmp_status, cmp_type from sbom ;";
         setcookie("cmp_status_cookie", "", time()-3600);
@@ -271,7 +271,7 @@ if ($_COOKIE['app_status_cookie']!= null) {
             </tfoot>
 
                     </table>";
-}elseif ($_COOKIE['request_status_cookie']!= null) {
+}elseif (isset($_COOKIE['request_status_cookie'])) {
     $requestType = $_COOKIE['request_status_cookie'];
     $sql = "SELECT DISTINCT request_status, request_step, request_id, request_date, app_name, app_version, cmp_name, cmp_version from sbom ;";
     setcookie("request_status_cookie", "", time()-3600);
@@ -331,7 +331,7 @@ if ($_COOKIE['app_status_cookie']!= null) {
         </tfoot>
 
                 </table>";
-}elseif ($_COOKIE['request_step_cookie']!= null) {
+}elseif (isset($_COOKIE['request_step_cookie'])) {
     $requestStep = $_COOKIE['request_step_cookie'];
     $sql = "SELECT DISTINCT request_status, request_step, request_id, request_date, app_name, app_version, cmp_name, cmp_version from sbom ;";
     setcookie("request_step_cookie", "", time()-3600);
