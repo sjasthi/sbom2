@@ -65,20 +65,10 @@ function showAppsetsAsTable($db){
     $appset_id = NULL;
     $appset_list = [];
     while($app_from_appset = $query_appsets_result->fetch_assoc()){
-
       if($appset_id != $app_from_appset['app_set_id']){
-        if($appset_id != NULL){
-          ?>
-          <script type="text/javascript">
-          let radio_btn = document.getElementById("<?php echo $appset_id ?>");
-          radio_btn.value = <?php echo '"'.implode(',', $appset_list).'"'; ?>;
-          </script>
-          <?php
-          $appset_list = [];
-        }
         echo '<tr>';
         $appset_id = $app_from_appset['app_set_id'];
-        echo '<td><input id="'.$app_from_appset['app_set_id'].'" type="radio" name="appset_radio"></td>';
+        echo '<td><input id="'.$app_from_appset['app_set_id'].'" type="radio" name="appset_radio" value="'.$app_from_appset['app_set_id'].'"></td>';
         echo'<td>'.$app_from_appset['app_set_name'].'</td>';
       } else {
         echo '<td></td>';
@@ -88,12 +78,6 @@ function showAppsetsAsTable($db){
       echo '</tr>';
       $appset_list[] = $app_from_appset['app_id'];
     }
-    ?>
-    <script type="text/javascript">
-    radio_btn = document.getElementById("<?php echo $appset_id ?>");
-    radio_btn.value = <?php echo '"'.implode(',', $appset_list).'"'; ?>;
-    </script>
-    <?php
 }
 
 ?>

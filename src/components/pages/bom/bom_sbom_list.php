@@ -31,13 +31,13 @@
 
       <!-- Form to retrieve user preference -->
       <form id='getpref-form' name='getpref-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getpref' value='submit'>Show My BOMS</button>
+        <button type='submit' name='show_user_boms' value='submit'>Show My BOMS</button>
       </form>
       <form id='getdef-form' name='getdef-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getdef' value='submit'>Show System Boms</button>
+        <button type='submit' name='show_system_boms' value='submit'>Show System Boms</button>
       </form>
       <form id='getall-form' name='getall-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getall' value='submit'>Show All BOMS</button>
+        <button type='submit' name='show_all_boms' value='submit'>Show All BOMS</button>
       </form>
 
       <table id="info" cellpadding="0" cellspacing="0" border="0"
@@ -57,13 +57,13 @@
       <?php
         /*----------------- GET PREFERENCE COOKIE -----------------*/
         //if user clicks "get all BOMS", retrieve all BOMS
-        if(isset($_POST['getall'])) {
+        if(isset($_POST['show_all_boms'])) {
           //$def = "false";
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
           <?php
           getAppList($db);
-        } elseif (isset($_POST['getdef'])) {
+        } elseif (isset($_POST['show_system_boms'])) {
           //$def = "true";
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> System BOMS";</script>
@@ -81,7 +81,7 @@
               getAppList($db);
             }
           }
-        } elseif(isset($_COOKIE[$bom_app_set_cookie_name]) && isset($_POST['getpref'])) {
+        } elseif(isset($_COOKIE[$bom_app_set_cookie_name]) && isset($_POST['show_user_boms'])) {
           //default if preference cookie is set, display user BOM preferences
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> My BOMS";</script>
@@ -92,7 +92,7 @@
             WHERE app_id IN ('.get_user_appset_cookie_string().')
           ';
           displayAllAppsList($db, $bom_columns, $sql);
-        } elseif(isset($_POST['getpref']) && !isset($_COOKIE[$bom_app_set_cookie_name])) {
+        } elseif(isset($_POST['show_user_boms']) && !isset($_COOKIE[$bom_app_set_cookie_name])) {
           //if no preference cookie is set but user clicks "show my BOMS"
           //$def = "false";
           ?>

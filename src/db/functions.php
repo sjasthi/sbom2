@@ -4,7 +4,7 @@ $sql_applications_query = "
   SELECT * FROM applications
 ";
 
-$system_appset_pref_name = "SYSTEM_BOMS";
+$system_appset_pref_name = "ACTIVE_APP_SET";
 
 function getScope ($db){
     $sql = "SELECT * FROM preferences WHERE name = 'SYSTEM_BOMS';";
