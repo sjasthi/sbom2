@@ -19,7 +19,7 @@ $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
   <form class="appSetForm" action="app_page.php" method="POST">
     <button type="submit" name="user_submit">Set My Apps</button>
     <?php
-    if($_SESSION['admin']){
+    if(isset($_SESSION['admin'])){
       echo '<button type="submit" name="system_submit">Set System Apps</button>';
       echo '<button type="submit" name="appset_submit">Create Appset</button>';
       echo '<input type="text" name="appset_name" placeholder="appset name">';
@@ -29,7 +29,7 @@ $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
     if(isset($_POST['user_submit'])){
       setUserAppSetCookies($apps);
     }
-    if($_SESSION['admin']){
+    if(isset($_SESSION['admin'])){
       if(isset($_POST['system_submit'])){
         if(setSystemAppSet($db, implode(',', $apps))){
           echo '<p style="background: green; color: white; font-size: 2rem;">Set system app set.</p>';

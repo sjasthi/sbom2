@@ -4,7 +4,7 @@ $sql_applications_query = "
   SELECT * FROM applications
 ";
 
-$system_appset_pref_name = "SYSTEM_BOMS";
+$system_appset_pref_name = "ACTIVE_APP_SET";
 
 function getScope ($db){
     $sql = "SELECT * FROM preferences WHERE name = 'SYSTEM_BOMS';";
@@ -30,7 +30,7 @@ function getScope ($db){
     return $output;
 }
 
-function setSystemAppSet($db, $app_string){
+function setSystemAppSet($db, $app_set_id){
   global $system_appset_pref_name;
   $sql_update_system_appset = '
     UPDATE preferences
@@ -38,8 +38,17 @@ function setSystemAppSet($db, $app_string){
     WHERE name = "'.$system_appset_pref_name.'";
   ';
   $query_update_appsets = $db->prepare($sql_update_system_appset);
-  $query_update_appsets->bind_param('s', $app_string);
+  $query_update_appsets->bind_param('s', $app_set_id);
   return $query_update_appsets->execute();
+}
+
+function deleteSystemAppSet($db, $app_set_id){
+  global $system_appset_pref_name;
+  $sql_delete_system_appset = '
+    DELETE FROM app_sets
+    WHERE app_set_id = '.$app_set_id.';
+  ';
+  return $db->query($sql_delete_system_appset);
 }
 
 function url_for($script_path) {
