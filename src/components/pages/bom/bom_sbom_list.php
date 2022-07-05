@@ -3,18 +3,14 @@
   $left_selected = "SBOMLIST";
   $tabTitle = "SBOM - BOM (List)";
   $bom_columns = array("app_id","app_name","app_version","app_status","is_eol");
-  $bom_app_set_cookie_name = "user_bom_app_set";
 
   include("bom_functions.php");
-  include("get_scope.php");
   include("../../../../index.php");
   include("bom_left_menu.php");
 
   $def = "false";
   $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
   $scopeArray = array();
-
-  require_once('calculate_color.php');
 ?>
 
 
@@ -27,15 +23,7 @@
     displayAllAppsList($db, $bom_columns);
   }
 
-  //Display error if user retrieves preferences w/o any cookies set
-  if(isset($_POST['getpref']) && !isset($_COOKIE[$bom_app_set_cookie_name])) {
-    $pref_err = 'You don\'t have BOMS saved. Select some in the <a href="bom_app_set.php">BOM App Set page</a>';
-  }
-  echo '<p
-  style="font-size: 2.5rem;
-  text-align: center;
-  background-color: red;
-  color: white;">'.$pref_err.'</p>'
+  checkUserAppsetCookie();
 ?>
 
     <div class="wrap">
@@ -43,67 +31,77 @@
 
       <!-- Form to retrieve user preference -->
       <form id='getpref-form' name='getpref-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getpref' value='submit'>Show My BOMS</button>
+        <button type='submit' name='show_user_boms' value='submit'>Show My BOMS</button>
       </form>
       <form id='getdef-form' name='getdef-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getdef' value='submit'>Show System Boms</button>
+        <button type='submit' name='show_system_boms' value='submit'>Show System Boms</button>
       </form>
       <form id='getall-form' name='getall-form' method='post' action='' style='display: inline;'>
-        <button type='submit' name='getall' value='submit'>Show All BOMS</button>
+        <button type='submit' name='show_all_boms' value='submit'>Show All BOMS</button>
       </form>
 
       <table id="info" cellpadding="0" cellspacing="0" border="0"
         class="datatable table table-striped table-bordered datatable-style table-hover"
         width="100%" style="width: 100px;">
-        <thead>
-          <tr id="table-first-row">
-            <?php
-              global $bom_columns;
-              foreach($bom_columns as $column){
-                echo '<th>'.$column.'</th>';
-              }
-             ?>
-          </tr>
-        </thead>
+      <thead>
+        <tr id="table-first-row">
+          <?php
+            global $bom_columns;
+            foreach($bom_columns as $column){
+              echo '<th>'.$column.'</th>';
+            }
+           ?>
+        </tr>
+      </thead>
       <tbody>
       <?php
         /*----------------- GET PREFERENCE COOKIE -----------------*/
         //if user clicks "get all BOMS", retrieve all BOMS
-        if(isset($_POST['getall'])) {
-          $def = "false";
+        if(isset($_POST['show_all_boms'])) {
+          //$def = "false";
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
           <?php
           getAppList($db);
-        //If user clicks "show system BOMS", display BOM list filtered by default system scope
-        } elseif (isset($_POST['getdef'])) {
-          $def = "true";
+        } elseif (isset($_POST['show_system_boms'])) {
+          //$def = "true";
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> System BOMS";</script>
           <?php
-          getAppList($db);
-        } //default if preference cookie is set, display user BOM preferences
-        elseif(isset($_COOKIE[$bom_app_set_cookie_name]) && isset($_POST['getpref'])) {
+          $is_set_sql = $db->prepare('SELECT value FROM preferences WHERE name = "ACTIVE_APP_SET"');
+          if(!$is_set_sql->execute()) {
+            getAppList($db);
+          } else {
+            $is_set_results = $is_set_sql->get_result();
+            $is_set_rows = $is_set_results->fetch_all(MYSQLI_ASSOC);
+            if ( 0 < count($is_set_rows)) {
+              $system_dbom_sql = 'SELECT * FROM applications WHERE app_id in ( SELECT app_id FROM app_sets WHERE app_set_id in ( SELECT value FROM preferences WHERE name = "ACTIVE_APP_SET" ));';
+              displayAllAppsList($db, $bom_columns, $system_dbom_sql);
+            } else {
+              getAppList($db);
+            }
+          }
+        } elseif(isset($_COOKIE[$bom_app_set_cookie_name]) && isset($_POST['show_user_boms'])) {
+          //default if preference cookie is set, display user BOM preferences
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> My BOMS";</script>
           <?php
           global $bom_columns;
-          $prep_cookie_value = rtrim($_COOKIE[$bom_app_set_cookie_name], ',');
           $sql = '
-            SELECT * FROM applications WHERE app_id IN ('.$prep_cookie_value.')
+            SELECT * FROM applications
+            WHERE app_id IN ('.get_user_appset_cookie_string().')
           ';
           displayAllAppsList($db, $bom_columns, $sql);
-
-        }//if no preference cookie is set but user clicks "show my BOMS"
-        elseif(isset($_POST['getpref']) && !isset($_COOKIE[$bom_app_set_cookie_name])) {
-          $def = "false";
+        } elseif(isset($_POST['show_user_boms']) && !isset($_COOKIE[$bom_app_set_cookie_name])) {
+          //if no preference cookie is set but user clicks "show my BOMS"
+          //$def = "false";
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
           <?php
           getAppList($db);
         }//if no preference cookie is set show all BOMS
         else {
-          $def = "false";
+          //$def = "false";
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> All BOMS";</script>
           <?php
