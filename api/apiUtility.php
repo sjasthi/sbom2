@@ -10,6 +10,21 @@
     class apiUtility
     {
 
+        //Begin get_yellow_unique_names
+        /**
+         * @param $app_id
+         *
+         * @return bool|mysqli_result
+         */
+        
+         public function get_yellow_unique_names(){
+            global $db;
+            $sql = "SELECT DISTINCT app_name FROM apps_components";
+            return $db->query($sql);
+         }
+
+
+
         // Begin get_bomlines_status functions
         /**
          * @param $app_id
