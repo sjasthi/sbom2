@@ -1,22 +1,13 @@
 <?php
     /**
-     * Purpose: API module get_owner.php provides information about the requester,
-     *          and application owner given either application or component information.
-     *
-     * Input:   supported input parameters are 'component_name, 'component_id', 
-     *          'component version', 'app_id', 'and app_name'. Both the
-     *          parameters can be used as a single input or passed as a combined unit.
-     *          component_id = digits only.
-     *          component_name = Alpha,digits, space and certain special characters.
-     *          component_version = digits, space and certain special characters
-     * 
-     *          app_id = digits only.
-     *          app_name = Alpha,digits, space and certain special characters.
+     * Purpose: API module get_requester_count.php provides information about the number
+     * of applications being requested by each requester in the database(specific to apps_components)
      *
      *
-     * SAMPLE URL INPUTS
-     * Component input
-     * http://localhost/sbom2/api/get_owner.php?component_id=755954
+     *
+     * SAMPLE INPUT
+     * Retrieves all applications requested by each requester in apps_components
+     * http://localhost/sbom2/api/get_requester_count.php
      * Output:  The module outputs data as a json object. The json object also includes HTTP
      *          response code and count of rows parameters passed and data name value pairs.
      *
@@ -30,6 +21,37 @@
      */
     require("./apiUtility.php");
 
+    $apiFunctions = new apiUtility();
+    $processor = $apiFunctions->get_requester_count();
+    $data = [];
+    $count = 0;
+    if($processor!==false && $processor->num_rows > 0) {
+        $count = $processor->num_rows;
+        while($row  = $processor->fetch_assoc()){
+            $data[] = $row;
+        }
+    } else{
+        invalidResponse("Empty Database");
+    }
+    $res = [];
+    response(200, $count, $component_id, $data);
+
+    function invalidResponse($message) {
+        response(400, $message, NULL, NULL);
+    }
+
+    function response($responseCode, $message, $string, $data) {
+        // Locally cache results for two hours
+        header('Cache-Control: max-age=7200');
+        // JSON Header
+        header('Content-type:application/json;charset=utf-8');
+        http_response_code($responseCode);
+        $response = array("response_code" => $responseCode, "Records" => $message, "Parameter Value" => $string, "data" => $data);
+        $json = json_encode($response, JSON_PRETTY_PRINT);
+        echo $json;
+    }
+
+    /*
     if(isset($_GET['component_id'])) {
         $component_id = $_GET['component_id'];
 
@@ -56,19 +78,4 @@
     } else{
         invalidResponse("Invalid Request");
     }
-
-
-    function invalidResponse($message) {
-        response(400, $message, NULL, NULL);
-    }
-
-    function response($responseCode, $message, $string, $data) {
-        // Locally cache results for two hours
-        header('Cache-Control: max-age=7200');
-        // JSON Header
-        header('Content-type:application/json;charset=utf-8');
-        http_response_code($responseCode);
-        $response = array("response_code" => $responseCode, "Records" => $message, "Parameter Value" => $string, "data" => $data);
-        $json = json_encode($response, JSON_PRETTY_PRINT);
-        echo $json;
-    }
+    */
