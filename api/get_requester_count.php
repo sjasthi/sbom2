@@ -12,8 +12,8 @@
      *          response code and count of rows parameters passed and data name value pairs.
      *
      * Error Conditions: response code of http 400 is generated when system detects an error condition.
-     *                   component_id, component_name, component_version can generate "Invalid request"
-     *                   or "Invalid or empty request" for unsupported characters.
+     *                   No data in the apps_components table n can generate "Empty Database"
+     *                   message.
      *
      * @author Shahid Iqbal, Isaac Hentges, Nathan Lantaigne-Goetsch, Abdulsalam Geddi
      *
