@@ -385,7 +385,7 @@
         // Begin get_app_component_counts function
         /**
          * get_app_component_counts provides FOS count, 
-         * Commercial count, Internal count and Total count.
+         * Commercial count, Internal count and Total count
          * 
          * @return bool|mysqli_result
          */
