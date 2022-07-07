@@ -382,4 +382,44 @@
             return $db->query($sql);
         }
 
+        // Begin get_app_component_counts function
+        /**
+         * get_app_component_counts provides FOS count, 
+         * Commercial count, Internal count and Total count.
+         * 
+         * @return bool|mysqli_result
+         */
+
+        public function get_app_component_counts() {
+            global $db;
+            $sql = "SELECT `app_id`, `app_name`, `app_version`, 
+                        COUNT(IF (cmpt_type = 'Open Source', cmpt_id, null)) AS `Open Source Component Count`, 
+                        COUNT(IF (cmpt_type = 'Commercial', cmpt_id, null)) AS `Commercial Component Count`, 
+                        COUNT(IF (cmpt_type = 'Internal', cmpt_id, null)) AS `Internal Component Count`, 
+                        COUNT(cmpt_id) TOTAL_COUNT 
+                    FROM `apps_components` 
+                    GROUP BY app_name";
+            return $db->query($sql);
+        }
+
+
+        // Begin get_green_unique_names function
+        /**
+         * get_green_unique_names returns unique green component names.
+         *
+         * @return bool|mysqli_result
+         */
+
+        public function get_green_unique_names() {
+            global $db;
+            $sql = "SELECT `app_id`, `app_name`, `app_version`, 
+                        COUNT(DISTINCT cmpt_name) `Unique Green Components`, 
+                        COUNT(cmpt_name) `NOT Unique Green Components`,
+                        GROUP_CONCAT(DISTINCT cmpt_name) `Names of Unique Green Components`
+                    FROM `apps_components` GROUP BY app_name";
+            return $db->query($sql);
+        }
+
+
+
     }
