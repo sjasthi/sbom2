@@ -502,4 +502,11 @@
             return $db->query($sql);
         }
 
+        public function get_requester_pending_tasks() {
+            global $db;
+            $sql = "SELECT `red_app_id`, `cmpt_id`, `cmpt_name`, `cmpt_version`, `app_id`, `app_name`,`app_version`, `status` 
+                                                                    FROM `apps_components` WHERE status NOT LIKE 'Approved';";
+            return $db->query($sql);
+        }
+
     }
