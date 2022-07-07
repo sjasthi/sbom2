@@ -359,6 +359,19 @@
             return $db->query($sql);
         }
 
+        /**
+        Get the amount of applications(is not distinct/unique) requested by each requester
+         *
+         * @return bool|mysqli_result
+         */
+        public function get_requester_count() {
+            global $db;
+            $sql = "SELECT concat(requester, ' - ',COUNT(*)) 'Requester App Request Count'
+            FROM apps_components
+            GROUP BY requester";
+            return $db->query($sql);
+        }
+
         // Begin get_bom_list functions
         /**
          * get_bom_list returns rows based on red_app_id parameter.
