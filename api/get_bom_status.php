@@ -1,7 +1,7 @@
 <?php
 
  /**
-     * Purpose: API module get_bomlines_pending.php provides information about the application id,
+     * Purpose: API module get_bomlines_status.php provides information about the application id,
      *          application name, and application version where the status is not approved 
      *
      * Input:   supported input parameters are 'app_name, 'app_id' & 'app_version'. Both the
@@ -22,11 +22,12 @@
      * The apiUtility class is for various helper functions for the php pages.
      * 
      * SAMLE QUERIES
-     * http://localhost/sbom2/api/get_bomlines_pending.php?app_name=General%20ED&app_version=7.7.0.9
-     * http://localhost/sbom2/api/get_bomlines_pending.php?app_name=General%20ED
-     * http://localhost/sbom2/api/get_bomlines_pending.php?app_id=49823779
-     * http://localhost/sbom2/api/get_bomlines_pending.php?app_name=LTS JSON L          Doesnt return anything because it is in approved status
-     * 
+     * http://localhost/sbom2/api/get_bom_status.php?app_name=General%20ED&app_version=7.7.0.9   Returns Open Status
+     * http://localhost/sbom2/api/get_bom_status.php?app_name=LTS JSON L&app_version=9.9 Returns Approved Status
+     * http://localhost/sbom2/api/get_bom_status.php?app_name=LTS JSON L    Returns Approved Status
+     * http://localhost/sbom2/api/get_bom_status.php?app_name=General%20ED  Returns Open Status
+     * http://localhost/sbom2/api/get_bom_status.php?app_id=77956767   Returns Approved Status
+     * http://localhost/sbom2/api/get_bom_status.php?app_id=49823779   Returns Open Status
      * 
      */
 
@@ -39,15 +40,9 @@
     if((!empty($app_name) && preg_match('/^[\d A-Za-z +:-]*$/', $app_name)) &&
         (!empty($app_version) && preg_match('/^[\d.,_ ]*$/', $app_version))) {
         $apiFunctions = new apiUtility();
-        $processor = $apiFunctions->get_bomlines_pending_name_version($app_name, $app_version);
+        $processor = $apiFunctions->get_bom_status_name_version($app_name, $app_version);
         $data = [];
         $count = 0;
-        if($processor->num_rows > 0) {
-            $count = $processor->num_rows;
-            while($row  = $processor->fetch_assoc()){
-                $data[] = $row;
-            }
-        }
         response(200, $count, $app_name . ", " . $app_version, $data);
     }
 
@@ -65,15 +60,9 @@
 
     if (!empty($app_id) && preg_match('/^\d*$/', $app_id)) {
         $apiFunctions = new apiUtility();
-        $processor = $apiFunctions->get_bomlines_pending_id($app_id);
+        $processor = $apiFunctions->get_bom_status_id($app_id);
         $data = [];
         $count = 0;
-        if ($processor->num_rows > 0) {
-            $count = $processor->num_rows;
-            while ($row = $processor->fetch_assoc()) {
-                $data[] = $row;
-            }
-        }
         response(200, $count, $app_id, $data);
     }
     else if (isset($app_id) && empty($app_id)) {
@@ -89,15 +78,9 @@ else if (isset($_GET['app_name'])) {
 
     if(!empty($app_name) && preg_match('/^[\d A-Za-z +:-]*$/', $app_name)) {
         $apiFunctions = new apiUtility();
-        $processor = $apiFunctions->get_bomlines_pending_name($app_name);
+        $processor = $apiFunctions->get_bom_status_name($app_name);
         $data = [];
         $count = 0;
-        if($processor!==false && $processor->num_rows > 0) {
-            $count = $processor->num_rows;
-            while($row  = $processor->fetch_assoc()){
-                $data[] = $row;
-            }
-        }
         response(200, $count, $app_name, $data);
     }
     else if (isset($app_name) && empty($app_name)) {
