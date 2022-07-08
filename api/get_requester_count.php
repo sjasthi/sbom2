@@ -12,8 +12,8 @@
      *          response code and count of rows parameters passed and data name value pairs.
      *
      * Error Conditions: response code of http 400 is generated when system detects an error condition.
-     *                   component_id, component_name, component_version can generate "Invalid request"
-     *                   or "Invalid or empty request" for unsupported characters.
+     *                   No data in the apps_components table n can generate "Empty Database"
+     *                   message.
      *
      * @author Shahid Iqbal, Isaac Hentges, Nathan Lantaigne-Goetsch, Abdulsalam Geddi
      *
@@ -50,32 +50,3 @@
         $json = json_encode($response, JSON_PRETTY_PRINT);
         echo $json;
     }
-
-    /*
-    if(isset($_GET['component_id'])) {
-        $component_id = $_GET['component_id'];
-
-        if(!empty($component_id) && preg_match('/^\d*$/', $component_id)) {
-            $apiFunctions = new apiUtility();
-            $processor = $apiFunctions->get_owner_component_id($component_id);
-            $data = [];
-            $count = 0;
-            if($processor!==false && $processor->num_rows > 0) {
-                $count = $processor->num_rows;
-                while($row  = $processor->fetch_assoc()){
-                    $data[] = $row;
-                }
-            }
-            $res = [];
-            response(200, $count, $component_id, $data);
-        }
-        else if (isset($component_id) && empty($component_id)) {
-            invalidResponse("Invalid or Empty input");
-        }
-        else {
-            invalidResponse("Invalid Request");
-        }
-    } else{
-        invalidResponse("Invalid Request");
-    }
-    */
