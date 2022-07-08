@@ -366,7 +366,7 @@
          */
         public function get_requester_count() {
             global $db;
-            $sql = "SELECT concat(requester, ' - ',COUNT(*)) 'Requester Count Total'
+            $sql = "SELECT requester, COUNT(*) 'Requester Count Total'
             FROM apps_components
             GROUP BY requester";
             return $db->query($sql);
