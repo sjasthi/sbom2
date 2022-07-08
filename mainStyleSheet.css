@@ -534,7 +534,3 @@ div#response.display-block {
 input[type='file'] {
   color: transparent;
 }
-
-#hide_this {
-  visibility: hidden;
-}
