@@ -21,7 +21,7 @@ $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
     <?php
     if(isset($_SESSION['admin'])){
       echo '<button type="submit" name="submit_appset_delete">Delete App Set</button>';
-      echo '<button type="submit" name="submit_system_appset">Set System Apps</button>';
+      echo '<button type="submit" name="submit_system_appset">Set System App Set</button>';
     }
     if(isset($_SESSION['admin'])){
       if(isset($_POST['submit_appset_delete'])){
@@ -41,7 +41,9 @@ $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
         }
       }
     }
+    echo "<h4><span style='font-weight: bold; color: #01B0F1; background: #bbbbbb; padding: 6px;'>Current App Set: </span><span style='padding: 6px; background: #bbbbbb;'>".getSystemAppSetName($db)."</span></h4>";
     ?>
+    <br />
     <fieldset>
       <legend>Select BOM Apps:</legend>
       <table class="datatable table">

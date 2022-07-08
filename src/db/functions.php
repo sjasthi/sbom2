@@ -42,13 +42,30 @@ function setSystemAppSet($db, $app_set_id){
   return $query_update_appsets->execute();
 }
 
+// Is this correct? Function is named delete, but query is only a select?
 function deleteSystemAppSet($db, $app_set_id){
   global $system_appset_pref_name;
   $sql_delete_system_appset = '
-    DELETE FROM app_sets
+    SELECT value FROM app_sets
     WHERE app_set_id = '.$app_set_id.';
   ';
   return $db->query($sql_delete_system_appset);
+}
+
+function getSystemAppSetName($db){
+  global $system_appset_pref_name;
+  $sql_get_system_app_set_name = '
+    SELECT app_set_name FROM app_sets
+    WHERE app_set_id IN
+    ( SELECT value FROM preferences WHERE name = "ACTIVE_APP_SET");
+  ';
+  $name_result = $db->query($sql_get_system_app_set_name);
+  $name_associative = $name_result->fetch_all(MYSQLI_ASSOC);
+  if (isset($name_associative[0]['app_set_name'])) {
+		return $name_associative[0]['app_set_name'];
+	} else {
+    return "Not Set";
+	}
 }
 
 function url_for($script_path) {
