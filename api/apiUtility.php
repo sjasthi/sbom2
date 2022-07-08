@@ -517,8 +517,11 @@
 
         public function get_requester_pending_tasks() {
             global $db;
-            $sql = "SELECT `red_app_id`, `cmpt_id`, `cmpt_name`, `cmpt_version`, `app_id`, `app_name`,`app_version`, `status` 
-                                                                    FROM `apps_components` WHERE status NOT LIKE 'Approved';";
+            $sql = "SELECT applications.app_id, applications.app_name, applications.app_version, apps_components.cmpt_id,
+                    apps_components.cmpt_name, apps_components.cmpt_version, apps_components.app_id, apps_components.app_name, 
+                    apps_components.app_version, apps_components.status FROM apps_components 
+                        INNER JOIN applications ON applications.app_id = apps_components.red_app_id 
+                                                                        WHERE apps_components.status NOT LIKE 'Approved'";
             return $db->query($sql);
         }
 
