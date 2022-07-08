@@ -25,6 +25,10 @@ function getReports($db)
   $result = $db->query($sql);
 
   if ($result->num_rows > 0) {
+    $oss_total = 0;
+    $commercial_total = 0;
+    $total = 0;
+
     // output data of each row
     while ($row = $result->fetch_assoc()) {
       echo '<tr>
@@ -34,7 +38,17 @@ function getReports($db)
           <td>' . $row["commercial_count"] . '</td>
           <td>' . $row["total"] . '</td>
         </tr>';
+      $oss_total += $row["oss_count"];
+      $commercial_total += $row["commercial_count"];
+      $total += $row["total"];
     } //end while
+    echo '<tr>
+    <td>' . 'z' . '</td>
+    <td><b>' . 'Total ' .  '</b></td>
+    <td><b>' . $oss_total . '</b></td>
+    <td><b>' . $commercial_total . '</b></td>
+    <td><b>' . $total . '</b></td>
+    </tr>';
   } //end if
   else {
     echo "0 results";
