@@ -176,4 +176,246 @@
 
     $('.table-container').doubleScroll(); // assign a double scroll to this class
     } );
-  </script>
+//====================================================================================================================
+function createBarChart(barChart){
+    let name = barChart[0];
+    let columnTitle = barChart[1];
+
+    let queryArray = [[columnTitle, 'OSS Count', {role:'annotation'}]];
+
+
+    switch(name){
+
+        case 'Component':
+            <?php
+            $query = $db->query("SELECT app_name, SUM(CASE WHEN license 
+            NOT LIKE '%Commercial%' THEN 1 ELSE 0 END) as oss_count, SUM(CASE WHEN license 
+            LIKE '%Commercial%' THEN 1 ELSE 0 END) 
+            as commercial_count, COUNT(license) as total
+            FROM apps_components
+            GROUP BY app_name;");
+            while($query_row = $query->fetch_assoc()) {
+              echo 'queryArray.push(["'.$query_row["app_name"].'", '.$query_row["oss_count"].', "'.$query_row["oss_count"].'"]);';
+              echo 'queryArray.push(["'.$query_row[""].'", '.$query_row["commercial_count"].', "'.$query_row["commercial_count"].'"]);';
+
+            }
+            ?>
+            break;
+    }
+    return queryArray;
+}
+
+let barCharts = [['Component', 'Component Status']];
+
+for(let i = 0; i < barCharts.length; i++){
+    barCharts[i] = createBarChart(barCharts[i]);
+}
+</script>
+
+<!-- Google Bar Chart API Code -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawBarCharts);
+
+function drawBarCharts() {
+    barCharts.forEach(queryArray => drawBarChart(queryArray));
+}
+
+function drawBarChart(queryArray){
+    var data = google.visualization.arrayToDataTable(queryArray);
+
+    let title = queryArray[0][0] + ' Report';
+
+    var options = {
+        title: title,
+        width: 750,
+        height: 400,
+    };
+
+    var chart = new google.visualization.BarChart(document.getElementById(title.replace(/ /g, '')));
+
+    google.visualization.events.addListener(chart, 'select', selectHandler);
+
+    chart.draw(data, options);
+
+    function selectHandler(){
+        var selectedItem = chart.getSelection()[0];
+
+        if (selectedItem) {
+            var statusSelection = data.getValue(selectedItem.row, 0);
+            var reportName = queryArray[0][0].toLowerCase().replace(/ /g, '');
+
+            document.cookie = encodeURI("app_issue_count_cookie=");
+
+
+            switch(reportName){
+                case "componentstatus":
+                    document.cookie = encodeURI("app_issue_count_cookie=" + statusSelection); break;
+
+            }
+
+            location.reload();
+        }
+    }
+
+    let reportName = queryArray[0][0].toLowerCase().replace(/ /g, '');
+
+    let length = 0;
+
+    queryArray.forEach((slice, index) => {
+        if(index !== 0){
+            length += slice[1];
+        }
+    });
+
+    switch(reportName){
+                case "componentstatus":
+                    document.getElementById('totalComponentStatusReport').innerHTML = "Total: " + length; break;
+
+            }
+}
+</script>
+
+<div class="right-content">
+    <div class="container">
+    <h3></h3>
+    <h3>Bar Graph</h3>
+    </div>
+</div>
+<div class="container">
+    <div class="table-container">
+        <table>
+            <tr>
+                <td>
+                    <div style="width:750px; height:400px; disply:inline-block;" id="ComponentStatusReport" style="width: 50%; height: 500px;"></div>
+                    <p  style="position:relative;z-index:1000;text-align:center" id="totalComponentStatusReport"></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+<?php
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+  if($_COOKIE['app_issue_count_cookie']!= null) {
+        $cmpStatusSelection = $_COOKIE['app_issue_count_cookie'];
+        $sql = "SELECT DISTINCT  red_app_id, app_name, app_version, from sbom ;";
+        setcookie("app_issue_count_cookie", "", time()-3600);
+        echo "<table id='info' cellpadding='0' cellspacing='0' border='0'
+        class='datatable table table-striped table-bordered datatable-style table-hover'
+        width='100%' style='width: 50px;'>
+                <thead>
+                    <tr id='table-first-row'>
+                            <th>CMP Id</th>
+                            <th>CMP Name</th>
+                            <th>CMP Version</th>
+                            <th>CMP Count</th>
+                            <th>CMP Total</th>
+
+                            
+
+                    </tr>
+                </thead>
+
+                <tbody>";
+                $result = $db->query($sql);
+
+                    if ($result->num_rows > 0) {
+                        // output data of each row
+                        while($row = $result->fetch_assoc()) {
+                            echo '<tr>
+                                    <td>'.$row["red_app_id"].'</td>
+                                    <td>'.$row["app_name"].'</td>
+                                    <td>'.$row["app_version"].'</td>
+                                    <td>'.$row["issue_count"].'</td>
+                                    <td>'.$row["total_issue_count"].'</td>
+
+
+                                </tr>';
+
+                        }//end while
+                    }//end if
+                    else {
+                        echo "0 results";
+                    }//end else
+
+                    $result->close();
+                    echo "</tbody>
+
+                <tfoot>
+                <tr>
+                <th>CMP Id</th>
+                <th>CMP Name</th>
+                <th>CMP Version</th>
+                <th>CMP Count</th>
+                <th>CMP Total</th>
+
+
+                </tr>
+            </tfoot>
+
+</tfoot>
+</table>";
+}
+?>
+
+            </tbody>
+        </table>
+
+
+        <script type="text/javascript" language="javascript">
+
+        var app_status, app_name = null;
+        <?php
+
+          if ($cmpStatusSelection != null) {
+            echo  "app_name ='".$cmpStatusSelection."';";
+
+        } else {
+            echo "console.log(\"No Cookies Set\");";
+        }
+        ?>
+
+        $(document).ready( function () {
+
+        $('#info').DataTable( {
+            dom: 'lfrtBip',
+            buttons: [
+                'copy', 'excel', 'csv', 'pdf'
+            ] }
+        );
+
+
+
+        $('#info thead tr').clone(true).appendTo( '#info thead' );
+        $('#info thead tr:eq(1) th').each( function (i) {
+            var title = $(this).text();
+
+              if (title == 'CMP NAME' && app_name != null) {
+                $(this).html( '<input id = "mytext" type="text" placeholder="Search '+title+'" value = "'+app_name+'" autofocus/>' );
+                $( 'input', this ).trigger( 'keyup change' );
+            } else {
+                $(this).html( '<input id = "mytext" type="text" placeholder="Search '+title+'"/>' );
+            }
+
+            $( 'input', this ).on( 'keyup change', function () {
+                if ( table.column(i).search() !== this.value ) {
+                    table
+                        .column(i)
+                        .search( this.value )
+                        .draw();
+                }
+            } );
+
+
+        } );
+
+        var table = $('#info').DataTable( {
+            orderCellsTop: true,
+            fixedHeader: true,
+            retrieve: true
+        } );
+        table.columns(0).search( $('#mytext').val() ).draw();
+    } );
+
+    </div>
+    </script>
