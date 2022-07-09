@@ -22,6 +22,7 @@ $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
     if(isset($_SESSION['admin'])){
       echo '<button type="submit" name="system_submit">Set System Apps</button>';
       echo '<button type="submit" name="appset_submit">Create Appset</button>';
+      echo '<span> </span>';
       echo '<input type="text" name="appset_name" placeholder="appset name">';
     }
     isset($_POST[$app_checkbox_name]) ? $apps = $_POST[$app_checkbox_name] : $apps = [];
@@ -51,12 +52,15 @@ $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
 
     ?>
     <fieldset>
-      <table class="datatable table">
+      <table class="datatable table" id="info">
         <thead>
           <tr id="table-first-row">
             <th><input id="check-all" type="checkbox" style="width:20px;height:20px;"></th>
             <th>App Name</th>
             <th>App ID</th>
+            <th>App Version</th>
+            <th>App Status</th>
+            <th>End of Life?</th>
           </tr>
         </thead>
         <tbody>
@@ -75,5 +79,8 @@ $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
       $('.appCheckbox').prop('checked', false);
     }
   });
+  $(document).ready( function () {
+    $('#info').DataTable();
+  }); 
   </script>
 </div>
