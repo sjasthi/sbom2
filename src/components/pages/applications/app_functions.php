@@ -12,6 +12,9 @@ function showAppsAsChecklist($db){
       echo '<td><input class="appCheckbox" name="'.$app_checkbox_name.'[]" id="checkbox'.$option_id.'" value="'.$application["app_id"].'" style="width:20px;height:20px;" type="checkbox"></td>';
       echo '<td>'.$application["app_name"].'</td>';
       echo '<td>'.$application["app_id"].'</td>';
+      echo '<td>'.$application["app_version"].'</td>';
+      echo '<td>'.$application["app_status"].'</td>';
+      echo '<td>'.$application["is_eol"].'</td>';
       echo '</tr>';
       $option_id++;
     }
