@@ -11,7 +11,61 @@ include("app_left_menu.php");
 
 global $db;
 $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
+$BARGRAPH_LENGTH = 300;
 
+function showAppsAsChecklist($db){
+  global $app_checkbox_name;
+  $sql_applications_components_query = "
+    SELECT a.app_id,a.app_name,monitoring_digest, a.app_version, a.app_status, a.is_eol FROM applications a JOIN apps_components ac
+    ON a.app_id = ac.red_app_id
+    ORDER BY a.app_id;
+  ";
+
+
+  $option_id = 1;
+  $query_applications = $db->query($sql_applications_components_query);
+  if($query_applications->num_rows > 0){
+    global $BARGRAPH_LENGTH;
+    $last_app_id = '';
+    $last_app_name = '';
+    // $total_security_issues = 0;
+    $security_issues = [0,0,0];
+    $debug_msg = array();
+    while($application = $query_applications->fetch_assoc()){
+      if($last_app_id != $application['app_id'] && $last_app_id != ''){
+        echo '<tr>';
+        echo '<td><input class="appCheckbox" name="'.$app_checkbox_name.'[]" id="checkbox'.$option_id.'" value="'.$application["app_id"].'" style="width:20px;height:20px;" type="checkbox"></td>';
+        echo '<td>'.$last_app_name.'</td>';
+        echo '<td>'.$last_app_id.'</td>';
+        echo '<td>'.$application["app_version"].'</td>';
+        echo '<td>'.$application["app_status"].'</td>';
+        echo '<td>'.$application["is_eol"].'</td>';
+        echo '<td><div class="bargraph" style="width:320px">';
+        $total_security_issues = $security_issues[0] + $security_issues[1] + $security_issues[2];
+        $multi = 0;
+        if($total_security_issues != 0){
+          $multi = $BARGRAPH_LENGTH / ($total_security_issues);
+        }
+        echo '<span class="graphBar" style="background-color:red; width:'.($security_issues[0] * $multi).'px;"></span>';
+        echo '<span class="graphBar" style="background-color:orange; width:'.($security_issues[1] * $multi).'px;"></span>';
+        echo '<span class="graphBar" style="background-color:yellow; width:'.($security_issues[2] * $multi).'px;"></span>';
+        echo '</div></td>';
+        echo '</tr>';
+        $security_issues = [0,0,0];
+      } else {
+        preg_match('/([0-9]*) critical, ([0-9]*) major, ([0-9]*) minor/', $application['monitoring_digest'], $security_count);
+        if(count($security_count) == 4){
+          $security_issues[0] += $security_count[1];
+          $security_issues[1] += $security_count[2];
+          $security_issues[2] += $security_count[3];
+        }
+      }
+      $last_app_id = $application['app_id'];
+      $last_app_name = $application['app_name'];
+      $option_id++;
+    }
+  }
+}
 ?>
 
 <div class="wrap">
@@ -61,6 +115,7 @@ $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
             <th>App Version</th>
             <th>App Status</th>
             <th>End of Life?</th>
+            <th>App Security</th>
           </tr>
         </thead>
         <tbody>
@@ -81,6 +136,6 @@ $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
   });
   $(document).ready( function () {
     $('#info').DataTable();
-  }); 
+  });
   </script>
 </div>
