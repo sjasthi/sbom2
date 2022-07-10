@@ -16,9 +16,9 @@ $BARGRAPH_LENGTH = 300;
 function showAppsAsChecklist($db){
   global $app_checkbox_name;
   $sql_applications_components_query = "
-    SELECT applications.app_id,applications.app_name,monitoring_digest FROM applications JOIN apps_components
-    ON applications.app_id = apps_components.red_app_id
-    ORDER BY applications.app_id;
+    SELECT a.app_id,a.app_name,monitoring_digest, a.app_version, a.app_status, a.is_eol FROM applications a JOIN apps_components ac
+    ON a.app_id = ac.red_app_id
+    ORDER BY a.app_id;
   ";
 
 
@@ -37,6 +37,9 @@ function showAppsAsChecklist($db){
         echo '<td><input class="appCheckbox" name="'.$app_checkbox_name.'[]" id="checkbox'.$option_id.'" value="'.$application["app_id"].'" style="width:20px;height:20px;" type="checkbox"></td>';
         echo '<td>'.$last_app_name.'</td>';
         echo '<td>'.$last_app_id.'</td>';
+        echo '<td>'.$application["app_version"].'</td>';
+        echo '<td>'.$application["app_status"].'</td>';
+        echo '<td>'.$application["is_eol"].'</td>';
         echo '<td><div class="bargraph" style="width:320px">';
         $total_security_issues = $security_issues[0] + $security_issues[1] + $security_issues[2];
         $multi = 0;
@@ -73,6 +76,7 @@ function showAppsAsChecklist($db){
     if(isset($_SESSION['admin'])){
       echo '<button type="submit" name="system_submit">Set System Apps</button>';
       echo '<button type="submit" name="appset_submit">Create Appset</button>';
+      echo '<span> </span>';
       echo '<input type="text" name="appset_name" placeholder="appset name">';
     }
     isset($_POST[$app_checkbox_name]) ? $apps = $_POST[$app_checkbox_name] : $apps = [];
@@ -102,12 +106,15 @@ function showAppsAsChecklist($db){
 
     ?>
     <fieldset>
-      <table class="datatable table">
+      <table class="datatable table" id="info">
         <thead>
           <tr id="table-first-row">
             <th><input id="check-all" type="checkbox" style="width:20px;height:20px;"></th>
             <th>App Name</th>
             <th>App ID</th>
+            <th>App Version</th>
+            <th>App Status</th>
+            <th>End of Life?</th>
             <th>App Security</th>
           </tr>
         </thead>
@@ -126,6 +133,9 @@ function showAppsAsChecklist($db){
     } else {
       $('.appCheckbox').prop('checked', false);
     }
+  });
+  $(document).ready( function () {
+    $('#info').DataTable();
   });
   </script>
 </div>

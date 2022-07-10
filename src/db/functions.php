@@ -4,6 +4,10 @@ $sql_applications_query = "
   SELECT * FROM applications
 ";
 
+$sql_bom_query = "
+  SELECT * FROM apps_components;
+";
+
 $system_appset_pref_name = "ACTIVE_APP_SET";
 
 function getScope ($db){
@@ -46,7 +50,7 @@ function setSystemAppSet($db, $app_set_id){
 function deleteSystemAppSet($db, $app_set_id){
   global $system_appset_pref_name;
   $sql_delete_system_appset = '
-    SELECT value FROM app_sets
+    DELETE FROM app_sets
     WHERE app_set_id = '.$app_set_id.';
   ';
   return $db->query($sql_delete_system_appset);
