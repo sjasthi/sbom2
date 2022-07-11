@@ -1,2 +1,0 @@
-cmpt_id,cmpt_name,cmpt_version,app_id,app_name,app_version,license,status,requester,description,monitoring_id,monitoring_digest,issue_count
-00000001,Best Component,0.0.1,00000001,Best App,0.0.1,bsd 3 clause,Approved,Nathan Souer,A thing,00001,na,8
