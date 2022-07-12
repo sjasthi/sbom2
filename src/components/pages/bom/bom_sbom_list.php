@@ -2,7 +2,8 @@
   $nav_selected = "BOM";
   $left_selected = "SBOMLIST";
   $tabTitle = "SBOM - BOM (List)";
-  $bom_columns = array("app_id","app_name","app_version","app_status","is_eol");
+  //$bom_columns = array("app_id","app_name","app_version","app_status","is_eol");
+  $bom_columns = array("app_id","app_name","app_version","cmpt_id","cmpt_name","cmpt_version","license","status","requester","description","monitoring_id","monitoring_digest","issue_count");
 
   include("bom_functions.php");
   include("../../../../index.php");
@@ -20,7 +21,8 @@
   /*----------------- FUNCTION TO GET BOMS -----------------*/
   function getAppList($db) {
     global $bom_columns;
-    displayAllAppsList($db, $bom_columns);
+    //displayAllAppsList($db, $bom_columns);
+    displayAllAppsAndComponentList($db, $bom_columns);
   }
 
   checkUserAppsetCookie();
