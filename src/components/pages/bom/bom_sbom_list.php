@@ -77,7 +77,8 @@
             $is_set_results = $is_set_sql->get_result();
             $is_set_rows = $is_set_results->fetch_all(MYSQLI_ASSOC);
             if ( 0 < count($is_set_rows)) {
-              $system_dbom_sql = 'SELECT * FROM applications WHERE app_id in ( SELECT app_id FROM app_sets WHERE app_set_id in ( SELECT value FROM preferences WHERE name = "ACTIVE_APP_SET" ));';
+              //$system_dbom_sql = 'SELECT * FROM applications WHERE app_id in ( SELECT app_id FROM app_sets WHERE app_set_id in ( SELECT value FROM preferences WHERE name = "ACTIVE_APP_SET" ));';
+              $system_dbom_sql = 'SELECT applications.app_id, applications.app_name, applications.app_version, apps_components.cmpt_id, apps_components.cmpt_name, apps_components.cmpt_version, apps_components.license,apps_components.status,apps_components.requester,apps_components.description,apps_components.monitoring_id,apps_components.monitoring_digest,apps_components.issue_count FROM applications INNER JOIN apps_components ON applications.app_id = apps_components.red_app_id WHERE applications.app_id IN ( SELECT app_id FROM app_sets WHERE app_set_id in ( SELECT value FROM preferences WHERE name = "ACTIVE_APP_SET" ));';
               displayAllAppsList($db, $bom_columns, $system_dbom_sql);
             } else {
               getAppList($db);
@@ -89,10 +90,11 @@
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> Software BOM --> My BOMS";</script>
           <?php
           global $bom_columns;
-          $sql = '
+          /*$sql = '
             SELECT * FROM applications
             WHERE app_id IN ('.get_user_appset_cookie_string().')
-          ';
+          ';*/
+          $sql = 'SELECT applications.app_id, applications.app_name, applications.app_version, apps_components.cmpt_id, apps_components.cmpt_name, apps_components.cmpt_version, apps_components.license,apps_components.status,apps_components.requester,apps_components.description,apps_components.monitoring_id,apps_components.monitoring_digest,apps_components.issue_count FROM applications INNER JOIN apps_components ON applications.app_id = apps_components.red_app_id WHERE applications.app_id IN ('.get_user_appset_cookie_string().')';
           displayAllAppsList($db, $bom_columns, $sql);
         } elseif(isset($_POST['show_user_boms']) && !isset($_COOKIE[$bom_app_set_cookie_name])) {
           //if no preference cookie is set but user clicks "show my BOMS"
