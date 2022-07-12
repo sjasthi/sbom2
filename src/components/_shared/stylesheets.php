@@ -16,6 +16,7 @@
         echo '<link rel="stylesheet" href="'.$componentsPath.'pages/bom/tree.css">';
         echo '<link rel="stylesheet" href="'.$componentsPath.'pages/login/login.css">';
         echo '<link rel="stylesheet" href="'.$componentsPath.'pages/releases/releases.css">';
+        echo '<link rel="stylesheet" href="'.$componentsPath.'pages/applications/bar_graph.css">';
     ?>
 
     <link rel="icon" href="<?php echo $assetsPath; ?>images/BOM.png" />

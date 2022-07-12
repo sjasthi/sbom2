@@ -79,6 +79,26 @@ function displayAllAppsList($db, $app_columns, $app_query = ''){
   }
 }
 
+function displayAllAppsAndComponentList($db, $app_columns, $app_query = ''){
+  //global $sql_applications_query;
+  if($app_query == ''){
+    //$app_query = $sql_applications_query;
+    $app_query = '
+      select applications.app_id, applications.app_name, applications.app_version, apps_components.cmpt_id, apps_components.cmpt_name, apps_components.cmpt_version, apps_components.license,apps_components.status,apps_components.requester,apps_components.description,apps_components.monitoring_id,apps_components.monitoring_digest,apps_components.issue_count from applications inner join apps_components on applications.app_id = apps_components.red_app_id; 
+    ';
+  }
+  $query_applications = $db->query($app_query);
+  if($query_applications->num_rows > 0){
+    while($row = $query_applications->fetch_assoc()){
+      echo '<tr>';
+      foreach($app_columns as $column){
+        echo '<td>'.$row[$column].'</td>';
+      }
+      echo '</tr>';
+    }
+  }
+}
+
 //Display error if user retrieves preferences w/o any cookies set
 function checkUserAppsetCookie(){
   global $pref_err, $bom_app_set_cookie_name;
