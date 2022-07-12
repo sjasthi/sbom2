@@ -85,24 +85,6 @@ function getDuplicateComponents($db)
 
 function getComponentCount($db)
 {
-    //your code here
-
-}
-
-function getDependencyReport($db)
-{
-    //your code here
-
-}
-
-function getUniqueComponents($db)
-{
-    //your code here
-
-}
-
-function getLicenseCounts($db)
-{
     $sql = "SELECT app_name, app_version, SUM(CASE WHEN license NOT LIKE '%Commercial%' THEN 1 ELSE 0 END) as oss_count, SUM(CASE WHEN license LIKE '%Commercial%' THEN 1 ELSE 0 END) as commercial_count, COUNT(license) as total
     FROM apps_components
     GROUP BY app_name;";
@@ -127,7 +109,7 @@ function getLicenseCounts($db)
             $total += $row["total"];
         } //end while
         echo '<tr>
-            <td>' . 'z' . '</td>
+            <td>' . '' . '</td>
             <td><b>' . 'Total ' .  '</b></td>
             <td><b>' . $oss_total . '</b></td>
             <td><b>' . $commercial_total . '</b></td>
@@ -140,11 +122,109 @@ function getLicenseCounts($db)
     $result->close();
 }
 
+function getDependencyReport($db)
+{
+    //your code here
+
+}
+
+function getUniqueComponents($db)
+{
+    //your code here
+
+}
+
+function getLicenseCounts($db)
+{
+    $sql = "SELECT license, COUNT(*) as cmpt_number
+    FROM `apps_components`
+    GROUP BY license
+    ORDER BY 2 DESC;";
+    $result = $db->query($sql);
+
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while ($row = $result->fetch_assoc()) {
+            echo '<tr>
+                <td>' . $row["license"] . '</td>
+                <td>' . $row["cmpt_number"] . '</td>
+                </tr>';
+        } //end while
+    } //end if
+    else {
+        echo "0 results";
+    } //end else
+    $result->close();
+}
+
 ?>
 
 <!-- We'll need to figure out how to setup the HTML to display everything -->
 <div class="wrap">
     <h3 id=scannerHeader style="color: #01B0F1;">Reports --> Comprehensive Report </h3>
+    <div class="table-container">
+        <h4 style="color: #01B0F1;">Fix Plan</h4>
+        <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
+            <thead>
+                <tr id="table-first-row">
+                    <th>App ID</th>
+                    <th>App Name</th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>App ID</th>
+                    <th>App Name</th>
+
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="table-container">
+        <h4 style="color: #01B0F1;">Fix Plan</h4>
+        <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
+            <thead>
+                <tr id="table-first-row">
+                    <th>App ID</th>
+                    <th>App Name</th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>App ID</th>
+                    <th>App Name</th>
+
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="table-container">
+        <h4 style="color: #01B0F1;">Fix Plan</h4>
+        <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
+            <thead>
+                <tr id="table-first-row">
+                    <th>App ID</th>
+                    <th>App Name</th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>App ID</th>
+                    <th>App Name</th>
+
+                </tr>
+            </tfoot>
+        </table>
+    </div>
     <div class="table-container">
         <h4 style="color: #01B0F1;">Fix Plan</h4>
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
@@ -274,6 +354,87 @@ function getLicenseCounts($db)
                     <th>OSS Count</th>
                     <th>Commercial Count</th>
                     <th>Total</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="table-container">
+        <h4 style="color: #01B0F1;">Dependency Report</h4>
+        <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
+            <thead>
+                <tr id="table-first-row">
+                    <th>App ID</th>
+                    <th>App Name</th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>App ID</th>
+                    <th>App Name</th>
+
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="table-container">
+        <h4 style="color: #01B0F1;">List of Unique Components</h4>
+        <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
+            <thead>
+                <tr id="table-first-row">
+                    <th>App ID</th>
+                    <th>App Name</th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>App ID</th>
+                    <th>App Name</th>
+
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="table-container">
+        <h4 style="color: #01B0F1;">License Counts</h4>
+        <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
+            <thead>
+                <tr id="table-first-row">
+                    <th>License</th>
+                    <th># of Components</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                /*----------------- GET PREFERENCE COOKIE -----------------*/
+                // Calls the function where the query is set above.
+                getLicenseCounts($db);
+
+                //Checks our cookie for a preference, then grabs the info from the getReports function
+                // and displays it in the appropriate rows and columns
+                if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+                    $def = "false";
+
+                    while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<tr>
+                <td>' . $row["license"] . '</td>
+                <td>' . $row["cmpt_number"] . '</td>
+                </tr>';
+                    }
+                }
+                ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>License</th>
+                    <th># of Components</th>
+
                 </tr>
             </tfoot>
         </table>
