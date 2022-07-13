@@ -75,11 +75,11 @@
         width="100%" style="width: 100px;">
         <thead>
           <tr id="table-first-row">
-            <th>red_app_id</th>
-	      <th>App Name</th>
+            <th>red App Id</th>
+	          <th>App Name</th>
             <th>App Version</th>
             <th>Cmpt Version</th>
-            <th>Cmpt ID</th>
+            <th>Cmpt Id</th>
             <th>Cmpt Name </th>
             <th>Monitoring Id</th>
             <th>Monitering Digest</th>
@@ -115,11 +115,11 @@
       </tbody>
       <tfoot>
         <tr>
-          <th>red_app_id</th>
-	    <th>App Name</th>
+          <th>red App Id</th>
+	        <th>App Name</th>
           <th>App Version</th>
           <th>Cmpt Version</th>
-          <th>Cmpt ID</th>
+          <th>Cmpt Id</th>
           <th>Cmpt Name </th>
           <th>Monitoring Id</th>
           <th>Monitering Digest</th>
