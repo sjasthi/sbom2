@@ -31,7 +31,7 @@
 
 <?php
     require_once('../connect.php'); // connect to DB
-    require_once('php/json.php'); // json()
+    require_once('php/createSQL.php'); // createSQL()
     require_once('php/grabList.php'); // grabList()
     require_once('php/createNewList.php'); // createNewList()
     require_once('php/createTinyBOM.php'); // createTinyBOM()

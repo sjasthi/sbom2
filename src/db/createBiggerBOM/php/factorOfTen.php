@@ -10,8 +10,9 @@
 
                 foreach( $item as $key => $val ) {
                     if( $key === "line_id" ) {
-                        $obj -> $key = $i;
                         $i++;
+
+                        $obj -> $key = $i;
                     }else {
                         $obj -> $key = $val;
                     }
