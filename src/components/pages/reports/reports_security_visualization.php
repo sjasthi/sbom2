@@ -193,7 +193,7 @@
 
     switch(name){
 
-        case 'Component':
+        case 'Issue':
             <?php
             $query = $db->query("SELECT app_name, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END) 
             as num_issue, SUM(issue_count) as total_issue_count 
@@ -211,7 +211,7 @@
     return queryArray;
 }
 
-let barCharts = [['Component', 'Component Status']];
+let barCharts = [['Issue', 'Issue Count']];
 
 for(let i = 0; i < barCharts.length; i++){
     barCharts[i] = createBarChart(barCharts[i]);
@@ -256,7 +256,7 @@ function drawBarChart(queryArray){
 
 
             switch(reportName){
-                case "componentstatus":
+                case "issuecount":
                     document.cookie = encodeURI("app_issue_count_cookie=" + statusSelection); break;
 
             }
@@ -276,8 +276,8 @@ function drawBarChart(queryArray){
     });
 
     switch(reportName){
-                case "componentstatus":
-                    document.getElementById('totalComponentStatusReport').innerHTML = "Total: " + length; break;
+                case "issuecount":
+                    document.getElementById('totalIssueCountReport').innerHTML = "Total: " + length; break;
 
             }
 }
@@ -295,116 +295,11 @@ function drawBarChart(queryArray){
         <table>
             <tr>
                 <td>
-                    <div style="width:750px; height:400px; disply:inline-block;" id="ComponentStatusReport" style="width: 50%; height: 500px;"></div>
-                    <p  style="position:relative;z-index:1000;text-align:center" id="totalComponentStatusReport"></p>
+                    <div style="width:750px; height:400px; display:inline-block;" id="IssueCountReport" style="width: 50%; height: 500px;"></div>
+                    <p  style="position:relative;z-index:1000;text-align:center" id="totalIssueCountReport"></p>
                 </td>
             </tr>
         </table>
     </div>
-<?php
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
-  if($_COOKIE['app_issue_count_cookie']!= null) {
-        $appIssueSelection = $_COOKIE['app_issue_count_cookie'];
-        $sql = "SELECT DISTINCT  red_app_id, app_name, app_version, from sbom ;";
-        setcookie("app_issue_count_cookie", "", time()-3600);
-        echo "<table id='info' cellpadding='0' cellspacing='0' border='0'
-        class='datatable table table-striped table-bordered datatable-style table-hover'
-        width='100%' style='width: 50px;'>
-                <thead>
-                    <tr id='table-first-row'>
-                            <th>CMP Id</th>
-                            <th>CMP Name</th>
-                            <th>CMP Version</th>
-                            <th>CMP Count</th>
-                            <th>CMP Total</th>
 
-                            
-
-                    </tr>
-                </thead>
-
-                <tbody>";
-                $result = $db->query($sql);
-
-                    if ($result->num_rows > 0) {
-                        // output data of each row
-                        while($row = $result->fetch_assoc()) {
-                            echo '<tr>
-                                    <td>'.$row["red_app_id"].'</td>
-                                    <td>'.$row["app_name"].'</td>
-                                    <td>'.$row["app_version"].'</td>
-                                    <td>'.$row["issue_count"].'</td>
-                                    <td>'.$row["total_issue_count"].'</td>
-                                </tr>';
-
-                        }//end while
-                    }//end if
-                    else {
-                        echo "0 results";
-                    }//end else
-
-                    $result->close();
-                    echo "</tbody>
-
-                <tfoot>
-                <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Version</th>
-                <th>Count</th>
-                <th>Total</th>
-
-
-                </tr>
-            </tfoot>
-
-</tfoot>
-</table>";
-}
-?>
-
-            </tbody>
-        </table>
-
-
-        <script type="text/javascript" language="javascript">
-
-        var app_status, app_name = null;
-        <?php
-
-          if ($appIssueSelection != null) {
-            echo  "app_name ='".$appIssueSelection."';";
-
-        } else {
-            echo "console.log(\"No Cookies Set\");";
-        }
-        ?>
-
-        $(document).ready( function () {
-
-        $('#info').DataTable( {
-          destroy: true,
-            dom: 'lfrtBip',
-            buttons: [
-                'copy', 'excel', 'csv', 'pdf'
-            ] }
-        );
-        $('#info thead tr').clone(true).appendTo( '#info thead' );
-        $('#info thead tr:eq(1) th').each( function (i) {
-            var title = $(this).text();
-
-            $( 'input', this ).on( 'keyup change', function () {
-                if ( table.column(i).search() !== this.value ) {
-                    table
-                        .column(i)
-                        .search( this.value )
-                        .draw();
-                }
-            } );
-
-
-        } );   
-    } );
-
-    </div>
-    </script>
+</script>
