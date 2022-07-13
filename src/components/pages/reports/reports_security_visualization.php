@@ -304,7 +304,7 @@ function drawBarChart(queryArray){
 <?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
   if($_COOKIE['app_issue_count_cookie']!= null) {
-        $cmpStatusSelection = $_COOKIE['app_issue_count_cookie'];
+        $appIssueSelection = $_COOKIE['app_issue_count_cookie'];
         $sql = "SELECT DISTINCT  red_app_id, app_name, app_version, from sbom ;";
         setcookie("app_issue_count_cookie", "", time()-3600);
         echo "<table id='info' cellpadding='0' cellspacing='0' border='0'
@@ -335,8 +335,6 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
                                     <td>'.$row["app_version"].'</td>
                                     <td>'.$row["issue_count"].'</td>
                                     <td>'.$row["total_issue_count"].'</td>
-
-
                                 </tr>';
 
                         }//end while
@@ -350,11 +348,11 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
                 <tfoot>
                 <tr>
-                <th>CMP Id</th>
-                <th>CMP Name</th>
-                <th>CMP Version</th>
-                <th>CMP Count</th>
-                <th>CMP Total</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Version</th>
+                <th>Count</th>
+                <th>Total</th>
 
 
                 </tr>
@@ -374,8 +372,8 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
         var app_status, app_name = null;
         <?php
 
-          if ($cmpStatusSelection != null) {
-            echo  "app_name ='".$cmpStatusSelection."';";
+          if ($appIssueSelection != null) {
+            echo  "app_name ='".$appIssueSelection."';";
 
         } else {
             echo "console.log(\"No Cookies Set\");";
@@ -385,24 +383,15 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
         $(document).ready( function () {
 
         $('#info').DataTable( {
+          destroy: true,
             dom: 'lfrtBip',
             buttons: [
                 'copy', 'excel', 'csv', 'pdf'
             ] }
         );
-
-
-
         $('#info thead tr').clone(true).appendTo( '#info thead' );
         $('#info thead tr:eq(1) th').each( function (i) {
             var title = $(this).text();
-
-              if (title == 'CMP NAME' && app_name != null) {
-                $(this).html( '<input id = "mytext" type="text" placeholder="Search '+title+'" value = "'+app_name+'" autofocus/>' );
-                $( 'input', this ).trigger( 'keyup change' );
-            } else {
-                $(this).html( '<input id = "mytext" type="text" placeholder="Search '+title+'"/>' );
-            }
 
             $( 'input', this ).on( 'keyup change', function () {
                 if ( table.column(i).search() !== this.value ) {
@@ -414,14 +403,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
             } );
 
 
-        } );
-
-        var table = $('#info').DataTable( {
-            orderCellsTop: true,
-            fixedHeader: true,
-            retrieve: true
-        } );
-        table.columns(0).search( $('#mytext').val() ).draw();
+        } );   
     } );
 
     </div>
