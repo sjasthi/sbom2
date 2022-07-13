@@ -8,8 +8,8 @@
         foreach( $list as $item ) {
             $obj = new stdClasS();
             foreach( $item as $key => $val ) {
-                if( $key === "cmpt_id" || $key === "app_id" ) {
-                    $newVal = intval( $val ) + 1;
+                if( $key === "cred_app_id" || $key === "cmpt_id" || $key === "app_id" ) {
+                    $newVal = intval( $val );
 
                     $obj -> $key = $newVal;
                 } else if( $key === "line_id" ) {

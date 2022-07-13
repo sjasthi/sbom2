@@ -24,7 +24,7 @@
         );
         $GLOBALS['db'] -> query( $addSQL );
 
-        $getSQL = 'SELECT * FROM apps_components LIMIT 10';
+        $getSQL = 'SELECT * FROM apps_components LIMIT 100';
         $data = $GLOBALS['db'] -> query( $getSQL );
 
         return createNewList( grabList( $data ) );
