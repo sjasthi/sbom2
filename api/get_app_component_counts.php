@@ -6,6 +6,7 @@
      * Input:  This API doesnt take any input paramaters.
      * 
      * Sample URL
+     * 
      * http://localhost/sbom2/api/get_app_component_counts.php
      *
      * @author Shahid Iqbal, Isaac Hentges, Nathan Lantaigne-Goetsch, Abdulsalam Geddi
