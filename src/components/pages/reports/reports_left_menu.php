@@ -24,7 +24,7 @@
 
         <a href="<?php echo checkSelectedLeftMenuLink( "REPORTSUNIQUEFOSSLIST", "reports_unique_foss_list.php" ); ?>">
             <div <?php echo checkSelectedLeftMenu( "REPORTSUNIQUEFOSSLIST" ); ?>>
-                <?php include $assetsPath."svg/starCircled.svg"; ?>
+                <?php include $assetsPath."svg/unique.svg"; ?>
                 <p> Unique FOSS List </p>
             </div>
         </a>
@@ -44,8 +44,8 @@
 	  </a>
 	  <a href="<?php echo checkSelectedLeftMenuLink( "REPORTSSECURITY", "reports_security.php" ); ?>">
             <div <?php echo checkSelectedLeftMenu( "REPORTSSECURITY" ); ?>>
-                <?php include $assetsPath."svg/copyright.svg"; ?>
-                <p> Reports (Security) </p>		
+                <?php include $assetsPath."svg/secuirtyissue.svg"; ?>
+                <p> Reports Security </p>		
             </div>
         </a>
         <a href="<?php echo checkSelectedLeftMenuLink( "REPORTSOWNERSHIP", "reports_ownership.php" ); ?>">
@@ -57,7 +57,7 @@
         
         <a href="<?php echo checkSelectedLeftMenuLink( "REPORTSREQUESTER", "reports_requester_count.php" ); ?>">
             <div <?php echo checkSelectedLeftMenu( "REPORTSREQUESTER" ); ?>>
-                <?php include $assetsPath."svg/copyright.svg"; ?>
+                <?php include $assetsPath."svg/request.svg"; ?>
                 <p> Report Requester  </p>
             </div>
         </a>
@@ -65,7 +65,7 @@
         <a href="<?php echo checkSelectedLeftMenuLink( "REPORTSSECURITY", "reports_security_visualization.php" ); ?>">
             <div <?php echo checkSelectedLeftMenu( "REPORTSSECURITY" ); ?>>
                 <?php include $assetsPath."svg/security.svg"; ?>
-                <p> Security (Visualization) </p>
+                <p> Security Visualization </p>
             </div>    
 
         </a> 
