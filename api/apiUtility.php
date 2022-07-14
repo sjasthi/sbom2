@@ -419,7 +419,7 @@
         public function get_green_unique_names() {
             global $db;
             $sql = "SELECT COUNT(DISTINCT cmpt_name) `Count of Unique Green Components`, 
-                        GROUP_CONCAT(DISTINCT cmpt_name) `Names of Unique Green Components`
+                        GROUP_CONCAT(DISTINCT cmpt_name) `Names of Unique Green Components Used`
                     FROM `apps_components`";
             return $db->query($sql);
         }
