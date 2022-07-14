@@ -1,7 +1,7 @@
 <?php
   $nav_selected = "APPLICATIONS";
   $left_selected = "APP_SECURITY";
-  $tabTitle = "Application";
+  $tabTitle = "APP Security";
 
   include "get_scope.php";
   include("../../../../index.php");
