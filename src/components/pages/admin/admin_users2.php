@@ -5,49 +5,111 @@
 
     include("../../../../index.php");
     include("admin_left_menu.php");
+	
 
-    $query = "SELECT * FROM users";
+
+//Read cookies for description and did you know length, use defauts if not set.
+$last_name_length = 1000;
+$email_length = 1000;
+
+$description_length_cookie_name = "last_name_length";
+$email_length_cookie_name = "email_length_length";
+
+if (isset($_COOKIE[$last_name_length_cookie_name])) {
+    $last_name_length = $_COOKIE[$last_name_length_cookie_name];
+}
+
+if (isset($_COOKIE[$email_length_cookie_name])) {
+    $email_length = $_COOKIE[$email_length_cookie_name];
+}
+
+    $query = "SELECT id, first_name, LEFT (last_name, $last_name_length) as last_name, LEFT (email, $email_length) as email, hash, active, role, modified_time, created_time FROM users";
+
     $GLOBALS['data'] = mysqli_query( $db, $query );
 ?>
 
-<div class="wrap">
-    <h3 style="color: #01B0F1;"> Admin --> Users </h3>
+<style>
+    #title {
+        text-align: center;
+        color: darkgoldenrod;
+    }
+    #toggle {
+        color: 	#4397fb;
+    }
+    #toggle:hover {
+        color: #467bc7
+    }
+    thead input {
+        width: 100%;
+    }
+    .thumbnailSize{
+        height: 100px;
+        width: 100px;
+        transition:transform 0.25s ease;
+    }
+    .thumbnailSize:hover {
+        -webkit-transform:scale(3.5);
+        transform:scale(3.5);
+    }
+    
+</style>
 
+<!-- Page Content -->
+<br><br>
+<div class="container-fluid">
+    <?php
+        if(isset($_GET['createDress'])){
+            if($_GET["createDress"] == "Success"){
+                echo '<br><h3>Success! Your Dress has been added!</h3>';
+            }
+        }
 
+        if(isset($_GET['DressUpdated'])){
+            if($_GET["DressUpdated"] == "Success"){
+                echo '<br><h3>Success! Your Dress has been modified!</h3>';
+            }
+        }
 
+        if(isset($_GET['DressDeleted'])){
+            if($_GET["DressDeleted"] == "Success"){
+                echo '<br><h3>Success! Your Dress has been deleted!</h3>';
+            }
+        }
 
-
-
-    <div id="customerTableView" class="table-container">
-        <table id="info" class="datatable table table-striped table-bordered datatable-style table-hover">
-            <thead>
-                <tr id="table-first-row">
+        if(isset($_GET['createTopic'])){
+            if($_GET["createTopic"] == "Success"){
+                echo '<br><h3>Success! Your topic has been added!</h3>';
+            }
+        }
+    ?>
+   
+    <h2 id="title">Dresses List</h2><br>
+    
+    <div id="customerTableView">
+        <button><a class="btn btn-sm" href="create_dress.php">Create a Dress</a></button>
+        <table class="display" id="ceremoniesTable" style="width:100%">
+            <div class="table responsive">
+                <thead>
+                <tr>
                     <th>ID</th>
-					<th>ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Hash</th>
-                    <th>Active</th>
-                    <th>Role</th>
-					<th>Modified Time</th>
-                    <th>Created Time</th>
-
-                    <th>Edit</th>
+                    <th>First</th>
+                    <th>last</th>
+                    <th>email</th>
+                    <th>hash</th>
+                    <th>active</th>
+                    <th>role</th>
+                    <th>modified_time</th>
+                    <th>created_time</th>
+					
+                    <th>Display</th>
+                    <th>Modify</th>
                     <th>Delete</th>
                 </tr>
-            </thead>
-
-
-        <button><a class="btn btn-sm" href="create_user.php">Create a User</a></button>
+                </thead>
                 <tbody>
-<!--<div class="wrap">
-  
-
                 <div>
                     <strong> Toggle column: </strong> 
                     <a id="toggle" class="toggle-vis" data-column="0">ID</a> - 
-					<a id="toggle" class="toggle-vis" data-column="0">ID</a> - 
                     <a id="toggle" class="toggle-vis" data-column="1">First</a> - 
                     <a id="toggle" class="toggle-vis" data-column="2">Last</a> - 
                     <a id="toggle" class="toggle-vis" data-column="3">email</a> - 
@@ -56,9 +118,10 @@
                     <a id="toggle" class="toggle-vis" data-column="6">role</a> -
                     <a id="toggle" class="toggle-vis" data-column="7">modified_time</a> - 
                     <a id="toggle" class="toggle-vis" data-column="8">created_time</a> -
+ 
                     <a id="toggle" class="toggle-vis" data-column="12">Modify</a> - 
                     <a id="toggle" class="toggle-vis" data-column="13">Delete</a> 
-                </div> --> <br><br>
+                </div> <br>
                 
                 <?php
                 // fetch the data from $_GLOBALS
@@ -91,13 +154,14 @@
                     <td><div contenteditable="true" onBlur="updateValue(this,'created_time','<?php echo $ID; ?>')"><?php echo $created_time; ?></div></span> </td>
                    
 
-                    <?php echo '<td><a class="btn btn-warning btn-sm" href="edit_users.php?id='.$row["id"].'">Edit</a></td>' ?>
+                    <?php echo '<td><a class="btn btn-warning btn-sm" href="modify_dress.php?id='.$row["id"].'">Modify</a></td>' ?>
                     <?php echo '<td><a class="btn btn-danger btn-sm" href="deleteDress.php?id='.$row["id"].'">Delete</a></td>' ?>
                 </tr>
                  <?php  
                     } else{
                       echo '<tr>
                       <td>'.$row["id"].'</td>
+                      <td> </span> <a href="display_the_dress.php?id='.$row["id"].'">'.$row["ID"].'</a></td>
                       <td>'.$row["first_name"].'</td>
                       <td>'.$row["last_name"].'</td>
                       <td>'.$row["email"].' </span> </td>
@@ -108,8 +172,8 @@
                       <td>'.$row["created_time"].' </span> </td>
                       
 
-                      <td><a class="btn btn-warning btn-sm" href="edit_users.php?id='.$row["id"].'">Edit</a></td>
-                     <td><a class="btn btn-danger btn-sm" href="deleteDress.php?id='.$row["id"].'">Delete</a></td>
+                      <td><a class="btn btn-warning btn-sm" href="modify_dress.php?id='.$row["id"].'">Modify</a></td>
+                      <td><a class="btn btn-danger btn-sm" href="deleteDress.php?id='.$row["id"].'">Delete</a></td>
                   </tr>';    
 
                     }//end while
@@ -124,12 +188,10 @@
     </div>
 </div>
 
-
-
 <!-- /.container -->
 <!-- Footer -->
 <footer class="page-footer text-center">
-    <!--<p>Created for ICS 325 Summer Project "Team Cougar"</p> -->
+    <p>Created for ICS 325 Summer Project "Team Alligators"</p>
 </footer>
 
 <!--JQuery-->

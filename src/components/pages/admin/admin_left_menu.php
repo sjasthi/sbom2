@@ -1,10 +1,10 @@
 <div class="wrap">
   <div id="menu-left">
-    <!-- <a href="<?php echo checkSelectedLeftMenuLink( "USERS", "admin_users.php" ); ?>">
+    <a href="<?php echo checkSelectedLeftMenuLink( "USERS", "admin_users.php" ); ?>">
         <div <?php echo checkSelectedLeftMenu( "USERS" ); ?>>
         <?php include $assetsPath."svg/users.svg"; ?>
         <p>Users</p></div>
-    </a> -->
+    </a>
 
     <a href="<?php echo checkSelectedLeftMenuLink( "BOMBACKUP", "admin_bom_backup.php" ); ?>">
         <div <?php echo checkSelectedLeftMenu( "BOMBACKUP" ); ?>>

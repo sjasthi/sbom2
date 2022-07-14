@@ -33,17 +33,13 @@
 					<th>Modified Time</th>
                     <th>Created Time</th>
 
-                    <th>Edit</th>
+                    <th>Modify</th>
                     <th>Delete</th>
                 </tr>
             </thead>
 
 
-        <button><a class="btn btn-sm" href="create_user.php">Create a User</a></button>
                 <tbody>
-<!--<div class="wrap">
-  
-
                 <div>
                     <strong> Toggle column: </strong> 
                     <a id="toggle" class="toggle-vis" data-column="0">ID</a> - 
@@ -58,7 +54,7 @@
                     <a id="toggle" class="toggle-vis" data-column="8">created_time</a> -
                     <a id="toggle" class="toggle-vis" data-column="12">Modify</a> - 
                     <a id="toggle" class="toggle-vis" data-column="13">Delete</a> 
-                </div> --> <br><br>
+                </div> <br>
                 
                 <?php
                 // fetch the data from $_GLOBALS
@@ -91,7 +87,7 @@
                     <td><div contenteditable="true" onBlur="updateValue(this,'created_time','<?php echo $ID; ?>')"><?php echo $created_time; ?></div></span> </td>
                    
 
-                    <?php echo '<td><a class="btn btn-warning btn-sm" href="edit_users.php?id='.$row["id"].'">Edit</a></td>' ?>
+                    <?php echo '<td><a class="btn btn-warning btn-sm" href="edit_users.php?id='.$row["id"].'">Modify</a></td>' ?>
                     <?php echo '<td><a class="btn btn-danger btn-sm" href="deleteDress.php?id='.$row["id"].'">Delete</a></td>' ?>
                 </tr>
                  <?php  
