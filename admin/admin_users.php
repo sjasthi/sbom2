@@ -33,7 +33,7 @@
 					<th>Modified Time</th>
                     <th>Created Time</th>
 
-                    <th>Modify</th>
+                    <th>Edit</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -91,7 +91,7 @@
                     <td><div contenteditable="true" onBlur="updateValue(this,'created_time','<?php echo $ID; ?>')"><?php echo $created_time; ?></div></span> </td>
                    
 
-                    <?php echo '<td><a class="btn btn-warning btn-sm" href="edit_users.php?id='.$row["id"].'">Modify</a></td>' ?>
+                    <?php echo '<td><a class="btn btn-warning btn-sm" href="edit_users.php?id='.$row["id"].'">Edit</a></td>' ?>
                     <?php echo '<td><a class="btn btn-danger btn-sm" href="deleteDress.php?id='.$row["id"].'">Delete</a></td>' ?>
                 </tr>
                  <?php  
