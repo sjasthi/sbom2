@@ -10,83 +10,6 @@
     class apiUtility
     {
 
-        //Begin get_yellow_unique_names
-        /**
-         * @param $app_id
-         *
-         * @return bool|mysqli_result
-         */
-        
-         public function get_yellow_unique_names(){
-            global $db;
-            $sql = "SELECT DISTINCT app_name FROM apps_components";
-            return $db->query($sql);
-         }
-
-
-
-        // Begin get_bomlines_status functions
-        /**
-         * @param $app_id
-         *
-         * @return bool|mysqli_result
-         */
-        public function get_bom_status_id($app_id){
-            global $db;
-            $sql = "SELECT status FROM apps_components
-                                  WHERE app_id = $app_id
-                                  AND status != 'Approved' ";
-            $result= $db->query($sql);
-            if ($result->num_rows > 0) {
-                echo "Status Open";
-            }
-                else {
-                echo "Status Approved";
-        }
-    }
-
-
-        /**
-         * @param $app_name
-         * @param $app_version
-         *
-         * @return bool|mysqli_result
-         */
-        public function get_bom_status_name_version($app_name, $app_version){
-            global $db;
-            $sql = "SELECT status FROM apps_components
-                                  WHERE app_name LIKE '$app_name%'
-                                  AND app_version LIKE '$app_version%'
-                                  AND status != 'Approved' ";
-            $result= $db->query($sql);
-            if ($result->num_rows > 0) {
-                echo "Status Open";
-            }
-                else {
-                    echo "Status Approved";
-        }
-        }
-
-         /**
-         * @param app_name
-         *
-         * @return bool|mysqli_result
-         */
-        public function get_bom_status_name($app_name){
-            global $db;
-            $sql = "SELECT status FROM apps_components
-                                  WHERE app_name LIKE '$app_name%'
-                                  AND status != 'Approved' ";
-            $result= $db->query($sql);
-            if ($result->num_rows > 0) {
-                echo "Status Open";
-            }
-                else {
-                    echo "Status Approved";
-        }
-        }
-        
-
         // Begin get_bomlines_pending functions
         /**
          * @param $app_id
@@ -131,6 +54,9 @@
         }
 
 
+
+
+
         // Begin is_safe functions
         /**
          * @param $component_id
@@ -139,7 +65,7 @@
          */
         public function is_safe_id($component_id) {
             global $db;
-            $sql = "SELECT DISTINCT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components 
+            $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components 
                                                                        WHERE cmpt_id = $component_id 
                                                                        AND issue_count = 0";
             return $db->query($sql);
@@ -153,8 +79,8 @@
          */
         public function is_safe_name_version($component_name, $component_version) {
             global $db;
-            $sql = "SELECT DISTINCT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components 
-                                                                       WHERE cmpt_name LIKE '$component_name%' 
+            $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components 
+                                                                       WHERE cmpt_name = '$component_name%' 
                                                                        AND cmpt_version = '$component_version' 
                                                                        AND issue_count = 0";
             return $db->query($sql);
@@ -167,7 +93,7 @@
          */
         public function is_safe_name($component_name) {
             global $db;
-            $sql = "SELECT DISTINCT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components WHERE cmpt_name LIKE '$component_name%' 
+            $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components WHERE cmpt_name LIKE '$component_name%' 
                                                                                               AND issue_count = 0";
             return $db->query($sql);
         }
@@ -181,7 +107,7 @@
         public function get_security_summary_id($component_id) {
             global $db;
             $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, monitoring_id, monitoring_digest, issue_count FROM apps_components 
-                                                                       WHERE cmpt_id = $component_id AND issue_count > 0";
+                                                                       WHERE cmpt_id = $component_id";
             return $db->query($sql);
         }
 
@@ -195,8 +121,7 @@
             global $db;
             $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, monitoring_id, monitoring_digest, issue_count FROM apps_components 
                                                                        WHERE cmpt_id = '$component_id' 
-                                                                       AND cmpt_version = '$component_version'
-                                                                       AND issue_count > 0";
+                                                                       AND cmpt_version = '$component_version'";
             return $db->query($sql);
         }
 
@@ -207,8 +132,7 @@
          */
         public function get_security_summary_name($component_name) {
             global $db;
-            $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, monitoring_id, monitoring_digest, issue_count FROM apps_components WHERE cmpt_name LIKE '$component_name%'
-                                                                                                                                AND issue_count > 0";
+            $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, monitoring_id, monitoring_digest, issue_count FROM apps_components WHERE cmpt_name LIKE '$component_name%'";
             return $db->query($sql);
         }
 
@@ -288,7 +212,6 @@
         }
 
         /**
-        Get the application owner given an app id
          * @param $app_id
          *
          * @return bool|mysqli_result
@@ -303,7 +226,6 @@
         }
 
         /**
-        Get the application owner given an app name
          * @param $app_name
          *
          * @return bool|mysqli_result
@@ -316,62 +238,6 @@
             return $db->query($sql);
         }
 
-        /**
-        Get the requester given an component id
-         * @param $app_id
-         *
-         * @return bool|mysqli_result
-         */
-        public function get_owner_component_id($component_id) {
-            global $db;
-            $sql = "SELECT requester 
-            FROM apps_components 
-            WHERE cmpt_id = '$component_id'";
-            return $db->query($sql);
-        }
-
-        /**
-        Get the requester given an component name
-         * @param $app_name
-         *
-         * @return bool|mysqli_result
-         */
-        public function get_owner_component_name($component_name) {
-            global $db;
-            $sql = "SELECT requester 
-            FROM apps_components 
-            WHERE cmpt_name = '$component_name'";
-            return $db->query($sql);
-        }
-
-
-        /**
-        Get the requester given an component version
-         * @param $app_name
-         *
-         * @return bool|mysqli_result
-         */
-        public function get_owner_component_version($component_version) {
-            global $db;
-            $sql = "SELECT requester 
-            FROM apps_components 
-            WHERE cmpt_version = '$component_version'";
-            return $db->query($sql);
-        }
-
-        /**
-        Get the amount of applications(is not distinct/unique) requested by each requester
-         *
-         * @return bool|mysqli_result
-         */
-        public function get_requester_count() {
-            global $db;
-            $sql = "SELECT requester, COUNT(*) 'Requester Count Total'
-            FROM apps_components
-            GROUP BY requester";
-            return $db->query($sql);
-        }
-
         // Begin get_bom_list functions
         /**
          * get_bom_list returns rows based on red_app_id parameter.
@@ -379,6 +245,7 @@
          *
          * @return bool|mysqli_result
          */
+
         public function get_bom_list_id($app_id) {
             global $db;
             $sql = "SELECT * FROM apps_components WHERE app_id =  $app_id";
@@ -515,14 +382,48 @@
             return $db->query($sql);
         }
 
-        public function get_requester_pending_tasks() {
+        // Begin get_app_component_counts function
+        /**
+         * get_app_component_counts provides FOS count, 
+         * Commercial count, Internal count and Total count
+         * 
+         * Query for all total count
+         * SELECT  ap.app_id red_app_id, ap.app_name red_app_name, ap.app_version red_app_version, 
+         *              COUNT(IF (license LIKE '%Open Source', cmpt_id, null)) AS `Open Source Component Count`, 
+         *              COUNT(IF (license LIKE '%Commercial', cmpt_id, null)) AS `Commercial Component Count`,  
+         *              COUNT(cmpt_id) TOTAL_COUNT  
+         *           FROM apps_components ac JOIN applications ap ON ap.app_id = ac.red_app_id 
+         *           GROUP BY red_app_id
+         * @return bool|mysqli_result
+         */
+
+        public function get_app_component_counts() {
             global $db;
-            $sql = "SELECT applications.app_id, applications.app_name, applications.app_version, apps_components.cmpt_id,
-                    apps_components.cmpt_name, apps_components.cmpt_version, apps_components.app_id, apps_components.app_name, 
-                    apps_components.app_version, apps_components.status FROM apps_components 
-                        INNER JOIN applications ON applications.app_id = apps_components.red_app_id 
-                                                                        WHERE apps_components.status NOT LIKE 'Approved'";
+            $sql = "SELECT  ap.app_id red_app_id, ap.app_name red_app_name, ap.app_version red_app_version, 
+                        COUNT(IF (license LIKE '%Open Source', cmpt_id, null)) AS `Open Source Component Count`, 
+                        COUNT(IF (license LIKE '%Commercial', cmpt_id, null)) AS `Commercial Component Count`,  
+                        COUNT(IF (license LIKE '%Open Source' OR license LIKE '%Commercial', cmpt_id, null)) TOTAL_COUNT 
+                    FROM apps_components ac JOIN applications ap ON ap.app_id = ac.red_app_id 
+                    GROUP BY red_app_id";
             return $db->query($sql);
         }
+
+
+        // Begin get_green_unique_names function
+        /**
+         * get_green_unique_names returns unique green component names.
+         *
+         * @return bool|mysqli_result
+         */
+
+        public function get_green_unique_names() {
+            global $db;
+            $sql = "SELECT COUNT(DISTINCT cmpt_name) `Count of Unique Green Components`, 
+                        GROUP_CONCAT(DISTINCT cmpt_name) `Names of Unique Green Components`
+                    FROM `apps_components`";
+            return $db->query($sql);
+        }
+
+
 
     }
