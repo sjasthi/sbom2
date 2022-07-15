@@ -113,7 +113,7 @@ echo '<p
       </tbody>
       <tfoot>
         <tr>
-        <th>Requester Name</th>
+          <th>Requester Name</th>
           <th>Approved</th>
           <th>Pending</th>
         </tr>
@@ -184,120 +184,130 @@ echo '<p
 
       $('.table-container').doubleScroll(); // assign a double scroll to this class
     });
-    function createBarChart(barChart){
-    let name = barChart[0];
-    let columnTitle = barChart[1];
 
-    let queryArray = [[columnTitle, 'Count', {role:'annotation'}]];
+    function createBarChart(barChart) {
+      let name = barChart[0];
+      let columnTitle = barChart[1];
 
-    switch(name){
+      let queryArray = [
+        [columnTitle, 'Count', {
+          role: 'annotation'
+        }]
+      ];
+
+      switch (name) {
 
         case 'Requester':
-            <?php
-            $query = $db->query("SELECT requester, SUM(CASE WHEN status LIKE '%Approved%' THEN 1 ELSE 0 END) as total_approved, SUM(CASE WHEN status NOT LIKE '%Approved%' THEN 1 ELSE 0 END) as not_approved
+          <?php
+          $query = $db->query("SELECT requester, SUM(CASE WHEN status LIKE '%Approved%' THEN 1 ELSE 0 END) as total_approved, SUM(CASE WHEN status NOT LIKE '%Approved%' THEN 1 ELSE 0 END) as not_approved
             FROM apps_components
             GROUP BY requester;");
-            while($query_row = $query->fetch_assoc()) {
-                echo 'queryArray.push(["'.$query_row["requester"].'", '.$query_row["total_approved"].', "'.$query_row["total_approved"].'"]);';
-                echo 'queryArray.push(["'.$query_row[""].'", '.$query_row["not_approved"].', "'.$query_row["not_approved"].'"]);';
+          while ($query_row = $query->fetch_assoc()) {
+            echo 'queryArray.push(["' . $query_row["requester"] . '", ' . $query_row["total_approved"] . ', "' . $query_row["total_approved"] . '"]);';
+            echo 'queryArray.push(["' . $query_row[""] . '", ' . $query_row["not_approved"] . ', "' . $query_row["not_approved"] . '"]);';
+          }
+          ?>
+          break;
+      }
 
-            }
-            ?>
-            break;
+      return queryArray;
     }
 
-    return queryArray;
-}
+    let barCharts = [
+      ['Requester', 'Requester Count']
+    ];
 
-let barCharts = [['Requester', 'Requester Count']];
+    for (let i = 0; i < barCharts.length; i++) {
+      barCharts[i] = createBarChart(barCharts[i]);
+    }
+  </script>
 
-for(let i = 0; i < barCharts.length; i++){
-    barCharts[i] = createBarChart(barCharts[i]);
-}
-</script>
+  <!-- Google Bar Chart API Code -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {
+      'packages': ['corechart']
+    });
+    google.charts.setOnLoadCallback(drawBarCharts);
 
-<!-- Google Bar Chart API Code -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawBarCharts);
+    function drawBarCharts() {
+      barCharts.forEach(queryArray => drawBarChart(queryArray));
+    }
 
-function drawBarCharts() {
-    barCharts.forEach(queryArray => drawBarChart(queryArray));
-}
+    function drawBarChart(queryArray) {
+      var data = google.visualization.arrayToDataTable(queryArray);
 
-function drawBarChart(queryArray){
-    var data = google.visualization.arrayToDataTable(queryArray);
+      let title = queryArray[0][0] + ' Report';
 
-    let title = queryArray[0][0] + ' Report';
-
-    var options = {
+      var options = {
         title: title,
         width: 750,
         height: 400,
-    };
+      };
 
-    var chart = new google.visualization.BarChart(document.getElementById(title.replace(/ /g, '')));
+      var chart = new google.visualization.BarChart(document.getElementById(title.replace(/ /g, '')));
 
-    google.visualization.events.addListener(chart, 'select', selectHandler);
+      google.visualization.events.addListener(chart, 'select', selectHandler);
 
-    chart.draw(data, options);
+      chart.draw(data, options);
 
-    function selectHandler(){
+      function selectHandler() {
         var selectedItem = chart.getSelection()[0];
 
         if (selectedItem) {
-            var statusSelection = data.getValue(selectedItem.row, 0);
-            var reportName = queryArray[0][0].toLowerCase().replace(/ /g, '');
+          var statusSelection = data.getValue(selectedItem.row, 0);
+          var reportName = queryArray[0][0].toLowerCase().replace(/ /g, '');
 
-            document.cookie = encodeURI("app_issue_count_cookie=");
+          document.cookie = encodeURI("app_issue_count_cookie=");
 
 
-            switch(reportName){
-                case "requestercount":
-                    document.cookie = encodeURI("app_issue_count_cookie=" + statusSelection); break;
+          switch (reportName) {
+            case "requestercount":
+              document.cookie = encodeURI("app_issue_count_cookie=" + statusSelection);
+              break;
 
-            }
+          }
 
-            location.reload();
+          location.reload();
         }
+      }
+
+      let reportName = queryArray[0][0].toLowerCase().replace(/ /g, '');
+
+      let length = 0;
+
+      queryArray.forEach((slice, index) => {
+        if (index !== 0) {
+          length += slice[1];
+        }
+      });
+
+      switch (reportName) {
+        case "requestercount":
+          document.getElementById('totalRequesterCountReport').innerHTML = "Total: " + length;
+          break;
+
+      }
     }
+  </script>
 
-    let reportName = queryArray[0][0].toLowerCase().replace(/ /g, '');
-
-    let length = 0;
-
-    queryArray.forEach((slice, index) => {
-        if(index !== 0){
-            length += slice[1];
-        }
-    });
-
-    switch(reportName){
-                case "requestercount":
-                    document.getElementById('totalRequesterCountReport').innerHTML = "Total: " + length; break;
-
-            }
-}
-</script>
-
-<div class="right-content">
+  <div class="right-content">
     <div class="container">
-        <h3></h3>
-        <h3></h3>
-        <h3  id = scannerHeader style = "color: #FF0000;">Bar Graph</h3>
+      <h3></h3>
+      <h3></h3>
+      <h3 id=scannerHeader style="color: #FF0000;">Bar Graph</h3>
     </div>
-</div>
-<div class="container">
+  </div>
+  <div class="container">
     <div class="table-container">
-        <table>
-            <tr>
-                <td>
-                    <div style="width:750px; height:400px; display:inline-block;" id="RequesterCountReport" style="width: 50%; height: 500px;"></div>
-                    <p  style="position:relative;z-index:1000;text-align:center" id="totalRequesterCountReport"></p>
-                </td>
-            </tr>
-        </table>
+      <table>
+        <tr>
+          <td>
+            <div style="width:750px; height:400px; display:inline-block;" id="RequesterCountReport" style="width: 50%; height: 500px;"></div>
+            <p style="position:relative;z-index:1000;text-align:center" id="totalRequesterCountReport"></p>
+          </td>
+        </tr>
+      </table>
     </div>
 
-</script>
+    </script>
