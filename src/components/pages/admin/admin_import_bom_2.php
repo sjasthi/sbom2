@@ -263,16 +263,20 @@
 
      } else {
        /* apps_components */
+       //temporary disable of autocommit
+       $db->autocommit(FALSE);
        //delete existing data in table
        $sqldelete = $db->prepare('DELETE FROM apps_components WHERE red_app_id = ?');
        $sqldelete->bind_param('s',$red_app_id_field);
        //mysqli_query($db, $sqlDelete);
        if(!$sqldelete->execute()) {
-         echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
+         echo '<p style="background: red; color: white; font-size: 2rem;">ERROR & ROLLBACK: '.$db->error.'</p>';
+         $db->rollback();
+         $db->autocommit(TRUE);
        } else {
          echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
          text-align: center; border-radius: 2px;'>DELETE SUCCESSFUL";
-         echo "<br>".count($data)." rows have been successfully deleted from the apps_components table.</p>";
+         echo "<br>Old rows have been successfully deleted from the apps_components table.</p>";
        }
 
        //insert data into database
@@ -301,15 +305,26 @@
               $issue_count = $row[$issue_count_col];
 
            if(!$sqlinsert->execute()) {
+             $db->autocommit(TRUE);
              echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
              $successful_inserts = false;
            }
        }
+
        if($successful_inserts){
-         echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
-         text-align: center; border-radius: 2px;'>IMPORT SUCCESSFUL";
-         echo "<br>".count($data)." rows have been successfully imported into the apps_components table.</p>";
-       }
+         if (!$db->commit()) {
+           $db->rollback();
+           $db->autocommit(TRUE);
+           echo '<p style="background: red; color: white; font-size: 2rem;">ERROR & ROLLBACK: '.$db->error.'</p>';
+         } else {
+           echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
+           text-align: center; border-radius: 2px;'>IMPORT SUCCESSFUL";
+           echo "<br>".count($data)." rows have been successfully imported into the apps_components table.</p>";
+         }
+         $db->autocommit(TRUE);
+       } 
+
+       $db->autocommit(TRUE);
        /* applications */
        //$red_query = $db->prepare('select distinct app_id, app_name, app_version, status from apps_components where red_app_id = ?');
        $red_query = $db->prepare('select distinct app_id, app_name, app_version, status from apps_components where app_id = ?');
