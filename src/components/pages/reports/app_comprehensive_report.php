@@ -162,8 +162,8 @@ function getLicenseCounts($db)
 <!-- We'll need to figure out how to setup the HTML to display everything -->
 <div class="wrap">
     <h3 id=scannerHeader style="color: #01B0F1;">Reports --> Comprehensive Report </h3>
-    <div class="table-container">
-        <h4 style="color: #01B0F1;">Fix Plan</h4>
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Fix it plan</button>
+    <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
                 <tr id="table-first-row">
@@ -183,8 +183,8 @@ function getLicenseCounts($db)
             </tfoot>
         </table>
     </div>
-    <div class="table-container">
-        <h4 style="color: #01B0F1;">Fix Plan</h4>
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">Insert section name here</button>
+    <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
                 <tr id="table-first-row">
@@ -204,8 +204,8 @@ function getLicenseCounts($db)
             </tfoot>
         </table>
     </div>
-    <div class="table-container">
-        <h4 style="color: #01B0F1;">Fix Plan</h4>
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Insert Section Name here</button>
+    <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
                 <tr id="table-first-row">
@@ -225,8 +225,8 @@ function getLicenseCounts($db)
             </tfoot>
         </table>
     </div>
-    <div class="table-container">
-        <h4 style="color: #01B0F1;">Fix Plan</h4>
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Insert Section name here</button>
+    <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
                 <tr id="table-first-row">
@@ -246,8 +246,8 @@ function getLicenseCounts($db)
             </tfoot>
         </table>
     </div>
-    <div class="table-container">
-        <h4 style="color: #01B0F1;">Duplicate Components</h4>
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Duplicate Components</button>
+    <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
                 <tr id="table-first-row">
@@ -312,8 +312,8 @@ function getLicenseCounts($db)
             </tfoot>
         </table>
     </div>
-    <div class="table-container">
-        <h4 style="color: #01B0F1;">Component Count</h4>
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%;font-size: 24px;">Component Count</button>
+    <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
                 <tr id="table-first-row">
@@ -358,8 +358,8 @@ function getLicenseCounts($db)
             </tfoot>
         </table>
     </div>
-    <div class="table-container">
-        <h4 style="color: #01B0F1;">Dependency Report</h4>
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">Dependency Report</button>
+    <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
                 <tr id="table-first-row">
@@ -379,8 +379,8 @@ function getLicenseCounts($db)
             </tfoot>
         </table>
     </div>
-    <div class="table-container">
-        <h4 style="color: #01B0F1;">List of Unique Components</h4>
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">List of Unique Components</button>
+    <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
                 <tr id="table-first-row">
@@ -400,8 +400,8 @@ function getLicenseCounts($db)
             </tfoot>
         </table>
     </div>
-    <div class="table-container">
-        <h4 style="color: #01B0F1;">License Counts</h4>
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">License Counts</button>
+    <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
                 <tr id="table-first-row">
@@ -503,5 +503,25 @@ function getLicenseCounts($db)
 
             $('.table-container').doubleScroll(); // assign a double scroll to this class
         });
+    </script>
+    <script type="text/javascript">
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                /* Toggle between adding and removing the "active" class,
+                to highlight the button that controls the panel */
+                this.classList.toggle("active");
+
+                /* Toggle between hiding and showing the active panel */
+                var panel = this.nextElementSibling;
+                if (panel.style.display === "none") {
+                    panel.style.display = "block";
+                } else {
+                    panel.style.display = "none";
+                }
+            });
+        }
     </script>
 </div>
