@@ -100,6 +100,7 @@
           <th>Notes</th>
         </thead>
           <?php
+            $startTime = microtime(true);
             $getAppId = null;
             $findApp = false;
 
@@ -172,8 +173,10 @@
               <?php
               displayBomsAsTable($db);
              }
+            $endTime = microtime(true) - $startTime;
           ?>
         </table>
+        <span><?php echo round($endTime, 5); ?> seconds to generate</span>
         </div>
       </div>
     </div>
