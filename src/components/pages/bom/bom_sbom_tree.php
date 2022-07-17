@@ -94,10 +94,6 @@
           <th style="width:50%" >Name</th>
           <th>Version</th>
           <th>Status</th>
-          <th>CMP Desc.</th>
-          <th>Comp. ID</th>
-          <th>Request Step</th>
-          <th>Notes</th>
         </thead>
           <?php
             $startTime = microtime(true);
