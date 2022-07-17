@@ -48,9 +48,9 @@ function showAppsAsChecklist($db){
         if($total_security_issues != 0){
           $multi = $BARGRAPH_LENGTH / ($total_security_issues);
         }
-        echo '<span class="graphBar" style="background-color:red; width:'.($security_issues[0] * $multi).'px;"></span>';
-        echo '<span class="graphBar" style="background-color:orange; width:'.($security_issues[1] * $multi).'px;"></span>';
-        echo '<span class="graphBar" style="background-color:yellow; width:'.($security_issues[2] * $multi).'px;"></span>';
+        echo '<span class="graphBar" style="background-color:red; width:'.($security_issues[0] * $multi).'px;text-align:center;">'.(($security_issues[0] > 0)? $security_issues[0]:"").'</span>';
+        echo '<span class="graphBar" style="background-color:orange; width:'.($security_issues[1] * $multi).'px;text-align:center;">'.(($security_issues[1] > 0)? $security_issues[1]:"").'</span>';
+        echo '<span class="graphBar" style="background-color:yellow; width:'.($security_issues[2] * $multi).'px;text-align:center;">'.(($security_issues[2] > 0)? $security_issues[2]:"").'</span>';
         echo '</div></td>';
         echo '</tr>';
         $security_issues = [0,0,0];
