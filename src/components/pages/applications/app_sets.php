@@ -11,6 +11,37 @@ include("app_left_menu.php");
 global $db;
 $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
 
+function showAppsetsAsTable($db){
+    $sql_query_appsets = '
+      SELECT a_set.app_set_id, a_set.app_set_name, a_set.app_id, a.app_name, a.app_version
+      FROM app_sets a_set JOIN applications a
+      ON a_set.app_id = a.app_id
+      ORDER BY a_set.app_set_id ASC;
+    ';
+    $query_appsets_result = $db->query($sql_query_appsets);
+    if($query_appsets_result->num_rows < 1){
+      // show err
+      return;
+    }
+    $appset_id = NULL;
+    $appset_list = [];
+    while($app_from_appset = $query_appsets_result->fetch_assoc()){
+      if($appset_id != $app_from_appset['app_set_id']){
+        echo '<tr>';
+        $appset_id = $app_from_appset['app_set_id'];
+        echo '<td><input id="'.$app_from_appset['app_set_id'].'" type="radio" name="appset_radio" value="'.$app_from_appset['app_set_id'].'"></td>';
+        echo'<td>'.$app_from_appset['app_set_name'].'</td>';
+      } else {
+        echo '<td></td>';
+        echo '<td></td>';
+      }
+      echo'<td>'.$app_from_appset['app_id'].'</td>';
+      echo'<td>'.$app_from_appset['app_name'].'</td>';
+      echo'<td>'.$app_from_appset['app_version'].'</td>';
+      echo '</tr>';
+      $appset_list[] = $app_from_appset['app_id'];
+    }
+}
 ?>
 
 <div class="wrap">
@@ -52,6 +83,8 @@ $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
             <th></th>
             <th>App Set Name</th>
             <th>App IDs</th>
+            <th>App Name</th>
+            <th>App Version</th>
           </tr>
         </thead>
         <tbody>
