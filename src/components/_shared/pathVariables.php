@@ -15,4 +15,5 @@
       $autoFocus = '';
     }
   }
+  $appPagePath = $componentsPath . 'pages/applications/app_page.php';
 ?>

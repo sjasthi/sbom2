@@ -292,9 +292,16 @@ CREATE TABLE `ownership` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `ownership` (`app_name`, `app_type`, `foss_contact`, `app_owner`, `team_name`, `ownership_type`, `owning_org`) VALUES
-('test1', 'red', '', '', '', '', ''),
-('test2', 'yellow', '', '', '', '', ''),
-('test3', 'red_n_yellow', '', '', '', '', '');
+('Gimp', 'red', 'GIMP Development Team', 'open-source', 'GIMP', 'copyright-free', 'gimp.org'),
+('Python', 'yellow', 'Python Software Foundation', 'open-source', 'PYTHON', 'copyright-free', 'python.org'),
+('Mozilla Firefox', 'red_n_yellow', 'Mozilla Foundation', 'open-source', 'moz://a', 'copyright-free', 'mozilla.org'),
+('Pytorch', 'yellow', 'Pytorch Foundation', 'open-source', 'PYTORCH', 'copyright-free', 'pytorch.org'),
+('VLC Media Player', 'red_n_yellow', 'VLC Media Foundation', 'open-source', 'VLC MEDIA PLAYER', 'copyright-free', 'videolan.org'),
+('Gimp', 'red_n_yellow', 'GIMP Development Team', 'open-source', 'GIMP', 'copyright-free', 'gimp.org'),
+('Python', 'red', 'Python Software Foundation', 'open-source', 'PYTHON', 'copyright-free', 'python.org'),
+('Mozilla Firefox', 'yellow', 'Mozilla Foundation', 'open-source', 'moz://a', 'copyright-free', 'mozilla.org'),
+('Pytorch', 'red_n_yellow', 'Pytorch Foundation', 'open-source', 'PYTORCH', 'copyright-free', 'pytorch.org'),
+('VLC Media Player', 'yellow', 'VLC Media Foundation', 'open-source', 'VLC MEDIA PLAYER', 'copyright-free', 'videolan.org');
 
 -- --------------------------------------------------------
 
