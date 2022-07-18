@@ -1,16 +1,17 @@
 <?php
-$nav_selected = "REPORTS";
-$left_selected = "REPORTSDUPLICATEVERSIONS";
-$tabTitle = "SBOM - Reports (Duplicate Versions)";
+error_reporting(0);
+$nav_selected = "APPLICATIONS";
+$left_selected = "APPLICATIONS";
+$tabTitle = "SBOM - Applications";
 
 include "../bom/get_scope.php";
 include("../../../../index.php");
-include("reports_left_menu.php");
 
 $def = "false";
 $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
 $scopeArray = array();
 
+require_once('../bom/calculate_color.php');
 ?>
 
 <?php
@@ -18,24 +19,20 @@ $cookie_name = 'preference';
 global $pref_err;
 
 /*----------------- FUNCTION TO GET BOMS -----------------*/
-function getReports($db)
+function getBoms($db)
 {
-  $sql = "SELECT app_id, app_name, app_version, cmpt_id, cmpt_version, cmpt_name, COUNT(app_name) AS count
-    FROM apps_components
-    GROUP by app_name;";
+  $sql = "SELECT * from applications;";
   $result = $db->query($sql);
 
   if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
       echo '<tr>
-          <td>' . $row["app_id"] . '</td>
-          <td>' . $row["app_name"] . '</td>
-          <td>' . $row["app_version"] . '</td>
-          <td>' . $row["cmpt_id"] . '</td>
-          <td>' . $row["cmpt_version"] . '</td>
-          <td>' . $row["cmpt_name"] . '</td>
-          <td>' . $row["count"] . '</td>
+        <td>' . $row["app_id"] . '</td>
+        <td>' . $row["app_name"] . '</td>
+        <td>' . $row["app_version"] . '</td>
+        <td>' . $row["app_status"] . ' </span> </td>
+        <td>' . $row["is_eol"] . '</td>
         </tr>';
     } //end while
   } //end if
@@ -65,7 +62,7 @@ function getFilterArray($db)
 
 //Display error if user retrieves preferences w/o any cookies set
 if (isset($_POST['getpref']) && !isset($_COOKIE[$cookie_name])) {
-  $pref_err = "You don't have Reports saved.";
+  $pref_err = "You don't have BOMS saved.";
 }
 echo '<p
   style="font-size: 2.5rem;
@@ -75,7 +72,18 @@ echo '<p
 ?>
 
 <div class="wrap">
-  <h3 id=scannerHeader style="color: #01B0F1;">Reports --> Duplicate Versions </h3>
+  <h3 id=scannerHeader style="color: #01B0F1;">Applications --> Applications List </h3>
+  <!-- Form to retrieve user preference -->
+  <form id='getpref-form' name='getpref-form' method='post' action='' style='display: inline;'>
+    <button type='submit' name='getpref' value='submit'>Show My Applications</button>
+  </form>
+  <form id='getdef-form' name='getdef-form' method='post' action='' style='display: inline;'>
+    <button type='submit' name='getdef' value='submit'>Show System Applications</button>
+  </form>
+  <form id='getall-form' name='getall-form' method='post' action='' style='display: inline;'>
+    <button type='submit' name='getall' value='submit'>Show All Applications</button>
+  </form>
+
   <div class="table-container">
     <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
       <thead>
@@ -83,19 +91,40 @@ echo '<p
           <th>App ID</th>
           <th>App Name</th>
           <th>App Version</th>
-          <th>Component ID</th>
-          <th>Component Version</th>
-          <th>Component Name</th>
-          <th>Duplicate Count</th>
+          <th>App Status</th>
+          <th>EOL</th>
         </tr>
       </thead>
       <tbody>
         <?php
         /*----------------- GET PREFERENCE COOKIE -----------------*/
-        //default if preference cookie is set, display user BOM preferences
-        if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+        //if user clicks "get all BOMS", retrieve all BOMS
+        if (isset($_POST['getall'])) {
           $def = "false";
         ?>
+          <script>
+            document.getElementById("scannerHeader").innerHTML = "Applications --> Applications List --> All Applications";
+          </script>
+        <?php
+          getBoms($db);
+          //If user clicks "show system BOMS", display BOM list filtered by default system scope
+        } elseif (isset($_POST['getdef'])) {
+          $def = "true";
+        ?>
+          <script>
+            document.getElementById("scannerHeader").innerHTML = "Applications --> Applications List --> System Applications";
+          </script>
+        <?php
+          getBoms($db);
+          getFilterArray($db);
+        } //default if preference cookie is set, display user BOM preferences
+        elseif (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+          $def = "false";
+        ?>
+
+          <script>
+            document.getElementById("scannerHeader").innerHTML = "Applications --> Applications List --> My Applications";
+          </script>
           <?php
           $prep = rtrim(str_repeat('?,', count(json_decode($_COOKIE[$cookie_name]))), ',');
           $sql = 'SELECT * FROM applications WHERE app_id IN (' . $prep . ')';
@@ -104,27 +133,31 @@ echo '<p
 
           while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
             echo '<tr>
-            <td>' . $row["app_id"] . '</td>
-            <td>' . $row["app_name"] . '</td>
-            <td>' . $row["app_version"] . '</td>
-            <td>' . $row["cmpt_id"] . '</td>
-            <td>' . $row["cmpt_version"] . '</td>
-            <td>' . $row["cmpt_name"] . '</td>
-            <td>' . $row["count"] . '</td>
-            </tr>';
+              <td>' . $row["app_id"] . '</td>
+              <td>' . $row["app_name"] . '</td>
+              <td>' . $row["app_version"] . '</td>
+              <td>' . $row["app_status"] . ' </span> </td>
+              <td>' . $row["is_eol"] . '</td>
+              </tr>';
           }
         } //if no preference cookie is set but user clicks "show my BOMS"
         elseif (isset($_POST['getpref']) && !isset($_COOKIE[$cookie_name])) {
           $def = "false";
           ?>
+          <script>
+            document.getElementById("scannerHeader").innerHTML = "Applications --> Applications List --> All Applications";
+          </script>
         <?php
-          getReports($db);
+          getBoms($db);
         } //if no preference cookie is set show all BOMS
         else {
           $def = "false";
         ?>
+          <script>
+            document.getElementById("scannerHeader").innerHTML = "Applications --> Applications List --> All Applications";
+          </script>
         <?php
-          getReports($db);
+          getBoms($db);
         }
         ?>
       </tbody>
@@ -133,10 +166,8 @@ echo '<p
           <th>App ID</th>
           <th>App Name</th>
           <th>App Version</th>
-          <th>Component ID</th>
-          <th>Component Version</th>
-          <th>Component Name</th>
-          <th>Duplicate Count</th>
+          <th>App Status</th>
+          <th>EOL</th>
         </tr>
       </tfoot>
     </table>
@@ -202,7 +233,5 @@ echo '<p
 
       z.append(listTable);
       infoFilter.after(z);
-
-      $('.table-container').doubleScroll(); // assign a double scroll to this class
     });
   </script>

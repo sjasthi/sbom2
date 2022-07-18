@@ -1,12 +1,15 @@
 <?php
 $nav_selected = "REPORTS";
-$left_selected = "REPORTSFOSSCOUNT";
-$tabTitle = "SBOM - Reports (FOSS Count)";
+$left_selected = "REPORTSREQUESTER";
+$tabTitle = "SBOM - Reports (Requester)";
 
 include "../bom/get_scope.php";
 include("../../../../index.php");
 include("reports_left_menu.php");
 
+$def = "false";
+$DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
+$scopeArray = array();
 ?>
 
 <?php
@@ -16,41 +19,53 @@ global $pref_err;
 /*----------------- FUNCTION TO GET BOMS -----------------*/
 function getReports($db)
 {
-  $sql = "SELECT app_name, app_version, SUM(CASE WHEN license NOT LIKE '%Commercial%' THEN 1 ELSE 0 END) as oss_count, SUM(CASE WHEN license LIKE '%Commercial%' THEN 1 ELSE 0 END) as commercial_count, COUNT(license) as total
-    FROM apps_components
-    GROUP BY app_name;";
+  $sql = "SELECT requester, SUM(CASE WHEN status LIKE '%Approved%' THEN 1 ELSE 0 END) as total_approved, SUM(CASE WHEN status NOT LIKE '%Approved%' THEN 1 ELSE 0 END) as not_approved
+  FROM apps_components
+  GROUP BY requester;";
   $result = $db->query($sql);
 
   if ($result->num_rows > 0) {
-    $oss_total = 0;
-    $commercial_total = 0;
-    $total = 0;
+    $approved_total = 0;
+    $not_approved_total = 0;
 
     // output data of each row
     while ($row = $result->fetch_assoc()) {
       echo '<tr>
-          <td>' . $row["app_name"] . '</td>
-          <td>' . $row["app_version"] . '</td>
-          <td>' . $row["oss_count"] . ' </span> </td>
-          <td>' . $row["commercial_count"] . '</td>
-          <td>' . $row["total"] . '</td>
+          <td>' . $row["requester"] . '</td>
+          <td>' . $row["total_approved"] . ' </span> </td>
+          <td>' . $row["not_approved"] . '</td>
         </tr>';
-      $oss_total += $row["oss_count"];
-      $commercial_total += $row["commercial_count"];
-      $total += $row["total"];
+      $approved_total += $row["total_approved"];
+      $not_approved_total += $row["not_approved"];
     } //end while
     echo '<tr>
-    <td>' . '' . '</td>
-    <td><b>' . 'Total ' .  '</b></td>
-    <td><b>' . $oss_total . '</b></td>
-    <td><b>' . $commercial_total . '</b></td>
-    <td><b>' . $total . '</b></td>
+    <td>' . 'Total' . '</b></td>
+    <td><b>' . $approved_total . '</b></td>
+    <td><b>' . $not_approved_total . '</b></td>
     </tr>';
   } //end if
   else {
     echo "0 results";
   } //end else
   $result->close();
+}
+
+function getFilterArray($db)
+{
+  global $scopeArray;
+  global $pdo;
+  global $DEFAULT_SCOPE_FOR_RELEASES;
+
+  $sql = "SELECT * FROM releases WHERE app_id LIKE ?";
+  foreach ($DEFAULT_SCOPE_FOR_RELEASES as $currentID) {
+    $sqlID = $pdo->prepare($sql);
+    $sqlID->execute([$currentID]);
+    if ($sqlID->rowCount() > 0) {
+      while ($row = $sqlID->fetch(PDO::FETCH_ASSOC)) {
+        array_push($scopeArray, $row["app_id"]);
+      }
+    }
+  }
 }
 
 //Display error if user retrieves preferences w/o any cookies set
@@ -65,16 +80,14 @@ echo '<p
 ?>
 
 <div class="wrap">
-  <h3 id=scannerHeader style="color: #01B0F1;">Reports --> FOSS Count </h3>
+  <h3 id=scannerHeader style="color: #01B0F1;">Reports --> Requester </h3>
   <div class="table-container">
     <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
       <thead>
         <tr id="table-first-row">
-          <th>App Name</th>
-          <th>App Version</th>
-          <th>OSS Count</th>
-          <th>Commercial Count</th>
-          <th>Total</th>
+          <th>Requester Name</th>
+          <th>Approved</th>
+          <th>Pending</th>
         </tr>
       </thead>
       <tbody>
@@ -90,11 +103,9 @@ echo '<p
 
           while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
             echo '<tr>
-              <td>' . $row["app_name"] . '</td>
-              <td>' . $row["app_version"] . '</td>
-              <td>' . $row["oss_count"] . ' </span> </td>
-              <td>' . $row["compenents_count"] . '</td>
-              <td>' . $row["total"] . '</td>
+            <td>' . $row["requester"] . '</td>
+            <td>' . $row["total_approved"] . ' </span> </td>
+            <td>' . $row["not_approved"] . '</td>
             </tr>';
           }
         }
@@ -102,11 +113,9 @@ echo '<p
       </tbody>
       <tfoot>
         <tr>
-          <th>App Name</th>
-          <th>App Version</th>
-          <th>OSS Count</th>
-          <th>Commercial Count</th>
-          <th>Total</th>
+          <th>Requester Name</th>
+          <th>Approved</th>
+          <th>Pending</th>
         </tr>
       </tfoot>
     </table>
@@ -181,38 +190,38 @@ echo '<p
       let columnTitle = barChart[1];
 
       let queryArray = [
-        [columnTitle, 'OSS Count', {
+        [columnTitle, 'Count', {
           role: 'annotation'
         }]
       ];
 
       switch (name) {
 
-        case 'Foss':
+        case 'Requester':
           <?php
-          $query = $db->query("SELECT app_name, SUM(CASE WHEN license
-            NOT LIKE '%Commercial%' THEN 1 ELSE 0 END) as oss_count, SUM(CASE WHEN license
-            LIKE '%Commercial%' THEN 1 ELSE 0 END)
-            as commercial_count, COUNT(license) as total
+          $query = $db->query("SELECT requester, SUM(CASE WHEN status LIKE '%Approved%' THEN 1 ELSE 0 END) as total_approved, SUM(CASE WHEN status NOT LIKE '%Approved%' THEN 1 ELSE 0 END) as not_approved
             FROM apps_components
-            GROUP BY app_name;");
+            GROUP BY requester;");
           while ($query_row = $query->fetch_assoc()) {
-            echo 'queryArray.push(["' . $query_row["app_name"] . '", ' . $query_row["oss_count"] . ', "' . $query_row["oss_count"] . '"]);';
-            echo 'queryArray.push(["' . $query_row[""] . '", ' . $query_row["commercial_count"] . ', "' . $query_row["commercial_count"] . '"]);';
+            echo 'queryArray.push(["' . $query_row["requester"] . '", ' . $query_row["total_approved"] . ', "' . $query_row["total_approved"] . '"]);';
+            echo 'queryArray.push(["' . $query_row[""] . '", ' . $query_row["not_approved"] . ', "' . $query_row["not_approved"] . '"]);';
           }
           ?>
           break;
       }
+
       return queryArray;
     }
+
     let barCharts = [
-      ['Foss', 'Foss Count']
+      ['Requester', 'Requester Count']
     ];
 
     for (let i = 0; i < barCharts.length; i++) {
       barCharts[i] = createBarChart(barCharts[i]);
     }
   </script>
+
   <!-- Google Bar Chart API Code -->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
@@ -253,7 +262,7 @@ echo '<p
 
 
           switch (reportName) {
-            case "fosscount":
+            case "requestercount":
               document.cookie = encodeURI("app_issue_count_cookie=" + statusSelection);
               break;
 
@@ -274,17 +283,19 @@ echo '<p
       });
 
       switch (reportName) {
-        case "fosscount":
-          document.getElementById('totalFossCountReport').innerHTML = "Total: " + length;
+        case "requestercount":
+          document.getElementById('totalRequesterCountReport').innerHTML = "Total: " + length;
           break;
 
       }
     }
   </script>
+
   <div class="right-content">
     <div class="container">
       <h3></h3>
-      <h3 style="color: #FF0000;">Bar Graph</h3>
+      <h3></h3>
+      <h3 id=scannerHeader style="color: #FF0000;">Bar Graph</h3>
     </div>
   </div>
   <div class="container">
@@ -292,10 +303,11 @@ echo '<p
       <table>
         <tr>
           <td>
-            <div style="width:750px; height:400px; display:inline-block;" id="FossCountReport" style="width: 50%; height: 500px;"></div>
-            <p style="position:relative;z-index:1000;text-align:center" id="totalFossCountReport"></p>
+            <div style="width:750px; height:400px; display:inline-block;" id="RequesterCountReport" style="width: 50%; height: 500px;"></div>
+            <p style="position:relative;z-index:1000;text-align:center" id="totalRequesterCountReport"></p>
           </td>
         </tr>
       </table>
     </div>
+
     </script>
