@@ -169,7 +169,21 @@ function getDependencyReport($db)
 
 function getUniqueComponents($db)
 {
-    //your code here
+    $sql = "SELECT DISTINCT cmpt_name FROM apps_components ORDER BY cmpt_name;";
+    $result = $db->query($sql);
+
+    if ($result->num_rows > 0) {
+      // output data of each row
+      while($row = $result->fetch_assoc()) {
+        echo '<tr>
+       <td>'.$row["cmpt_name"].'</td>
+        </tr>';
+      }//end while
+    }//end if
+    else {
+      echo "0 results";
+    }//end else
+    $result->close();
 
 }
 
@@ -471,19 +485,28 @@ function getLicenseCounts($db)
     <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
-                <tr id="table-first-row">
-                    <th>App ID</th>
-                    <th>App Name</th>
-
+                <<tr id="table-first-row">
+                    <th>Component Name</th>
+                    
                 </tr>
             </thead>
             <tbody>
+                <?php
+            getUniqueComponents($db);
+            if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+                $def = "false";
+
+                while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<tr>
+                <td>' . $row["Cmpt_name"] . '</td>
+                </tr>';
+                }
+            }
+            ?>
             </tbody>
             <tfoot>
                 <tr>
-                    <th>App ID</th>
-                    <th>App Name</th>
-
+                <th>Component Name</th>
                 </tr>
             </tfoot>
         </table>
