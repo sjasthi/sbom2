@@ -16,7 +16,9 @@ $BARGRAPH_LENGTH = 300;
 function showAppsAsChecklist($db){
   global $app_checkbox_name;
   $sql_applications_components_query = "
-    SELECT a.app_id,a.app_name,monitoring_digest, a.app_version, a.app_status, a.is_eol FROM applications a JOIN apps_components ac
+    SELECT a.app_id,a.app_name,monitoring_digest, a.app_version, a.app_status,
+    a.is_eol, ac.red_app_id
+    FROM applications a JOIN apps_components ac
     ON a.app_id = ac.red_app_id
     ORDER BY a.app_id;
   ";
@@ -35,8 +37,8 @@ function showAppsAsChecklist($db){
       if($last_app_id != $application['app_id'] && $last_app_id != ''){
         echo '<tr>';
         echo '<td><input class="appCheckbox" name="'.$app_checkbox_name.'[]" id="checkbox'.$option_id.'" value="'.$application["app_id"].'" style="width:20px;height:20px;" type="checkbox"></td>';
-        echo '<td>'.$last_app_name.'</td>';
-        echo '<td>'.$last_app_id.'</td>';
+        echo '<td>'.$application["app_name"].'</td>';
+        echo '<td>'.$application["app_id"].'</td>';
         echo '<td>'.$application["app_version"].'</td>';
         echo '<td>'.$application["app_status"].'</td>';
         echo '<td>'.$application["is_eol"].'</td>';
@@ -46,9 +48,9 @@ function showAppsAsChecklist($db){
         if($total_security_issues != 0){
           $multi = $BARGRAPH_LENGTH / ($total_security_issues);
         }
-        echo '<span class="graphBar" style="background-color:red; width:'.($security_issues[0] * $multi).'px;"></span>';
-        echo '<span class="graphBar" style="background-color:orange; width:'.($security_issues[1] * $multi).'px;"></span>';
-        echo '<span class="graphBar" style="background-color:yellow; width:'.($security_issues[2] * $multi).'px;"></span>';
+        echo '<span class="graphBar" style="background-color:red; width:'.($security_issues[0] * $multi).'px;text-align:center;">'.(($security_issues[0] > 0)? $security_issues[0]:"").'</span>';
+        echo '<span class="graphBar" style="background-color:orange; width:'.($security_issues[1] * $multi).'px;text-align:center;">'.(($security_issues[1] > 0)? $security_issues[1]:"").'</span>';
+        echo '<span class="graphBar" style="background-color:yellow; width:'.($security_issues[2] * $multi).'px;text-align:center;">'.(($security_issues[2] > 0)? $security_issues[2]:"").'</span>';
         echo '</div></td>';
         echo '</tr>';
         $security_issues = [0,0,0];
