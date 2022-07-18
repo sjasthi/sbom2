@@ -334,6 +334,60 @@ function getLicenseCounts($db)
             </tfoot>
         </table>
     </div>
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Security Summary </button>
+    <div class="table-container" style="display:none;">
+        <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
+            <thead>
+            <tr id="table-first-row">
+            <th>red App Id</th>
+	        <th>App Name</th>
+            <th>App Version</th>
+            <th>Cmpt Version</th>
+            <th>Cmpt Id</th>
+            <th>Cmpt Name </th>
+            <th>Monitoring Id</th>
+            <th>Monitering Digest</th>
+            <th>Issue Count</th>
+           </tr>
+        </thead>
+        <tbody>
+            <?php
+
+        getSecuritySummary($db);
+        if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+            $def = "false";
+       
+             while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                echo '<tr>
+                <td>'.$row["red_app_id"].'</td>
+                <td>'.$row["app_name"].'</td>
+                <td>'.$row["app_version"].'</td>
+                <td>'.$row["cmpt_version"].' </td>
+                <td>'.$row["cmpt_id"].'</td>
+                <td>'.$row["cmpt_name"].'</td>
+                <td>'.$row["monitoring_id"].'</td>
+                <td>'.$row["monitoring_digest"].'</td>
+                <td>'.$row["issue_count"].'</span> </td>
+              </tr>';
+            }
+        } 
+       ?>
+       </tbody>
+            <tfoot>
+                <tr>
+            <th>red App Id</th>
+	        <th>App Name</th>
+            <th>App Version</th>
+            <th>Cmpt Version</th>
+            <th>Cmpt Id</th>
+            <th>Cmpt Name </th>
+            <th>Monitoring Id</th>
+            <th>Monitering Digest</th>
+            <th>Issue Count</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">Component With Pending Status</button>
     <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
@@ -381,6 +435,9 @@ function getLicenseCounts($db)
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
                 <tr id="table-first-row">
+                    <th>Requestor Name</th>
+	                <th>Toal Approved</th>
+                    <th>Not Apporved</th>
                 </tr>
             </thead>
             <tbody>
@@ -451,55 +508,24 @@ function getLicenseCounts($db)
             </tfoot>
         </table>
     </div>
-    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Security Summary </button>
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Components with Issues  </button>
     <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
             <tr id="table-first-row">
-            <th>red App Id</th>
-	        <th>App Name</th>
-            <th>App Version</th>
-            <th>Cmpt Version</th>
-            <th>Cmpt Id</th>
-            <th>Cmpt Name </th>
-            <th>Monitoring Id</th>
-            <th>Monitering Digest</th>
+            <th>Component Id</th>
+	        <th>Component Name</th>
+            <th>Component Version</th>
             <th>Issue Count</th>
            </tr>
         </thead>
         <tbody>
-            <?php
-
-        getSecuritySummary($db);
-        if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
-            $def = "false";
-       
-             while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-                echo '<tr>
-                <td>'.$row["red_app_id"].'</td>
-                <td>'.$row["app_name"].'</td>
-                <td>'.$row["app_version"].'</td>
-                <td>'.$row["cmpt_version"].' </td>
-                <td>'.$row["cmpt_id"].'</td>
-                <td>'.$row["cmpt_name"].'</td>
-                <td>'.$row["monitoring_id"].'</td>
-                <td>'.$row["monitoring_digest"].'</td>
-                <td>'.$row["issue_count"].'</span> </td>
-              </tr>';
-            }
-        } 
-       ?>
        </tbody>
             <tfoot>
                 <tr>
-            <th>red App Id</th>
-	        <th>App Name</th>
-            <th>App Version</th>
-            <th>Cmpt Version</th>
-            <th>Cmpt Id</th>
-            <th>Cmpt Name </th>
-            <th>Monitoring Id</th>
-            <th>Monitering Digest</th>
+            <th>Component Id</th>
+	        <th>Component Name</th>
+            <th>Component Version</th>
             <th>Issue Count</th>
                 </tr>
             </tfoot>
@@ -798,4 +824,5 @@ function getLicenseCounts($db)
             });
         }
     </script>
+
 </div>
