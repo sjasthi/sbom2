@@ -22,9 +22,31 @@ global $pref_err;
 
 function getFixPlan($db)
 {
-    //your code here
+    $sql = "SELECT red_app_id, app_name,app_version,monitoring_id,monitoring_digest,
+    CASE WHEN monitoring_digest = 'critical' THEN 'Next Patch'
+    ELSE 'Current Release' END AS fix_plan
+    FROM apps_components ;";
+    $result = $db->query($sql);
 
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while ($row = $result->fetch_assoc()) {
+            echo '<tr>
+                <td>' . $row["red_app_id"] . '</td>
+                <td>' . $row["app_name"] . '</td>
+                <td>' . $row["app_version"] . '</td>
+                <td>' . $row["monitoring_id"] . '</td>
+                <td>' . $row["monitoring_digest"] . '</td>
+                <td>' . $row["fix_plan"] . '</td>
+                </tr>';
+        } //end while
+    } //end if
+    else {
+        echo "0 results";
+    } //end else
+    $result->close();
 }
+
 
 function getSecuritySummary($db)
 {
@@ -57,19 +79,85 @@ function getSecuritySummary($db)
 
 function getComponentsWithPendingStatus($db)
 {
-    //your code here
+    $sql =  "SELECT app_name, app_version, cmpt_id, cmpt_name, status 
+    FROM `apps_components` 
+    WHERE status not like '%Approved%';";
+    $result = $db->query($sql);
 
+    if ($result->num_rows > 0) {
+      // output data of each row
+      while($row = $result->fetch_assoc()) {
+        echo '<tr>
+          <td>'.$row["app_name"].'</td>
+          <td>'.$row["app_version"].'</td>
+          <td>'.$row["cmpt_id"].'</td>
+          <td>'.$row["cmpt_name"].'</td>
+          <td>'.$row["status"].'</span> </td>
+        </tr>';
+      }//end while
+    }//end if
+    else {
+      echo "0 results";
+    }//end else
+    $result->close();
 }
-
 function getRequestorSummary($db)
 {
-    //your code here
-
+    $sql = "SELECT requester, SUM(CASE WHEN status LIKE '%Approved%' THEN 1 ELSE 0 END) as total_approved, SUM(CASE WHEN status NOT LIKE '%Approved%' THEN 1 ELSE 0 END) as not_approved
+    FROM apps_components
+    GROUP BY requester;";
+    $result = $db->query($sql);
+  
+    if ($result->num_rows > 0) {
+      $approved_total = 0;
+      $not_approved_total = 0;
+  
+      // output data of each row
+      while ($row = $result->fetch_assoc()) {
+        echo '<tr>
+            <td>' . $row["requester"] . '</td>
+            <td>' . $row["total_approved"] . ' </span> </td>
+            <td>' . $row["not_approved"] . '</td>
+          </tr>';
+        $approved_total += $row["total_approved"];
+        $not_approved_total += $row["not_approved"];
+      } //end while
+      echo '<tr>
+      <td>' . 'Total' . '</b></td>
+      <td><b>' . $approved_total . '</b></td>
+      <td><b>' . $not_approved_total . '</b></td>
+      </tr>';
+    } //end if
+    else {
+      echo "0 results";
+    } //end else
+    $result->close();
 }
+
 
 function getEOLComponents($db)
 {
-    //your code here
+    $sql = "SELECT app_id,app_name, app_version, SUM(CASE WHEN status LIKE '%Approved%' THEN 1 ELSE 0 END) 
+    as is_eol
+    FROM apps_components 
+    GROUP BY app_name;";
+    $result = $db->query($sql);
+
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while ($row = $result->fetch_assoc()) {
+            echo '<tr>
+                <td>' . $row["app_id"] . '</td>
+                <td>' . $row["app_name"] . '</td>
+                <td>' . $row["app_version"] . '</td>
+                <td>' . $row["is_eol"] . '</td>
+                </tr>';
+        } //end while
+    } //end if
+    else {
+        echo "0 results";
+    } //end else
+    $result->close();
 
 }
 
@@ -204,62 +292,161 @@ function getLicenseCounts($db)
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Fix it plan</button>
     <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
-            <thead>
+        <thead>
                 <tr id="table-first-row">
-                    <th>App ID</th>
+                    <th>Red App ID</th>
                     <th>App Name</th>
-
+                    <th>App Version</th>
+                    <th>Monitoring ID</th>
+                    <th>Monitoring Digest</th>
+                    <th>Fix Plan</th>
                 </tr>
             </thead>
             <tbody>
+            <?php
+
+        getFixPlan($db);
+        if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+            $def = "false";
+       
+             while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                echo '<tr>
+                <td>'.$row["red_app_id"].'</td>
+                <td>'.$row["app_name"].'</td>
+                <td>'.$row["app_version"].'</td>
+                <td>'.$row["monitoring_id"].'</td>
+                <td>'.$row["monitoring_digest"].'</td>
+                <td>'.$row["fix_plan"].'</span> </td>
+              </tr>';
+            }
+        } 
+       ?>      
             </tbody>
             <tfoot>
                 <tr>
-                    <th>App ID</th>
+                    <th>Red App ID</th>
                     <th>App Name</th>
+                    <th>App Version</th>
+                    <th>Monitoring ID</th>
+                    <th>Monitoring Digest</th>
+                    <th>Fix Plan</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">Component With Pending Status</button>
+    <div class="table-container" style="display:none;">
+        <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
+            <thead>
+                <tr id="table-first-row">
+                    <th>App Name</th>
+                    <th>App Version</th>
+                    <th>Component ID</th>
+                    <th>Component Name</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+
+        getComponentsWithPendingStatus($db);
+        if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+            $def = "false";
+       
+             while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                echo '<tr>
+                <td>'.$row["app_name"].'</td>
+                <td>'.$row["app_version"].'</td>
+                <td>'.$row["cmp_id"].'</td>
+                <td>'.$row["cmp_name"].'</td>
+                <td>'.$row["status"].'</span> </td>
+              </tr>';
+            }
+        } 
+       ?>      
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>App Name</th>
+                    <th>App Version</th>
+                    <th>Component ID</th>
+                    <th>Component Name</th>
+                    <th>Status</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Requester Summary</button>
+    <div class="table-container" style="display:none;">
+        <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
+            <thead>
+                <tr id="table-first-row">
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+
+        getRequestorSummary($db);
+        if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+            $def = "false";
+       
+             while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                echo '<tr>
+                <td>'.$row["requester"].'</td>
+                <td>'.$row["total_approved"].'</td>
+=                <td>'.$row["not_approved"].'</span> </td>
+              </tr>';
+            }
+        } 
+       ?>  
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Requestor Name</th>
+	                <th>Total Approved</th>
+                    <th>Not Apporved</th>
 
                 </tr>
             </tfoot>
         </table>
     </div>
-    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">Insert section name here</button>
+    
+
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">EOL Component</button>
     <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
                 <tr id="table-first-row">
-                    <th>App ID</th>
-                    <th>App Name</th>
-
+                    <th>App Id</th>
+	                <th>App Name</th>
+                    <th>App Version</th>
+                    <th>EOL Component</th>
                 </tr>
             </thead>
             <tbody>
+            <?php
+
+        getEOLComponents($db);
+        if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+            $def = "false";
+       
+             while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                echo '<tr>
+                <td>'.$row["app_id"].'</td>
+                <td>'.$row["app_name"].'</td>
+                <td>'.$row["app_version"].'</td>
+                <td>'.$row["is_eol"].'</span> </td>
+              </tr>';
+            }
+        } 
+       ?>  
             </tbody>
             <tfoot>
                 <tr>
-                    <th>App ID</th>
-                    <th>App Name</th>
-
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Insert Section Name here</button>
-    <div class="table-container" style="display:none;">
-        <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
-            <thead>
-                <tr id="table-first-row">
-                    <th>App ID</th>
-                    <th>App Name</th>
-
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>App ID</th>
-                    <th>App Name</th>
-
+                    <th>App Id</th>
+	                <th>App Name</th>
+                    <th>App Version</th>
+                    <th>EOL Component</th>
                 </tr>
             </tfoot>
         </table>
@@ -278,7 +465,6 @@ function getLicenseCounts($db)
             <th>Monitoring Id</th>
             <th>Monitering Digest</th>
             <th>Issue Count</th>
-
            </tr>
         </thead>
         <tbody>
