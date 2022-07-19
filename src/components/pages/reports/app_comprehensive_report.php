@@ -164,7 +164,7 @@ function getEOLComponents($db)
 function getComponentsWithIssues($db)
 {
     $sql = "SELECT cmpt_id, cmpt_name,cmpt_version, issue_count FROM apps_components
-    GROUP BY issue_count;";
+    ORDER BY issue_count;";
     $result = $db->query($sql);
 
     if ($result->num_rows > 0) {
@@ -550,8 +550,24 @@ function getLicenseCounts($db)
             <th>Component Version</th>
             <th>Issue Count</th>
            </tr>
-        </thead>
+        </thead>        
         <tbody>
+            
+    <?php
+        getComponentsWithIssues($db);
+if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+    $def = "false";
+
+     while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+        echo '<tr>
+        <td>'.$row["cmpt_id"].'</td>
+        <td>'.$row["cmpt_name"].'</td>
+        <td>'.$row["cmpt_version"].'</td>
+        <td>'.$row["issue_count"].'</span> </td>
+      </tr>';
+    }
+} 
+?> 
        </tbody>
             <tfoot>
                 <tr>
