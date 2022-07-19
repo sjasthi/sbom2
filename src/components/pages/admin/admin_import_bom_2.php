@@ -113,7 +113,10 @@
     <div id='list'>
       <p>Before importing a file, please make sure the file is a <span style="font-weight: bold;">CSV</span>
       file with these <span style="font-weight: bold;">13 </span>columns:<br></p>
-      <ul>
+      <table>
+        <tr>
+          <td style="vertical-align:top;">
+            <ul>
               <li>Component ID</li>
               <li>Component Name</li>
               <li>Component Version</li>
@@ -121,13 +124,20 @@
               <li>Application Name</li>
               <li>Application Version</li>
               <li>License</li>
+            </ul>
+          </td>
+          <td style="vertical-align:top;">
+            <ul>
               <li>Status</li>
               <li>Requester</li>
               <li>Monitoring ID</li>
               <li>Monitoring Digest</li>
               <li>Issue Count</li>
               <li>Description</li>
-      </ul>
+            </ul>
+          </td>
+				</tr>
+      </table>
     </div>
     <form enctype="multipart/form-data" method="POST" role="form">
       <input type="file" name="file" id="file" size="150" style="color:black; display: inline-block;">
@@ -179,7 +189,8 @@
         $handle = fopen($target_file, "r");
 
         if(FALSE !== $handle) {
-            $row = fgetcsv($handle, 1000, ',');
+            //$row = fgetcsv($handle, 1000, ',');
+            $row = fgetcsv($handle);
             if(count($row) < 13) {
               echo "<p style='color: white; background-color: red; font-weight: bold; width: 500px;
               text-align: center; border-radius: 2px;'>FILE CAN'T HAVE LESS THAN 13 COLUMNS</p>";
@@ -238,7 +249,8 @@
    //get data
    $handle = fopen($target_file, "r");
    if(FALSE !== $handle) {
-       $row = fgetcsv($handle, 1000, ',');
+       //$row = fgetcsv($handle, 1000, ',');
+       $row = fgetcsv($handle);
 
        //get column labels
        foreach($headers AS $header) {
@@ -250,7 +262,8 @@
 
        }
 
-   while($data1 = fgetcsv($handle, 1000, ',')) {
+   //while($data1 = fgetcsv($handle, 1000, ',')) {
+   while($data1 = fgetcsv($handle)) {
      $row = array();
      foreach($map as $index => $field) {
        $row[$field] = $data1[$index];
@@ -263,16 +276,20 @@
 
      } else {
        /* apps_components */
+       //temporary disable of autocommit
+       $db->autocommit(FALSE);
        //delete existing data in table
        $sqldelete = $db->prepare('DELETE FROM apps_components WHERE red_app_id = ?');
        $sqldelete->bind_param('s',$red_app_id_field);
        //mysqli_query($db, $sqlDelete);
        if(!$sqldelete->execute()) {
-         echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
+         echo '<p style="background: red; color: white; font-size: 2rem;">ERROR & ROLLBACK: '.$db->error.'</p>';
+         $db->rollback();
+         $db->autocommit(TRUE);
        } else {
          echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
          text-align: center; border-radius: 2px;'>DELETE SUCCESSFUL";
-         echo "<br>".count($data)." rows have been successfully deleted from the apps_components table.</p>";
+         echo "<br>Old rows have been successfully deleted from the apps_components table.</p>";
        }
 
        //insert data into database
@@ -301,15 +318,26 @@
               $issue_count = $row[$issue_count_col];
 
            if(!$sqlinsert->execute()) {
+             $db->autocommit(TRUE);
              echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
              $successful_inserts = false;
            }
        }
+
        if($successful_inserts){
-         echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
-         text-align: center; border-radius: 2px;'>IMPORT SUCCESSFUL";
-         echo "<br>".count($data)." rows have been successfully imported into the apps_components table.</p>";
-       }
+         if (!$db->commit()) {
+           $db->rollback();
+           $db->autocommit(TRUE);
+           echo '<p style="background: red; color: white; font-size: 2rem;">ERROR & ROLLBACK: '.$db->error.'</p>';
+         } else {
+           echo "<p style='color: white; background-color: green; font-weight: bold; width: 500px;
+           text-align: center; border-radius: 2px;'>IMPORT SUCCESSFUL";
+           echo "<br>".count($data)." rows have been successfully imported into the apps_components table.</p>";
+         }
+         $db->autocommit(TRUE);
+       } 
+
+       $db->autocommit(TRUE);
        /* applications */
        //$red_query = $db->prepare('select distinct app_id, app_name, app_version, status from apps_components where red_app_id = ?');
        $red_query = $db->prepare('select distinct app_id, app_name, app_version, status from apps_components where app_id = ?');
