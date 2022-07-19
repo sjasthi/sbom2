@@ -25,5 +25,13 @@
 <html>
   <body>
     <div id="root"></div>
+
+    <script>
+      // chatbot integration (see _shared scripts.php for import)
+      window.botpressWebChat.init({
+          host: 'http://localhost:3000',
+          botId: 'helper-bot',
+      });
+    </script>
   </body>
 </html>

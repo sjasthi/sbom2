@@ -71,8 +71,8 @@ CREATE TABLE `apps_components` (
 --
 
 INSERT INTO `apps_components` (`line_id`, `red_app_id`, `cmpt_id`, `cmpt_name`, `cmpt_version`, `app_id`, `app_name`, `app_version`, `license`, `status`, `requester`, `monitoring_id`, `monitoring_digest`, `issue_count`) VALUES
-(1, '76074884', '77960664', 'Unicode for C Sharp (Unicode4C)', '67.9', '77956767', 'LTS JSON L', '9.9', 'Unicode License V7', 'Approved', 'Tierra Von', '76654', 'na', 0),
-(2, '76074884', '77960664', 'Unicode for C Sharp (Unicode4C)', '67.9', '77956767', 'LTS JSON L', '9.9', 'Unicode License V7', 'Approved', 'Tierra Von', '76654', 'na', 0),
+(1, '76074884', '944965237', 'Unicode for C Sharp (Unicode4C)', '67.9', '77956767', 'LTS JSON L', '9.9', 'Unicode License V7', 'Approved', 'Tierra Von', '76654', 'na', 0),
+(2, '76074884', '77960664', 'Unicode for C Sharp (Unicode4C)', '67.9', '944965237', 'LTS JSON L', '9.9', 'Unicode License V7', 'Approved', 'Tierra Von', '76654', 'na', 0),
 (3, '76074884', '69676777', 'kassandra/xerces-c', '6.7.7', '77956767', 'LTS JSON L', '9.9', 'kassandra License 7.0', 'Approved', 'Tierra Von', '48023', 'na', 9),
 (4, '76074884', '69676777', 'kassandra/xerces-c', '6.7.7', '77956767', 'LTS JSON L', '9.9', 'kassandra License 7.0', 'Approved', 'Tierra Von', '48023', 'na', 9),
 (5, '76074884', '755954', 'Commons IO', '7.5', '49823779', 'General ED', '7.7.0.9', 'kassandra License 7.0', 'Rejected', 'Barry Lind', '75896', 'na', 9),
