@@ -163,8 +163,25 @@ function getEOLComponents($db)
 
 function getComponentsWithIssues($db)
 {
-    //your code here
+    $sql = "SELECT cmpt_id, cmpt_name,cmpt_version, issue_count FROM apps_components
+    GROUP BY issue_count;";
+    $result = $db->query($sql);
 
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while ($row = $result->fetch_assoc()) {
+            echo '<tr>
+                <td>' . $row["cmpt_id"] . '</td>
+                <td>' . $row["cmpt_name"] . '</td>
+                <td>' . $row["cmpt_version"] . '</td>
+                <td>' . $row["issue_count"] . '</td>                
+                </tr>';
+        } //end while
+    } //end if
+    else {
+        echo "0 results";
+    } //end else
+    $result->close();
 }
 
 function getDuplicateComponents($db)
@@ -185,6 +202,7 @@ function getDuplicateComponents($db)
                 <td>' . $row["cmpt_version"] . '</td>
                 <td>' . $row["cmpt_name"] . '</td>
                 <td>' . $row["count"] . '</td>
+
                 </tr>';
         } //end while
     } //end if
