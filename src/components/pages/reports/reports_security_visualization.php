@@ -181,125 +181,48 @@
 
     $('.table-container').doubleScroll(); // assign a double scroll to this class
     } );
+    </script>
+  <html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
 
-
-
-   //====================================================================================================================
-    function createBarChart(barChart){
-    let name = barChart[0];
-    let columnTitle = barChart[1];
-
-    let queryArray = [[columnTitle, 'Count', {role:'annotation'}]];
-
-    switch(name){
-
-        case 'Issue':
-            <?php
-            $query = $db->query("SELECT app_name, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END) 
-            as num_issue, SUM(issue_count) as total_issue_count 
-            FROM apps_components 
-            GROUP BY app_name;");
-            while($query_row = $query->fetch_assoc()) {
-                echo 'queryArray.push(["'.$query_row["app_name"].'", '.$query_row["total_issue_count"].', "'.$query_row["total_issue_count"].'"]);';
-                echo 'queryArray.push(["'.$query_row[""].'", '.$query_row["num_issue"].', "'.$query_row["num_issue"].'"]);';
-
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['App name', 'Issue Count', 'Total Issue Count'],
+          <?php
+          $query = $db->query("SELECT red_app_id,app_name, app_version, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END) 
+          as num_issue, SUM(issue_count) as total_issue_count 
+          FROM apps_components 
+          GROUP BY red_app_id;");
+          while ($query_row = $query->fetch_assoc()) {
+              $app_name=$query_row['app_name'];
+              $num_issue=$query_row['num_issue'];
+              $total_issue_count=$query_row['total_issue_count'];
+           ?>
+           ['<?php echo $app_name;?>',<?php echo $num_issue;?>,<?php echo $total_issue_count;?>],   
+           <?php   
             }
-            ?>
-            break;
-    }
+           ?> 
+        ]);
 
-    return queryArray;
-}
+        var options = {
+          chart: {
+            title: 'Security Issue Count',
+            subtitle: 'App Name, Issue count, and Total Issu count',
+          },
+          bars: 'vertical' 
+        };
 
-let barCharts = [['Issue', 'Issue Count']];
+        var chart = new google.charts.Bar(document.getElementById('barchart_material'));
 
-for(let i = 0; i < barCharts.length; i++){
-    barCharts[i] = createBarChart(barCharts[i]);
-}
-</script>
-
-<!-- Google Bar Chart API Code -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawBarCharts);
-
-function drawBarCharts() {
-    barCharts.forEach(queryArray => drawBarChart(queryArray));
-}
-
-function drawBarChart(queryArray){
-    var data = google.visualization.arrayToDataTable(queryArray);
-
-    let title = queryArray[0][0] + ' Report';
-
-    var options = {
-        title: title,
-        width: 750,
-        height: 400,
-    };
-
-    var chart = new google.visualization.BarChart(document.getElementById(title.replace(/ /g, '')));
-
-    google.visualization.events.addListener(chart, 'select', selectHandler);
-
-    chart.draw(data, options);
-
-    function selectHandler(){
-        var selectedItem = chart.getSelection()[0];
-
-        if (selectedItem) {
-            var statusSelection = data.getValue(selectedItem.row, 0);
-            var reportName = queryArray[0][0].toLowerCase().replace(/ /g, '');
-
-            document.cookie = encodeURI("app_issue_count_cookie=");
-
-
-            switch(reportName){
-                case "issuecount":
-                    document.cookie = encodeURI("app_issue_count_cookie=" + statusSelection); break;
-
-            }
-
-            location.reload();
-        }
-    }
-
-    let reportName = queryArray[0][0].toLowerCase().replace(/ /g, '');
-
-    let length = 0;
-
-    queryArray.forEach((slice, index) => {
-        if(index !== 0){
-            length += slice[1];
-        }
-    });
-
-    switch(reportName){
-                case "issuecount":
-                    document.getElementById('totalIssueCountReport').innerHTML = "Total: " + length; break;
-
-            }
-}
-</script>
-
-<div class="right-content">
-    <div class="container">
-        <h3></h3>
-        <h3></h3>
-        <h3  id = scannerHeader style = "color: #FF0000;">Bar Graph</h3>
-    </div>
-</div>
-<div class="container">
-    <div class="table-container">
-        <table>
-            <tr>
-                <td>
-                    <div style="width:750px; height:400px; display:inline-block;" id="IssueCountReport" style="width: 50%; height: 500px;"></div>
-                    <p  style="position:relative;z-index:1000;text-align:center" id="totalIssueCountReport"></p>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-</script>
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+    </script>
+  </head>
+  <body>
+    <div id="barchart_material" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>
