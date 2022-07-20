@@ -57,7 +57,7 @@
       </thead>
       <tbody>
       <?php
-        /*----------------- GET PREFERENCE COOKIE -----------------*/
+        $startTime = microtime(true);
         //if user clicks "get all BOMS", retrieve all BOMS
         if(isset($_POST['show_all_boms'])) {
           //$def = "false";
@@ -111,6 +111,7 @@
           <?php
           getAppList($db);
         }
+        $endTime = microtime(true) - $startTime;
       ?>
       </tbody>
       <tfoot>
@@ -124,6 +125,7 @@
         </tr>
       </tfoot>
       </table>
+      <span><?php echo round($endTime, 5); ?> seconds to generate</span>
 
     <script type="text/javascript" language="javascript">
     $(document).ready( function () {

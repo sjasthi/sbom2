@@ -22,8 +22,7 @@ function displayComponents($db, $parent_component_query, $parent_table_id) {
 
     echo "<tr data-tt-id = '".$comp_table_id."' data-tt-parent-id='".$parent_table_id."' class = 'component ".$comp_class."' >
     <td class='text-capitalize'> <div class = 'btn ".$comp_color."'> <span class = 'cmp_name'>".$comp_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
-    <td class = 'cmp_version'>".$comp_version."</td>
-    <td class='text-capitalize'>".$comp_status."</td>";
+    <td class = 'cmp_version'>".$comp_version."</td>";
 
     if($has_children){
       displayComponents($db, $query_component_children, $comp_table_id);
@@ -48,7 +47,7 @@ function displayBomsAsTable($db, $bom_query='') {
       echo "<tbody class= 'redApp'>
       <tr data-tt-id = '".$p_id."' ><td class='text-capitalize'>
       <div class = 'btn parent' ><span class = 'app_name' style = 'max-width: 160em; white-space: pre-wrap; word-wrap: break-word; word-break: break-all;'>".$app_name."</span>&nbsp; &nbsp;&nbsp; &nbsp;</div></td>
-      <td >".$app_version."</td><td class='text-capitalize'>".$app_status."</td><td/><td>".$red_app_id."<td/><td/><td/></tr>";
+      <td >".$app_version."</td><td class='text-capitalize'>".$app_status."</td></tr>";
 
       $sql_components = "
       SELECT * FROM apps_components
@@ -84,7 +83,13 @@ function displayAllAppsAndComponentList($db, $app_columns, $app_query = ''){
   if($app_query == ''){
     //$app_query = $sql_applications_query;
     $app_query = '
-      select applications.app_id, applications.app_name, applications.app_version, apps_components.cmpt_id, apps_components.cmpt_name, apps_components.cmpt_version, apps_components.license,apps_components.status,apps_components.requester,apps_components.description,apps_components.monitoring_id,apps_components.monitoring_digest,apps_components.issue_count from applications inner join apps_components on applications.app_id = apps_components.red_app_id; 
+      SELECT a.app_id, a.app_name, a.app_version,
+      a_comp.cmpt_id, a_comp.cmpt_name, a_comp.cmpt_version,
+      a_comp.license, a_comp.status, a_comp.requester,
+      a_comp.description, a_comp.monitoring_id, a_comp.monitoring_digest,
+      a_comp.issue_count
+      FROM applications a INNER JOIN apps_components a_comp
+      ON a.app_id = a_comp.red_app_id;
     ';
   }
   $query_applications = $db->query($app_query);

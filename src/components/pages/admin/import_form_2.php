@@ -1,76 +1,81 @@
 <form id="importform" action="admin_import_bom_2.php" method="post">
 <h4>Column Mapping for: <span style='color: red;'><?php echo $_FILES["file"]["name"]?></span></h4>
-<div class="group">
-  <label for="cmpt_id">Component ID:</label>
-  <select id="cmpt_id" name="cmpt_id" required>
+<table>
+  <tr>
+    <td><label for="cmpt_id">Component ID:</label></td></td>
+    <td><select id="cmpt_id" name="cmpt_id" required>
     <?php dropdown($cookie_map, 'cmpt_id', $row); ?>
-  </select>
+    </select></td></td>
 
-  <label for="cmpt_name">Component Name:</label>
-  <select id="cmpt_name" name="cmpt_name" required>
+    <td><label for="cmpt_name">Component Name:</label></td></td>
+    <td><select id="cmpt_name" name="cmpt_name" required>
     <?php dropdown($cookie_map, 'cmpt_name', $row); ?>
-  </select>
+    </select></td></td>
 
-  <label for="cmpt_version">Component Version:</label>
-  <select id="cmpt_version" name="cmpt_version" required>
+    <td><label for="cmpt_version">Component Version:</label></td></td>
+    <td><select id="cmpt_version" name="cmpt_version" required>
     <?php dropdown($cookie_map, 'cmpt_version', $row); ?>
-  </select>
+    </select></td></td>
+  </tr>
 
-  <label for="app_id">Application ID:</label>
-  <select id="app_id" name="app_id" required>
+  <tr>
+    <td><label for="app_id">Application ID:</label></td>
+    <td><select id="app_id" name="app_id" required>
     <?php dropdown($cookie_map, 'app_id', $row); ?>
-  </select>
-</div>
+    </select></td>
 
-<div class="group">
-  <label for="app_name">Application Name:</label>
-  <select id="app_name" name="app_name" required>
+    <td><label for="app_name">Application Name:</label></td>
+    <td><select id="app_name" name="app_name" required>
     <?php dropdown($cookie_map, 'app_name', $row); ?>
-  </select>
+    </select></td>
 
-  <label for="app_version">Application Version:</label>
-  <select id="app_version" name="app_version" required>
+    <td><label for="app_version">Application Version:</label></td>
+    <td><select id="app_version" name="app_version" required>
     <?php dropdown($cookie_map, 'app_version', $row); ?>
-  </select>
+    </select></td>
+  </tr>
 
-  <label for="license">License:</label>
-  <select id="license" name="license" required>
+  <tr>
+    <td><label for="license">License:</label></td>
+    <td><select id="license" name="license" required>
     <?php dropdown($cookie_map, 'license', $row); ?>
-  </select>
+    </select></td>
 
-  <label for="status">Status:</label>
-  <select id="status" name="status" required>
+    <td><label for="status">Status:</label></td>
+    <td><select id="status" name="status" required>
     <?php dropdown($cookie_map, 'status', $row); ?>
-  </select>
+    </select></td>
 
-  <label for="requester">Requester:</label>
-  <select id="requester" name="requester" required>
+    <td><label for="requester">Requester:</label></td>
+    <td><select id="requester" name="requester" required>
     <?php dropdown($cookie_map, 'requester', $row); ?>
-  </select>
-</div>
+    </select></td>
+  </tr>
 
-<div class="group">
-  <label for="description">Description:</label>
-  <select id="description" name="description" required>
+  <tr>
+    <td><label for="description">Description:</label></td>
+    <td><select id="description" name="description" required>
     <?php dropdown($cookie_map, 'description', $row); ?>
-  </select>
+    </select></td>
 
-  <label for="monitoring_id">Monitoring ID:</label>
-  <select id="monitoring_id" name="monitoring_id" required>
+    <td><label for="monitoring_id">Monitoring ID:</label></td>
+    <td><select id="monitoring_id" name="monitoring_id" required>
     <?php dropdown($cookie_map, 'monitoring_id', $row); ?>
-  </select>
+    </select></td>
 
-  <label for="monitoring_digest">Monitoring Digest:</label>
-  <select id="monitoring_digest" name="monitoring_digest" required>
+    <td><label for="monitoring_digest">Monitoring Digest:</label></td>
+    <td><select id="monitoring_digest" name="monitoring_digest" required>
     <?php dropdown($cookie_map, 'monitoring_digest', $row); ?>
-  </select>
+    </select></td>
+  </tr>
 
-  <label for="issue_count">Issue Count:</label>
-  <select id="issue_count" name="issue_count" required>
+  <tr>
+    <td><label for="issue_count">Issue Count:</label></td>
+    <td><select id="issue_count" name="issue_count" required>
     <?php dropdown($cookie_map, 'issue_count', $row); ?>
-  </select>
+    </select></td>
+  </tr>
 
-</div>
 
 <?php
   // Simply passing the Red App ID from admin_import_bom_2.php back to the same

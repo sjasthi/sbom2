@@ -33,33 +33,4 @@ function createSystemAppset($db, $apps, $appset_name){
   }
 }
 
-function showAppsetsAsTable($db){
-    $sql_query_appsets = '
-      SELECT app_set_id, app_set_name, app_id
-      FROM app_sets
-      ORDER BY app_set_id ASC;
-    ';
-    $query_appsets_result = $db->query($sql_query_appsets);
-    if($query_appsets_result->num_rows < 1){
-      // show err
-      return;
-    }
-    $appset_id = NULL;
-    $appset_list = [];
-    while($app_from_appset = $query_appsets_result->fetch_assoc()){
-      if($appset_id != $app_from_appset['app_set_id']){
-        echo '<tr>';
-        $appset_id = $app_from_appset['app_set_id'];
-        echo '<td><input id="'.$app_from_appset['app_set_id'].'" type="radio" name="appset_radio" value="'.$app_from_appset['app_set_id'].'"></td>';
-        echo'<td>'.$app_from_appset['app_set_name'].'</td>';
-      } else {
-        echo '<td></td>';
-        echo '<td></td>';
-      }
-      echo'<td>'.$app_from_appset['app_id'].'</td>';
-      echo '</tr>';
-      $appset_list[] = $app_from_appset['app_id'];
-    }
-}
-
 ?>
