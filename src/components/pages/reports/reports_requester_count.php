@@ -3,7 +3,6 @@ $nav_selected = "REPORTS";
 $left_selected = "REPORTSREQUESTER";
 $tabTitle = "SBOM - Reports (Requester)";
 
-include "../bom/get_scope.php";
 include("../../../../index.php");
 include("reports_left_menu.php");
 
