@@ -1,24 +1,16 @@
 <?php
 $nav_selected = "REPORTS";
-// $left_selected = "REPORTSFOSSCOUNT";
+$left_selected = "AppComprehensiveReport";
 $tabTitle = "SBOM - Reports (Comprehensive Report)";
 
-// include "../bom/get_scope.php";
 include("../../../../index.php");
-// include("reports_left_menu.php");
+include("reports_left_menu.php");
 
-// $def = "false";
-// $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
-// $scopeArray = array();
 ?>
 
 <?php
 $cookie_name = 'preference';
 global $pref_err;
-
-//We'll need different functions to grab the data from the db. Since we are working on the same file.
-//Make sure to work on your own function for each section/table we are displaying.
-//There might be a better way to do it this, if you find a way make sure to let everybody know!
 
 function getFixPlan($db)
 {
@@ -50,55 +42,55 @@ function getFixPlan($db)
 
 function getSecuritySummary($db)
 {
-    $sql =  "SELECT red_app_id, app_name, app_version, cmpt_version, cmpt_id, cmpt_name, monitoring_id, monitoring_digest, issue_count 
-    FROM `apps_components` 
+    $sql =  "SELECT red_app_id, app_name, app_version, cmpt_version, cmpt_id, cmpt_name, monitoring_id, monitoring_digest, issue_count
+    FROM `apps_components`
     WHERE issue_count > 0;";
     $result = $db->query($sql);
 
     if ($result->num_rows > 0) {
-      // output data of each row
-      while($row = $result->fetch_assoc()) {
-        echo '<tr>
-	    <td>'.$row["red_app_id"].'</td>
-          <td>'.$row["app_name"].'</td>
-          <td>'.$row["app_version"].'</td>
-          <td>'.$row["cmpt_version"].' </td>
-          <td>'.$row["cmpt_id"].'</td>
-          <td>'.$row["cmpt_name"].'</td>
-          <td>'.$row["monitoring_id"].'</td>
-          <td>'.$row["monitoring_digest"].'</td>
-          <td>'.$row["issue_count"].'</span> </td>
+        // output data of each row
+        while ($row = $result->fetch_assoc()) {
+            echo '<tr>
+	    <td>' . $row["red_app_id"] . '</td>
+          <td>' . $row["app_name"] . '</td>
+          <td>' . $row["app_version"] . '</td>
+          <td>' . $row["cmpt_version"] . ' </td>
+          <td>' . $row["cmpt_id"] . '</td>
+          <td>' . $row["cmpt_name"] . '</td>
+          <td>' . $row["monitoring_id"] . '</td>
+          <td>' . $row["monitoring_digest"] . '</td>
+          <td>' . $row["issue_count"] . '</span> </td>
         </tr>';
-      }//end while
-    }//end if
+        } //end while
+    } //end if
     else {
-      echo "0 results";
-    }//end else
+        echo "0 results";
+    } //end else
     $result->close();
 }
 
 function getComponentsWithPendingStatus($db)
 {
-    $sql =  "SELECT app_name, app_version, cmpt_id, cmpt_name, status 
-    FROM `apps_components` 
+    $sql =  "SELECT app_name, app_version, cmpt_id, cmpt_name, status
+    FROM `apps_components`
     WHERE status not like '%Approved%';";
     $result = $db->query($sql);
 
     if ($result->num_rows > 0) {
-      // output data of each row
-      while($row = $result->fetch_assoc()) {
-        echo '<tr>
-          <td>'.$row["app_name"].'</td>
-          <td>'.$row["app_version"].'</td>
-          <td>'.$row["cmpt_id"].'</td>
-          <td>'.$row["cmpt_name"].'</td>
-          <td>'.$row["status"].'</span> </td>
+        // output data of each row
+        while ($row = $result->fetch_assoc()) {
+            echo '<tr>
+          <td>' . $row["app_name"] . '</td>
+          <td>' . $row["app_version"] . '</td>
+          <td>' . $row["cmpt_id"] . '</td>
+          <td>' . $row["cmpt_name"] . '</td>
+          <td>' . $row["status"] . '</span> </td>
         </tr>';
-      }//end while
-    }//end if
+        } //end while
+    } //end if
     else {
-      echo "0 results";
-    }//end else
+        echo "0 results";
+    } //end else
     $result->close();
 }
 function getRequestorSummary($db)
@@ -107,29 +99,29 @@ function getRequestorSummary($db)
     FROM apps_components
     GROUP BY requester;";
     $result = $db->query($sql);
-  
+
     if ($result->num_rows > 0) {
-      $approved_total = 0;
-      $not_approved_total = 0;
-  
-      // output data of each row
-      while ($row = $result->fetch_assoc()) {
-        echo '<tr>
+        $approved_total = 0;
+        $not_approved_total = 0;
+
+        // output data of each row
+        while ($row = $result->fetch_assoc()) {
+            echo '<tr>
             <td>' . $row["requester"] . '</td>
             <td>' . $row["total_approved"] . ' </span> </td>
             <td>' . $row["not_approved"] . '</td>
           </tr>';
-        $approved_total += $row["total_approved"];
-        $not_approved_total += $row["not_approved"];
-      } //end while
-      echo '<tr>
+            $approved_total += $row["total_approved"];
+            $not_approved_total += $row["not_approved"];
+        } //end while
+        echo '<tr>
       <td>' . 'Total' . '</b></td>
       <td><b>' . $approved_total . '</b></td>
       <td><b>' . $not_approved_total . '</b></td>
       </tr>';
     } //end if
     else {
-      echo "0 results";
+        echo "0 results";
     } //end else
     $result->close();
 }
@@ -137,9 +129,9 @@ function getRequestorSummary($db)
 
 function getEOLComponents($db)
 {
-    $sql = "SELECT app_id,app_name, app_version, SUM(CASE WHEN status LIKE '%Approved%' THEN 1 ELSE 0 END) 
+    $sql = "SELECT app_id,app_name, app_version, SUM(CASE WHEN status LIKE '%Approved%' THEN 1 ELSE 0 END)
     as is_eol
-    FROM apps_components 
+    FROM apps_components
     GROUP BY app_name;";
     $result = $db->query($sql);
 
@@ -158,7 +150,6 @@ function getEOLComponents($db)
         echo "0 results";
     } //end else
     $result->close();
-
 }
 
 function getComponentsWithIssues($db)
@@ -174,7 +165,7 @@ function getComponentsWithIssues($db)
                 <td>' . $row["cmpt_id"] . '</td>
                 <td>' . $row["cmpt_name"] . '</td>
                 <td>' . $row["cmpt_version"] . '</td>
-                <td>' . $row["issue_count"] . '</td>                
+                <td>' . $row["issue_count"] . '</td>
                 </tr>';
         } //end while
     } //end if
@@ -253,8 +244,8 @@ function getComponentCount($db)
 
 function getDependencyReport($db)
 {
-    $sql = 'SELECT app_id, app_name, app_version 
-    FROM `apps_components` 
+    $sql = 'SELECT app_id, app_name, app_version
+    FROM `apps_components`
     WHERE app_id != red_app_id;';
     $result = $db->query($sql);
     if ($result->num_rows > 0) {
@@ -279,18 +270,17 @@ function getUniqueComponents($db)
     $result = $db->query($sql);
 
     if ($result->num_rows > 0) {
-      // output data of each row
-      while($row = $result->fetch_assoc()) {
-        echo '<tr>
-       <td>'.$row["cmpt_name"].'</td>
+        // output data of each row
+        while ($row = $result->fetch_assoc()) {
+            echo '<tr>
+       <td>' . $row["cmpt_name"] . '</td>
         </tr>';
-      }//end while
-    }//end if
+        } //end while
+    } //end if
     else {
-      echo "0 results";
-    }//end else
+        echo "0 results";
+    } //end else
     $result->close();
-
 }
 
 function getLicenseCounts($db)
@@ -324,7 +314,7 @@ function getLicenseCounts($db)
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Fix it plan</button>
     <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
-        <thead>
+            <thead>
                 <tr id="table-first-row">
                     <th>Red App ID</th>
                     <th>App Name</th>
@@ -335,24 +325,24 @@ function getLicenseCounts($db)
                 </tr>
             </thead>
             <tbody>
-            <?php
+                <?php
 
-        getFixPlan($db);
-        if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
-            $def = "false";
-       
-             while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-                echo '<tr>
-                <td>'.$row["red_app_id"].'</td>
-                <td>'.$row["app_name"].'</td>
-                <td>'.$row["app_version"].'</td>
-                <td>'.$row["monitoring_id"].'</td>
-                <td>'.$row["monitoring_digest"].'</td>
-                <td>'.$row["fix_plan"].'</span> </td>
+                getFixPlan($db);
+                if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+                    $def = "false";
+
+                    while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<tr>
+                <td>' . $row["red_app_id"] . '</td>
+                <td>' . $row["app_name"] . '</td>
+                <td>' . $row["app_version"] . '</td>
+                <td>' . $row["monitoring_id"] . '</td>
+                <td>' . $row["monitoring_digest"] . '</td>
+                <td>' . $row["fix_plan"] . '</span> </td>
               </tr>';
-            }
-        } 
-       ?>      
+                    }
+                }
+                ?>
             </tbody>
             <tfoot>
                 <tr>
@@ -370,53 +360,53 @@ function getLicenseCounts($db)
     <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
-            <tr id="table-first-row">
-            <th>red App Id</th>
-	        <th>App Name</th>
-            <th>App Version</th>
-            <th>Cmpt Version</th>
-            <th>Cmpt Id</th>
-            <th>Cmpt Name </th>
-            <th>Monitoring Id</th>
-            <th>Monitering Digest</th>
-            <th>Issue Count</th>
-           </tr>
-        </thead>
-        <tbody>
-            
-            <?php
+                <tr id="table-first-row">
+                    <th>red App Id</th>
+                    <th>App Name</th>
+                    <th>App Version</th>
+                    <th>Cmpt Version</th>
+                    <th>Cmpt Id</th>
+                    <th>Cmpt Name </th>
+                    <th>Monitoring Id</th>
+                    <th>Monitering Digest</th>
+                    <th>Issue Count</th>
+                </tr>
+            </thead>
+            <tbody>
 
-        getSecuritySummary($db);
-        if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
-            $def = "false";
-       
-             while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-                echo '<tr>
-                <td>'.$row["red_app_id"].'</td>
-                <td>'.$row["app_name"].'</td>
-                <td>'.$row["app_version"].'</td>
-                <td>'.$row["cmpt_version"].' </td>
-                <td>'.$row["cmpt_id"].'</td>
-                <td>'.$row["cmpt_name"].'</td>
-                <td>'.$row["monitoring_id"].'</td>
-                <td>'.$row["monitoring_digest"].'</td>
-                <td>'.$row["issue_count"].'</span> </td>
+                <?php
+
+                getSecuritySummary($db);
+                if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+                    $def = "false";
+
+                    while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<tr>
+                <td>' . $row["red_app_id"] . '</td>
+                <td>' . $row["app_name"] . '</td>
+                <td>' . $row["app_version"] . '</td>
+                <td>' . $row["cmpt_version"] . ' </td>
+                <td>' . $row["cmpt_id"] . '</td>
+                <td>' . $row["cmpt_name"] . '</td>
+                <td>' . $row["monitoring_id"] . '</td>
+                <td>' . $row["monitoring_digest"] . '</td>
+                <td>' . $row["issue_count"] . '</span> </td>
               </tr>';
-            }
-        } 
-       ?>
-       </tbody>
+                    }
+                }
+                ?>
+            </tbody>
             <tfoot>
                 <tr>
-            <th>red App Id</th>
-	        <th>App Name</th>
-            <th>App Version</th>
-            <th>Cmpt Version</th>
-            <th>Cmpt Id</th>
-            <th>Cmpt Name </th>
-            <th>Monitoring Id</th>
-            <th>Monitering Digest</th>
-            <th>Issue Count</th>
+                    <th>red App Id</th>
+                    <th>App Name</th>
+                    <th>App Version</th>
+                    <th>Cmpt Version</th>
+                    <th>Cmpt Id</th>
+                    <th>Cmpt Name </th>
+                    <th>Monitoring Id</th>
+                    <th>Monitering Digest</th>
+                    <th>Issue Count</th>
                 </tr>
             </tfoot>
         </table>
@@ -434,23 +424,23 @@ function getLicenseCounts($db)
                 </tr>
             </thead>
             <tbody>
-            <?php
+                <?php
 
-        getComponentsWithPendingStatus($db);
-        if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
-            $def = "false";
-       
-             while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-                echo '<tr>
-                <td>'.$row["app_name"].'</td>
-                <td>'.$row["app_version"].'</td>
-                <td>'.$row["cmp_id"].'</td>
-                <td>'.$row["cmp_name"].'</td>
-                <td>'.$row["status"].'</span> </td>
+                getComponentsWithPendingStatus($db);
+                if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+                    $def = "false";
+
+                    while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<tr>
+                <td>' . $row["app_name"] . '</td>
+                <td>' . $row["app_version"] . '</td>
+                <td>' . $row["cmp_id"] . '</td>
+                <td>' . $row["cmp_name"] . '</td>
+                <td>' . $row["status"] . '</span> </td>
               </tr>';
-            }
-        } 
-       ?>      
+                    }
+                }
+                ?>
             </tbody>
             <tfoot>
                 <tr>
@@ -469,39 +459,39 @@ function getLicenseCounts($db)
             <thead>
                 <tr id="table-first-row">
                     <th>Requestor Name</th>
-	                <th>Toal Approved</th>
+                    <th>Toal Approved</th>
                     <th>Not Apporved</th>
                 </tr>
             </thead>
             <tbody>
 
-            <?php
+                <?php
 
-        getRequestorSummary($db);
-        if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
-            $def = "false";
-       
-             while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-                echo '<tr>
-                <td>'.$row["requester"].'</td>
-                <td>'.$row["total_approved"].'</td>
-=                <td>'.$row["not_approved"].'</span> </td>
+                getRequestorSummary($db);
+                if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+                    $def = "false";
+
+                    while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<tr>
+                <td>' . $row["requester"] . '</td>
+                <td>' . $row["total_approved"] . '</td>
+=                <td>' . $row["not_approved"] . '</span> </td>
               </tr>';
-            }
-        } 
-       ?>  
+                    }
+                }
+                ?>
             </tbody>
             <tfoot>
                 <tr>
                     <th>Requestor Name</th>
-	                <th>Total Approved</th>
+                    <th>Total Approved</th>
                     <th>Not Apporved</th>
 
                 </tr>
             </tfoot>
         </table>
     </div>
-    
+
 
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">EOL Component</button>
     <div class="table-container" style="display:none;">
@@ -509,74 +499,74 @@ function getLicenseCounts($db)
             <thead>
                 <tr id="table-first-row">
                     <th>App Id</th>
-	                <th>App Name</th>
+                    <th>App Name</th>
                     <th>App Version</th>
                     <th>EOL Component</th>
                 </tr>
             </thead>
             <tbody>
-            <?php
+                <?php
 
-        getEOLComponents($db);
-        if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
-            $def = "false";
-       
-             while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-                echo '<tr>
-                <td>'.$row["app_id"].'</td>
-                <td>'.$row["app_name"].'</td>
-                <td>'.$row["app_version"].'</td>
-                <td>'.$row["is_eol"].'</span> </td>
+                getEOLComponents($db);
+                if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+                    $def = "false";
+
+                    while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<tr>
+                <td>' . $row["app_id"] . '</td>
+                <td>' . $row["app_name"] . '</td>
+                <td>' . $row["app_version"] . '</td>
+                <td>' . $row["is_eol"] . '</span> </td>
               </tr>';
-            }
-        } 
-       ?>  
+                    }
+                }
+                ?>
             </tbody>
             <tfoot>
                 <tr>
                     <th>App Id</th>
-	                <th>App Name</th>
+                    <th>App Name</th>
                     <th>App Version</th>
                     <th>EOL Component</th>
                 </tr>
             </tfoot>
         </table>
     </div>
-    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Components with Issues  </button>
+    <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Components with Issues </button>
     <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
-            <tr id="table-first-row">
-            <th>Component Id</th>
-	        <th>Component Name</th>
-            <th>Component Version</th>
-            <th>Issue Count</th>
-           </tr>
-        </thead>        
-        <tbody>
-            
-    <?php
-        getComponentsWithIssues($db);
-if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
-    $def = "false";
+                <tr id="table-first-row">
+                    <th>Component Id</th>
+                    <th>Component Name</th>
+                    <th>Component Version</th>
+                    <th>Issue Count</th>
+                </tr>
+            </thead>
+            <tbody>
 
-     while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-        echo '<tr>
-        <td>'.$row["cmpt_id"].'</td>
-        <td>'.$row["cmpt_name"].'</td>
-        <td>'.$row["cmpt_version"].'</td>
-        <td>'.$row["issue_count"].'</span> </td>
+                <?php
+                getComponentsWithIssues($db);
+                if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+                    $def = "false";
+
+                    while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<tr>
+        <td>' . $row["cmpt_id"] . '</td>
+        <td>' . $row["cmpt_name"] . '</td>
+        <td>' . $row["cmpt_version"] . '</td>
+        <td>' . $row["issue_count"] . '</span> </td>
       </tr>';
-    }
-} 
-?> 
-       </tbody>
+                    }
+                }
+                ?>
+            </tbody>
             <tfoot>
                 <tr>
-            <th>Component Id</th>
-	        <th>Component Name</th>
-            <th>Component Version</th>
-            <th>Issue Count</th>
+                    <th>Component Id</th>
+                    <th>Component Name</th>
+                    <th>Component Version</th>
+                    <th>Issue Count</th>
                 </tr>
             </tfoot>
         </table>
@@ -695,7 +685,7 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">Dependency Report</button>
     <div class="table-container" style="display:none;">
-    <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
+        <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
                 <tr id="table-first-row">
                     <th>App Id</th>
@@ -706,25 +696,25 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
             </thead>
             <tbody>
                 <?php
-            getDependencyReport($db);
-            if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
-                $def = "false";
+                getDependencyReport($db);
+                if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+                    $def = "false";
 
-                while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-                    echo '<tr>
+                    while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<tr>
                 <td>' . $row["app_id"] . '</td>
                 <td>' . $row["app_name"] . '</td>
                 <td>' . $row["app_version"] . '</td>
                 </tr>';
+                    }
                 }
-            }
-            ?>
+                ?>
             </tbody>
             <tfoot>
                 <tr>
-                <th>App Id</th>
-                <th>App Name</th>
-                <th>App Version</th>
+                    <th>App Id</th>
+                    <th>App Name</th>
+                    <th>App Version</th>
                 </tr>
             </tfoot>
         </table>
@@ -735,26 +725,26 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
             <thead>
                 <<tr id="table-first-row">
                     <th>Component Name</th>
-                    
-                </tr>
+
+                    </tr>
             </thead>
             <tbody>
                 <?php
-            getUniqueComponents($db);
-            if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
-                $def = "false";
+                getUniqueComponents($db);
+                if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
+                    $def = "false";
 
-                while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
-                    echo '<tr>
+                    while ($row = $pref->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<tr>
                 <td>' . $row["Cmpt_name"] . '</td>
                 </tr>';
+                    }
                 }
-            }
-            ?>
+                ?>
             </tbody>
             <tfoot>
                 <tr>
-                <th>Component Name</th>
+                    <th>Component Name</th>
                 </tr>
             </tfoot>
         </table>
@@ -883,146 +873,193 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
             });
         }
     </script>
-<script type="text/javascript">
-    function createBarChart(barChart){
-    let name = barChart[0];
-    let columnTitle = barChart[1];
+    <script type="text/javascript">
+        function createBarChart(barChart) {
+            let name = barChart[0];
+            let columnTitle = barChart[1];
 
-    let queryArray = [[columnTitle, 'Count',  {role:'annotation'}]];
+            let queryArray = [
+                [columnTitle, 'Count', {
+                    role: 'annotation'
+                }]
+            ];
 
-    switch(name){
-
-        case 'Issue':
-            <?php
-            $query = $db->query("SELECT app_name, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END) 
-            as num_issue, SUM(issue_count) as total_issue_count 
-            FROM apps_components 
+            switch (name) {
+                case 'Issue':
+                    <?php
+                    $query = $db->query("SELECT app_name, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END)
+            as num_issue, SUM(issue_count) as total_issue_count
+            FROM apps_components
             GROUP BY app_name;");
-            while($query_row = $query->fetch_assoc()) {
-                $requester=$query_row['requester'];
-                $total_approved=$query_row['total_approved'];
-                $not_approved=$query_row['not_approved'];
-                echo 'queryArray.push(["'.$query_row["app_name"].'", '.$query_row["total_issue_count"].', "'.$query_row["total_issue_count"].'"]);';
-                echo 'queryArray.push(["'.$query_row[""].'", '.$query_row["num_issue"].', "'.$query_row["num_issue"].'"]);';
-
-            }
-            ?>
-            break;
-        case 'Requester':
-          <?php
-          $query = $db->query("SELECT requester, SUM(CASE WHEN status LIKE '%Approved%' THEN 1 ELSE 0 END) as total_approved, SUM(CASE WHEN status NOT LIKE '%Approved%' THEN 1 ELSE 0 END) as not_approved
+                    while ($query_row = $query->fetch_assoc()) {
+                        $requester = $query_row['requester'];
+                        $total_approved = $query_row['total_approved'];
+                        $not_approved = $query_row['not_approved'];
+                        echo 'queryArray.push(["' . $query_row["app_name"] . '", ' . $query_row["total_issue_count"] . ', "' . $query_row["total_issue_count"] . '"]);';
+                        echo 'queryArray.push(["' . $query_row[""] . '", ' . $query_row["num_issue"] . ', "' . $query_row["num_issue"] . '"]);';
+                    }
+                    ?>
+                    break;
+                case 'Requester':
+                    <?php
+                    $query = $db->query("SELECT requester, SUM(CASE WHEN status LIKE '%Approved%' THEN 1 ELSE 0 END) as total_approved, SUM(CASE WHEN status NOT LIKE '%Approved%' THEN 1 ELSE 0 END) as not_approved
             FROM apps_components
             GROUP BY requester;");
-          while ($query_row = $query->fetch_assoc()) {
-            echo 'queryArray.push(["' . $query_row["requester"] . '", ' . $query_row["total_approved"] . ', "' . $query_row["total_approved"] . '"]);';
-            echo 'queryArray.push(["' . $query_row[""] . '", ' . $query_row["not_approved"] . ', "' . $query_row["not_approved"] . '"]);';             }
-            ?> 
-          break;
-    }
-
-    return queryArray;
-}
-
-let barCharts = [['Issue', 'Issue Count'],['Requester', 'Requester Count']];
-
-for(let i = 0; i < barCharts.length; i++){
-    barCharts[i] = createBarChart(barCharts[i]);
-}
-</script>
-
-<!-- Google Bar Chart API Code -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawBarCharts);
-
-function drawBarCharts() {
-    barCharts.forEach(queryArray => drawBarChart(queryArray));
-}
-
-function drawBarChart(queryArray){
-    var data = google.visualization.arrayToDataTable(queryArray);
-
-    let title = queryArray[0][0] + ' Report';
-
-    var options = {
-        title: title,
-        width: 750,
-        height: 400,
-    };
-
-    var chart = new google.visualization.BarChart(document.getElementById(title.replace(/ /g, '')));
-
-    google.visualization.events.addListener(chart, 'select', selectHandler);
-
-    chart.draw(data, options);
-
-    function selectHandler(){
-        var selectedItem = chart.getSelection()[0];
-
-        if (selectedItem) {
-            var statusSelection = data.getValue(selectedItem.row, 0);
-            var reportName = queryArray[0][0].toLowerCase().replace(/ /g, '');
-
-            document.cookie = encodeURI("app_issue_count_cookie=");
-
-
-            switch(reportName){
-                case "issuecount":
-                    document.cookie = encodeURI("app_issue_count_cookie=" + statusSelection); break;
-                case "requestercount":
-                    document.cookie = encodeURI("app_issue_count_cookie=" + statusSelection); break;
+                    while ($query_row = $query->fetch_assoc()) {
+                        echo 'queryArray.push(["' . $query_row["requester"] . '", ' . $query_row["total_approved"] . ', "' . $query_row["total_approved"] . '"]);';
+                        echo 'queryArray.push(["' . $query_row[""] . '", ' . $query_row["not_approved"] . ', "' . $query_row["not_approved"] . '"]);';
+                    }
+                    ?>
+                    break;
+                case 'Component':
+                    <?php
+                    $query = $db->query("SELECT app_name, app_version, SUM(CASE WHEN license NOT LIKE '%Commercial%' THEN 1 ELSE 0 END) as oss_count, SUM(CASE WHEN license LIKE '%Commercial%' THEN 1 ELSE 0 END) as commercial_count, COUNT(license) as total
+                    FROM apps_components
+                    GROUP BY app_name;");
+                    while ($query_row = $query->fetch_assoc()) {
+                        echo 'queryArray.push(["' . $query_row["app_name"] . '", ' . $query_row["app_version"] . ', "' . $query_row["oss_count"] . '", ' . $query_row["commercial_count"] . ', "' . $query_row["total"] . '"]);';
+                        // echo 'queryArray.push(["' . $query_row[""] . '", ' . $query_row["not_approved"] . ', "' . $query_row["not_approved"] . '"]);';
+                    }
+                    ?>
+                    break;
+                case 'License':
+                    <?php
+                    $query = $db->query("SELECT license, COUNT(*) as cmpt_number
+                    FROM `apps_components`
+                    GROUP BY license
+                    ORDER BY 2 DESC;");
+                    while ($query_row = $query->fetch_assoc()) {
+                        echo 'queryArray.push(["' . $query_row["license"] . '", ' . $query_row["cmpt_number"] . '"]);';
+                        // echo 'queryArray.push(["' . $query_row[""] . '", ' . $query_row["not_approved"] . ', "' . $query_row["not_approved"] . '"]);';
+                    }
+                    ?>
+                    break;
             }
 
-            location.reload();
+            return queryArray;
         }
-    }
 
-    let reportName = queryArray[0][0].toLowerCase().replace(/ /g, '');
+        let barCharts = [
+            ['Issue', 'Issue Count'],
+            ['Requester', 'Requester Count'],
+            ['Component', 'Component Count'],
+            ['License', 'License Count']
+        ];
 
-    let length = 0;
-
-    queryArray.forEach((slice, index) => {
-        if(index !== 0){
-            length += slice[1];
+        for (let i = 0; i < barCharts.length; i++) {
+            barCharts[i] = createBarChart(barCharts[i]);
         }
-    });
+    </script>
 
-    switch(reportName){
+    <!-- Google Bar Chart API Code -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {
+            'packages': ['corechart']
+        });
+        google.charts.setOnLoadCallback(drawBarCharts);
+
+        function drawBarCharts() {
+            barCharts.forEach(queryArray => drawBarChart(queryArray));
+        }
+
+        function drawBarChart(queryArray) {
+            var data = google.visualization.arrayToDataTable(queryArray);
+
+            let title = queryArray[0][0] + ' Report';
+
+            var options = {
+                title: title,
+                width: 750,
+                height: 400,
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById(title.replace(/ /g, '')));
+
+            google.visualization.events.addListener(chart, 'select', selectHandler);
+
+            chart.draw(data, options);
+
+            function selectHandler() {
+                var selectedItem = chart.getSelection()[0];
+
+                if (selectedItem) {
+                    var statusSelection = data.getValue(selectedItem.row, 0);
+                    var reportName = queryArray[0][0].toLowerCase().replace(/ /g, '');
+
+                    document.cookie = encodeURI("app_issue_count_cookie=");
+
+
+                    switch (reportName) {
+                        case "issuecount":
+                            document.cookie = encodeURI("app_issue_count_cookie=" + statusSelection);
+                            break;
+                        case "requestercount":
+                            document.cookie = encodeURI("app_issue_count_cookie=" + statusSelection);
+                            break;
+                        case "componentcount":
+                            document.cookie = encodeURI("app_issue_count_cookie=" + statusSelection);
+                            break;
+                        case "licensecount":
+                            documnet.cookie = encodedURI("app_issue_count_cookie=" + statusSelection);
+                    }
+
+                    location.reload();
+                }
+            }
+
+            let reportName = queryArray[0][0].toLowerCase().replace(/ /g, '');
+
+            let length = 0;
+
+            queryArray.forEach((slice, index) => {
+                if (index !== 0) {
+                    length += slice[1];
+                }
+            });
+
+            switch (reportName) {
                 case "issuecount":
                     document.getElementById('totalIssueCountReport').innerHTML = "Total: " + length;
-                     break;
+                    break;
                 case "requestercount":
                     document.getElementById('totalRequesterCountReport').innerHTML = "Total: " + length;
                     break;
-
-
+                case "componentcount":
+                    document.getElementById('totalComponentCountReport').innerHTML = "Total: " + length;
+                    break;
+                case "licensecount":
+                    document.getElementById('totalLicenseCountReport').innerHTML = "Total: " + length;
+                    break;
             }
-}
-</script>
+        }
+    </script>
 
-<div class="right-content">
-    <div class="container">
-        <h3></h3>
-        <h3></h3>
-        <h3  id = scannerHeader style = "color: #FF0000;">Bar Graph</h3>
+    <div class="right-content">
+        <div class="container">
+            <h3 id=scannerHeader style="color: #FF0000;">Bar Graph</h3>
+        </div>
     </div>
-</div>
-<div class="container">
-    <div class="table-container">
-        <table>
-            <tr>
-                <td>
-                <div id="IssueCountReport" style="width: 400px; height: 500px;"></div>
-                    <p  style="position:relative;z-index:1000;text-align:center" id="totalIssueCountReport"></p>
+    <div class="container">
+        <div class="table-container">
+            <table>
+                <tr>
+                    <td>
+                        <div id="IssueCountReport" style="width: 400px; height: 500px;"></div>
+                        <p style="position:relative;z-index:1000;text-align:center" id="totalIssueCountReport"></p>
                     </td>
                     <td>
-                    <div id="RequesterCountReport" style="width: 600px; height: 500px;"></div>
-                    <p style="position:relative;z-index:1000;text-align:center" id="totalRequesterCountReport"></p>
-                </td>
-            <tr>            
-        </table>
-    </div>
-
-</script>
-
+                        <div id="RequesterCountReport" style="width: 600px; height: 500px;"></div>
+                        <p style="position:relative;z-index:1000;text-align:center" id="totalRequesterCountReport"></p>
+                    </td>
+                    <td>
+                        <div id="ComponentCountReport" style="width: 600px; height: 500px;"></div>
+                        <p style="position:relative;z-index:1000;text-align:center" id="totalComponentCountReport"></p>
+                    </td>
+                    <td>
+                        <div id="LicenseCountReport" style="width: 600px; height: 500px;"></div>
+                        <p style="position:relative;z-index:1000;text-align:center" id="totalLicenseCountReport"></p>
+                    </td>
+                <tr>
+            </table>
+        </div>
