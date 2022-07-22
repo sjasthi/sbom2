@@ -360,19 +360,20 @@ function getLicenseCounts($db)
     <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
             <thead>
-                <tr id="table-first-row">
-                    <th>red App Id</th>
-                    <th>App Name</th>
-                    <th>App Version</th>
-                    <th>Cmpt Version</th>
-                    <th>Cmpt Id</th>
-                    <th>Cmpt Name </th>
-                    <th>Monitoring Id</th>
-                    <th>Monitering Digest</th>
-                    <th>Issue Count</th>
-                </tr>
-            </thead>
-            <tbody>
+            <tr id="table-first-row">
+            <th>red App Id</th>
+	        <th>App Name</th>
+            <th>App Version</th>
+            <th>Cmpt Version</th>
+            <th>Cmpt Id</th>
+            <th>Cmpt Name </th>
+            <th>Monitoring Id</th>
+            <th>Monitering Digest</th>
+            <th>Issue Count</th>
+           </tr>
+        </thead>
+        <tbody>
+            <?php
 
                 <?php
 
@@ -491,8 +492,6 @@ function getLicenseCounts($db)
             </tfoot>
         </table>
     </div>
-
-
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">EOL Component</button>
     <div class="table-container" style="display:none;">
         <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
@@ -872,194 +871,142 @@ function getLicenseCounts($db)
                 }
             });
         }
-    </script>
-    <script type="text/javascript">
-        function createBarChart(barChart) {
-            let name = barChart[0];
-            let columnTitle = barChart[1];
 
-            let queryArray = [
-                [columnTitle, 'Count', {
-                    role: 'annotation'
-                }]
-            ];
-
-            switch (name) {
-                case 'Issue':
-                    <?php
-                    $query = $db->query("SELECT app_name, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END)
-            as num_issue, SUM(issue_count) as total_issue_count
-            FROM apps_components
-            GROUP BY app_name;");
-                    while ($query_row = $query->fetch_assoc()) {
-                        $requester = $query_row['requester'];
-                        $total_approved = $query_row['total_approved'];
-                        $not_approved = $query_row['not_approved'];
-                        echo 'queryArray.push(["' . $query_row["app_name"] . '", ' . $query_row["total_issue_count"] . ', "' . $query_row["total_issue_count"] . '"]);';
-                        echo 'queryArray.push(["' . $query_row[""] . '", ' . $query_row["num_issue"] . ', "' . $query_row["num_issue"] . '"]);';
-                    }
-                    ?>
-                    break;
-                case 'Requester':
-                    <?php
-                    $query = $db->query("SELECT requester, SUM(CASE WHEN status LIKE '%Approved%' THEN 1 ELSE 0 END) as total_approved, SUM(CASE WHEN status NOT LIKE '%Approved%' THEN 1 ELSE 0 END) as not_approved
-            FROM apps_components
-            GROUP BY requester;");
-                    while ($query_row = $query->fetch_assoc()) {
-                        echo 'queryArray.push(["' . $query_row["requester"] . '", ' . $query_row["total_approved"] . ', "' . $query_row["total_approved"] . '"]);';
-                        echo 'queryArray.push(["' . $query_row[""] . '", ' . $query_row["not_approved"] . ', "' . $query_row["not_approved"] . '"]);';
-                    }
-                    ?>
-                    break;
-                case 'Component':
-                    <?php
-                    $query = $db->query("SELECT app_name, app_version, SUM(CASE WHEN license NOT LIKE '%Commercial%' THEN 1 ELSE 0 END) as oss_count, SUM(CASE WHEN license LIKE '%Commercial%' THEN 1 ELSE 0 END) as commercial_count, COUNT(license) as total
-                    FROM apps_components
-                    GROUP BY app_name;");
-                    while ($query_row = $query->fetch_assoc()) {
-                        echo 'queryArray.push(["' . $query_row["app_name"] . '", ' . $query_row["app_version"] . ', "' . $query_row["oss_count"] . '", ' . $query_row["commercial_count"] . ', "' . $query_row["total"] . '"]);';
-                        // echo 'queryArray.push(["' . $query_row[""] . '", ' . $query_row["not_approved"] . ', "' . $query_row["not_approved"] . '"]);';
-                    }
-                    ?>
-                    break;
-                case 'License':
-                    <?php
-                    $query = $db->query("SELECT license, COUNT(*) as cmpt_number
-                    FROM `apps_components`
-                    GROUP BY license
-                    ORDER BY 2 DESC;");
-                    while ($query_row = $query->fetch_assoc()) {
-                        echo 'queryArray.push(["' . $query_row["license"] . '", ' . $query_row["cmpt_number"] . '"]);';
-                        // echo 'queryArray.push(["' . $query_row[""] . '", ' . $query_row["not_approved"] . ', "' . $query_row["not_approved"] . '"]);';
-                    }
-                    ?>
-                    break;
-            }
-
-            return queryArray;
-        }
-
-        let barCharts = [
-            ['Issue', 'Issue Count'],
-            ['Requester', 'Requester Count'],
-            ['Component', 'Component Count'],
-            ['License', 'License Count']
-        ];
-
-        for (let i = 0; i < barCharts.length; i++) {
-            barCharts[i] = createBarChart(barCharts[i]);
-        }
-    </script>
-
-    <!-- Google Bar Chart API Code -->
+        </script>
+<html>
+  <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-        google.charts.load('current', {
-            'packages': ['corechart']
-        });
-        google.charts.setOnLoadCallback(drawBarCharts);
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawRequesterChart);
+      google.charts.setOnLoadCallback(drawSecurityChart);
+      google.charts.setOnLoadCallback(drawComponentCount);
+      google.charts.setOnLoadCallback(drawLicenesCount);
 
-        function drawBarCharts() {
-            barCharts.forEach(queryArray => drawBarChart(queryArray));
-        }
+      function drawRequesterChart() {
 
-        function drawBarChart(queryArray) {
-            var data = google.visualization.arrayToDataTable(queryArray);
+        var data = google.visualization.arrayToDataTable([
+          ['Requester name', 'Approved', 'Pending'],
+          <?php
+          $query = $db->query("SELECT requester, SUM(CASE WHEN status LIKE '%Approved%' THEN 1 ELSE 0 END) as total_approved, SUM(CASE WHEN status NOT LIKE '%Approved%' THEN 1 ELSE 0 END) as not_approved
+          FROM apps_components
+          GROUP BY requester;");
+          while ($query_row = $query->fetch_assoc()) {
+              $requester=$query_row['requester'];
+              $total_approved=$query_row['total_approved'];
+              $not_approved=$query_row['not_approved'];
+           ?>
+           ['<?php echo $requester;?>',<?php echo $total_approved;?>,<?php echo $not_approved;?>],
+           <?php
+            }
+           ?>
+        ]);
 
-            let title = queryArray[0][0] + ' Report';
+        var options = {title:'Requester count Report',
+                       width:550,
+                       height:500,
+                    };
 
-            var options = {
-                title: title,
-                width: 750,
-                height: 400,
-            };
+        var chart = new google.visualization.BarChart(document.getElementById('requesterChart'));
+        chart.draw(data, options);
+      }
 
-            var chart = new google.visualization.BarChart(document.getElementById(title.replace(/ /g, '')));
+      function drawSecurityChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['App name', 'Issue Count', 'Total Issue Count'],
+          <?php
+          $query = $db->query("SELECT red_app_id,app_name, app_version, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END)
+          as num_issue, SUM(issue_count) as total_issue_count
+          FROM apps_components
+          GROUP BY app_name;");
+          while ($query_row = $query->fetch_assoc()) {
+              $app_name=$query_row['app_name'];
+              $num_issue=$query_row['num_issue'];
+              $total_issue_count=$query_row['total_issue_count'];
+           ?>
+           ['<?php echo $app_name;?>',<?php echo $num_issue;?>,<?php echo $total_issue_count;?>],
+           <?php
+            }
+           ?>
+        ]);
 
-            google.visualization.events.addListener(chart, 'select', selectHandler);
-
-            chart.draw(data, options);
-
-            function selectHandler() {
-                var selectedItem = chart.getSelection()[0];
-
-                if (selectedItem) {
-                    var statusSelection = data.getValue(selectedItem.row, 0);
-                    var reportName = queryArray[0][0].toLowerCase().replace(/ /g, '');
-
-                    document.cookie = encodeURI("app_issue_count_cookie=");
-
-
-                    switch (reportName) {
-                        case "issuecount":
-                            document.cookie = encodeURI("app_issue_count_cookie=" + statusSelection);
-                            break;
-                        case "requestercount":
-                            document.cookie = encodeURI("app_issue_count_cookie=" + statusSelection);
-                            break;
-                        case "componentcount":
-                            document.cookie = encodeURI("app_issue_count_cookie=" + statusSelection);
-                            break;
-                        case "licensecount":
-                            documnet.cookie = encodedURI("app_issue_count_cookie=" + statusSelection);
+        var options = {title:'Security Count Report',
+                       width:550,
+                       height:500,
                     }
 
-                    location.reload();
-                }
+        var chart = new google.visualization.BarChart(document.getElementById('securityChart'));
+        chart.draw(data, options);
+      }
+
+    //*******************************************************/
+      function drawComponentCount() {
+        var data = google.visualization.arrayToDataTable([
+          ['App name', 'Issue Count', 'Total Issue Count'],
+          <?php
+          $query = $db->query("SELECT red_app_id,app_name, app_version, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END)
+          as num_issue, SUM(issue_count) as total_issue_count
+          FROM apps_components
+          GROUP BY app_name;");
+          while ($query_row = $query->fetch_assoc()) {
+              $app_name=$query_row['app_name'];
+              $num_issue=$query_row['num_issue'];
+              $total_issue_count=$query_row['total_issue_count'];
+           ?>
+           ['<?php echo $app_name;?>',<?php echo $num_issue;?>,<?php echo $total_issue_count;?>],
+           <?php
             }
+           ?>
+        ]);
 
-            let reportName = queryArray[0][0].toLowerCase().replace(/ /g, '');
+        var options = {title:'Component Count Report',
+                       width:550,
+                       height:500,
+                    }
 
-            let length = 0;
+        var chart = new google.visualization.BarChart(document.getElementById('componentChart'));
+        chart.draw(data, options);
+      }
 
-            queryArray.forEach((slice, index) => {
-                if (index !== 0) {
-                    length += slice[1];
-                }
-            });
-
-            switch (reportName) {
-                case "issuecount":
-                    document.getElementById('totalIssueCountReport').innerHTML = "Total: " + length;
-                    break;
-                case "requestercount":
-                    document.getElementById('totalRequesterCountReport').innerHTML = "Total: " + length;
-                    break;
-                case "componentcount":
-                    document.getElementById('totalComponentCountReport').innerHTML = "Total: " + length;
-                    break;
-                case "licensecount":
-                    document.getElementById('totalLicenseCountReport').innerHTML = "Total: " + length;
-                    break;
+      function drawLicenesCount() {
+        var data = google.visualization.arrayToDataTable([
+          ['App name', 'Issue Count', 'Total Issue Count'],
+          <?php
+          $query = $db->query("SELECT red_app_id,app_name, app_version, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END)
+          as num_issue, SUM(issue_count) as total_issue_count
+          FROM apps_components
+          GROUP BY app_name;");
+          while ($query_row = $query->fetch_assoc()) {
+              $app_name=$query_row['app_name'];
+              $num_issue=$query_row['num_issue'];
+              $total_issue_count=$query_row['total_issue_count'];
+           ?>
+           ['<?php echo $app_name;?>',<?php echo $num_issue;?>,<?php echo $total_issue_count;?>],
+           <?php
             }
-        }
+           ?>
+        ]);
+
+        var options = {title:'License Count Report',
+                       width:550,
+                       height:500,
+                    }
+
+        var chart = new google.visualization.BarChart(document.getElementById('licenseChart'));
+        chart.draw(data, options);
+      }
     </script>
+  </head>
+  <body>
+    <table class="columns">
+      <tr>
+        <td><div id="requesterChart" style="border: 1px solid #ccc"></div></td>
+        <td><div id="securityChart" style="border: 1px solid #ccc"></div></td>
+        <td><div id="componentChart" style="border: 1px solid #ccc"></div></td>
+        <td><div id="licenseChart" style="border: 1px solid #ccc"></div></td>
 
-    <div class="right-content">
-        <div class="container">
-            <h3 id=scannerHeader style="color: #FF0000;">Bar Graph</h3>
-        </div>
-    </div>
-    <div class="container">
-        <div class="table-container">
-            <table>
-                <tr>
-                    <td>
-                        <div id="IssueCountReport" style="width: 400px; height: 500px;"></div>
-                        <p style="position:relative;z-index:1000;text-align:center" id="totalIssueCountReport"></p>
-                    </td>
-                    <td>
-                        <div id="RequesterCountReport" style="width: 600px; height: 500px;"></div>
-                        <p style="position:relative;z-index:1000;text-align:center" id="totalRequesterCountReport"></p>
-                    </td>
-                    <td>
-                        <div id="ComponentCountReport" style="width: 600px; height: 500px;"></div>
-                        <p style="position:relative;z-index:1000;text-align:center" id="totalComponentCountReport"></p>
-                    </td>
-                    <td>
-                        <div id="LicenseCountReport" style="width: 600px; height: 500px;"></div>
-                        <p style="position:relative;z-index:1000;text-align:center" id="totalLicenseCountReport"></p>
-                    </td>
-                <tr>
-            </table>
-        </div>
+      </tr>
+    </table>
+  </body>
+</html>
+
