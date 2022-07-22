@@ -18,7 +18,7 @@
     $sql = "SELECT red_app_id,app_name, app_version, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END) 
     as num_issue, SUM(issue_count) as total_issue_count 
     FROM apps_components 
-    GROUP BY red_app_id;";
+    GROUP BY app_name;";
     $result = $db->query($sql);
 
     if ($result->num_rows > 0) {
@@ -196,7 +196,7 @@
           $query = $db->query("SELECT red_app_id,app_name, app_version, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END) 
           as num_issue, SUM(issue_count) as total_issue_count 
           FROM apps_components 
-          GROUP BY red_app_id;");
+          GROUP BY app_name;");
           while ($query_row = $query->fetch_assoc()) {
               $app_name=$query_row['app_name'];
               $num_issue=$query_row['num_issue'];
