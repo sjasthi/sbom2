@@ -916,6 +916,8 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                     };
 
         var chart = new google.visualization.BarChart(document.getElementById('requesterChart'));
+       // var chart = new google.visualization.PieChart(document.getElementById('requesterChart'));
+
         chart.draw(data, options);
       }
 
@@ -947,21 +949,20 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
         chart.draw(data, options);
       }
     
-    //*******************************************************/
+    //****************************************************** */
       function drawComponentCount() {
         var data = google.visualization.arrayToDataTable([
-          ['App name', 'Issue Count', 'Total Issue Count'],
+          ['App name', 'OSS Count', 'Commercial Count'],
           <?php
-          $query = $db->query("SELECT red_app_id,app_name, app_version, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END) 
-          as num_issue, SUM(issue_count) as total_issue_count 
-          FROM apps_components 
+          $query = $db->query("SELECT app_name, app_version, SUM(CASE WHEN license NOT LIKE '%Commercial%' THEN 1 ELSE 0 END) as oss_count, SUM(CASE WHEN license LIKE '%Commercial%' THEN 1 ELSE 0 END) as commercial_count, COUNT(license) as total
+          FROM apps_components
           GROUP BY app_name;");
           while ($query_row = $query->fetch_assoc()) {
               $app_name=$query_row['app_name'];
-              $num_issue=$query_row['num_issue'];
-              $total_issue_count=$query_row['total_issue_count'];
+              $oss_count=$query_row['oss_count'];
+              $commercial_count=$query_row['commercial_count'];
            ?>
-           ['<?php echo $app_name;?>',<?php echo $num_issue;?>,<?php echo $total_issue_count;?>],   
+           ['<?php echo $app_name;?>',<?php echo $oss_count;?>,<?php echo $commercial_count;?>],   
            <?php   
             }
            ?> 
@@ -978,18 +979,17 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
 
       function drawLicenesCount() {
         var data = google.visualization.arrayToDataTable([
-          ['App name', 'Issue Count', 'Total Issue Count'],
+          ['License name', 'License Count'],
           <?php
-          $query = $db->query("SELECT red_app_id,app_name, app_version, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END) 
-          as num_issue, SUM(issue_count) as total_issue_count 
-          FROM apps_components 
-          GROUP BY app_name;");
+          $query = $db->query("SELECT license, COUNT(*) as cmpt_number
+          FROM `apps_components`
+          GROUP BY license
+          ORDER BY 2 DESC;");
           while ($query_row = $query->fetch_assoc()) {
-              $app_name=$query_row['app_name'];
-              $num_issue=$query_row['num_issue'];
-              $total_issue_count=$query_row['total_issue_count'];
+              $license=$query_row['license'];
+              $cmpt_number=$query_row['cmpt_number'];
            ?>
-           ['<?php echo $app_name;?>',<?php echo $num_issue;?>,<?php echo $total_issue_count;?>],   
+           ['<?php echo $license;?>',<?php echo $cmpt_number;?>],   
            <?php   
             }
            ?> 
@@ -1006,15 +1006,9 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
     </script>
   </head>
   <body>
-    <table class="columns">
-      <tr>
-        <td><div id="requesterChart" style="border: 1px solid #ccc"></div></td>
-        <td><div id="securityChart" style="border: 1px solid #ccc"></div></td>
-        <td><div id="componentChart" style="border: 1px solid #ccc"></div></td>
-        <td><div id="licenseChart" style="border: 1px solid #ccc"></div></td>
 
-      </tr>
-    </table>
-  </body>
-</html>
-
+<div id="requesterChart" style="border: 1px solid #ccc"></div>
+<div id="securityChart" style="border: 1px solid #ccc"></div>
+<div id="componentChart" style="border: 1px solid #ccc"></div>
+<div id="licenseChart" style="border: 1px solid #ccc"></div>
+</body>
