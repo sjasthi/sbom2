@@ -1018,7 +1018,6 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
     </script>
   </head>
   <body>
-
   <div id="requesterChart" style="width: 900px; height: 500px;"></div>
   <div id="securityChart" style="width: 900px; height: 500px;"></div>
   <div id="componentChart" style="width: 900px; height: 500px;"></div>
