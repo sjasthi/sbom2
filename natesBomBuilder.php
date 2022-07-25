@@ -29,13 +29,14 @@
     for ( $i = 0; $i < $red_app_count; $i++) {
       $red_app_id =  $red_app_position;
       $red_app_ver = random_int(1,100).".".random_int(1,100).".".random_int(1,100);
+      $rando_ver = $red_app_ver;
       echo "<h3>Red App ID: ".sprintf("%'.08d", $red_app_id)."</h3>\n";
       $parent_id_buffer = $red_app_id;
       $parent_ver_buffer = $red_app_ver;
-      $rando_ver = random_int(1,100).".".random_int(1,100).".".random_int(1,100);
+
       $red_app_position++;
       for ( $j = 0; $j < $cmpt_per_red_app; $j++ ) {
-
+//        $rando_ver = random_int(1,100).".".random_int(1,100).".".random_int(1,100);
         echo sprintf("%'.08d", $cmpt_position).","."component_".$cmpt_position.",".$rando_ver.",".sprintf("%'.08d", $parent_id_buffer).",component_".$parent_id_buffer.",".$parent_ver_buffer.",GPLv3,approved,Nate's Buffer Builder,Description of component_".$parent_id_buffer.",".sprintf("%'.08d", $cmpt_position).",na,0".",\n</br>";
         $branch_position = ( $branch_position + 7 ) % 6;
 	if ( $branch_position == 0 ) {
@@ -47,7 +48,7 @@
 	}
 	
 	$cmpt_position++;
-//        $rando_ver = random_int(1,100).".".random_int(1,100).".".random_int(1,100);
+        $rando_ver = random_int(1,100).".".random_int(1,100).".".random_int(1,100);
       }
     }
   }
