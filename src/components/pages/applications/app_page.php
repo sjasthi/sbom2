@@ -108,7 +108,7 @@ function showAppsAsChecklist($db){
 
     ?>
     <fieldset>
-      <table class="datatable table" id="info">
+      <table class="datatable table" style="overflow-y: scroll" id="info">
         <thead>
           <tr id="table-first-row">
             <th><input id="check-all" type="checkbox" style="width:20px;height:20px;"></th>
@@ -136,8 +136,9 @@ function showAppsAsChecklist($db){
       $('.appCheckbox').prop('checked', false);
     }
   });
-  $(document).ready( function () {
-    $('#info').DataTable();
-  });
+//  $(document).ready( function () {
+//    $('#info').DataTable();
+//  });
+  
   </script>
 </div>
