@@ -139,6 +139,6 @@ function showAppsAsChecklist($db){
 //  $(document).ready( function () {
 //    $('#info').DataTable();
 //  });
-  
+
   </script>
 </div>

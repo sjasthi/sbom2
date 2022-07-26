@@ -1,3 +1,4 @@
+csv_files/*
 _docs/csv_files/*
 src/db/createBiggerBOM/sql/small_100.sql
 src/db/createBiggerBOM/sql/medium_1000.sql
