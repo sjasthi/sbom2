@@ -16,7 +16,7 @@
   $cmpt_position = 0;
   $red_app_position = 0;
   $branch_position = 0;
-  include("./src/db/database.php");
+//  include("./src/db/database.php");
 
   if(isset($_POST['number'])) {
     $cmpt_count = (int)$_POST['number'];
@@ -29,15 +29,20 @@
     for ( $i = 0; $i < $red_app_count; $i++) {
       $red_app_id =  $red_app_position;
       $red_app_ver = random_int(1,100).".".random_int(1,100).".".random_int(1,100);
+      $red_app_csv = fopen(sprintf("%'.08d", $red_app_id).".csv","w");
       $rando_ver = $red_app_ver;
       echo "<h3>Red App ID: ".sprintf("%'.08d", $red_app_id)."</h3>\n";
+      $line = "cmpt_id,cmpt_name,cmpt_version,app_id,app_name,app_version,license,status,requester,description,monitoring_id,monitoring_digest,issue_count\n";
+      fwrite($red_app_csv, $line);
       $parent_id_buffer = $red_app_id;
       $parent_ver_buffer = $red_app_ver;
 
       $red_app_position++;
       for ( $j = 0; $j < $cmpt_per_red_app; $j++ ) {
 //        $rando_ver = random_int(1,100).".".random_int(1,100).".".random_int(1,100);
-        echo sprintf("%'.08d", $cmpt_position).","."component_".$cmpt_position.",".$rando_ver.",".sprintf("%'.08d", $parent_id_buffer).",component_".$parent_id_buffer.",".$parent_ver_buffer.",GPLv3,approved,Nate's Buffer Builder,Description of component_".$parent_id_buffer.",".sprintf("%'.08d", $cmpt_position).",na,0".",\n</br>";
+        $line = sprintf("%'.08d", $cmpt_position).","."cmpt_".$cmpt_position.",".$rando_ver.",".sprintf("%'.08d", $parent_id_buffer).",cmpt_".$parent_id_buffer.",".$parent_ver_buffer.",GPLv3,approved,Nate's Buffer Builder,Description of cmpt_".$parent_id_buffer.",".sprintf("%'.08d", $cmpt_position).",na,0";
+	echo $line."</br>\n";
+	fwrite($red_app_csv, $line."\n");
         $branch_position = ( $branch_position + 7 ) % 6;
 	if ( $branch_position == 0 ) {
 	  $parent_id_buffer = $red_app_id;
@@ -50,6 +55,7 @@
 	$cmpt_position++;
         $rando_ver = random_int(1,100).".".random_int(1,100).".".random_int(1,100);
       }
+      fclose($red_app_csv);
     }
   }
 ?> 
