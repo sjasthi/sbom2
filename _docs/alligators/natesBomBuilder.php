@@ -13,7 +13,7 @@
   </body>
 </html>
 <?php
-  $cmpt_position = 0;
+  $cmpt_position = 1; // Red Apps in component table? Update this to 0
   $red_app_position = 0;
   $branch_position = 0;
 //  include("./src/db/database.php");
@@ -39,7 +39,7 @@
 
       $red_app_position++;
       for ( $j = 0; $j < $cmpt_per_red_app; $j++ ) {
-//        $rando_ver = random_int(1,100).".".random_int(1,100).".".random_int(1,100);
+
         $line = sprintf("%'.08d", $cmpt_position).","."cmpt_".$cmpt_position.",".$rando_ver.",".sprintf("%'.08d", $parent_id_buffer).",cmpt_".$parent_id_buffer.",".$parent_ver_buffer.",GPLv3,approved,Nate's Buffer Builder,Description of cmpt_".$parent_id_buffer.",".sprintf("%'.08d", $cmpt_position).",na,0";
 	echo $line."</br>\n";
 	fwrite($red_app_csv, $line."\n");
