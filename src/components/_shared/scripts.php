@@ -19,7 +19,7 @@
 <script src="<?php echo $assetsPath; ?>/jquery/jquery.treetable.js"></script>
 
 <!-- double scrollbar -->
-<script type="text/javascript" src="<?php echo $assetsPath; ?>jquery/doubleScroll/doubleScroll.js"></script>
+<!-- <script type="text/javascript" src="<?php echo $assetsPath; ?>jquery/doubleScroll/doubleScroll.js"></script> -->
 
 <!-- chatbot -->
-<script type="text/javascript" src="http://localhost:3000/assets/modules/channel-web/inject.js"></script>
+<!-- <script type="text/javascript" src="http://localhost:3000/assets/modules/channel-web/inject.js"></script> -->
