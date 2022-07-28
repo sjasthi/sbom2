@@ -23,11 +23,9 @@
             <thead>
                 <tr id="table-first-row">
                     <th>ID</th>
-					<th>ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
-                    <th>Hash</th>
                     <th>Active</th>
                     <th>Role</th>
 					<th>Modified Time</th>
@@ -46,12 +44,10 @@
 
                 <div>
                     <strong> Toggle column: </strong> 
-                    <a id="toggle" class="toggle-vis" data-column="0">ID</a> - 
 					<a id="toggle" class="toggle-vis" data-column="0">ID</a> - 
                     <a id="toggle" class="toggle-vis" data-column="1">First</a> - 
                     <a id="toggle" class="toggle-vis" data-column="2">Last</a> - 
                     <a id="toggle" class="toggle-vis" data-column="3">email</a> - 
-                    <a id="toggle" class="toggle-vis" data-column="4">hash</a> - 
                     <a id="toggle" class="toggle-vis" data-column="5">active</a> - 
                     <a id="toggle" class="toggle-vis" data-column="6">role</a> -
                     <a id="toggle" class="toggle-vis" data-column="7">modified_time</a> - 
@@ -69,7 +65,6 @@
                     $first_name = $row["first_name"];
                     $last_name = $row["last_name"];
                     $email = $row["email"];
-                    $hash = $row["hash"];
                     $active = $row["active"];
                     $role = $row["role"];
                     $modified_time = $row["modified_time"];
@@ -84,7 +79,6 @@
                     <td><div contenteditable="true" onBlur="updateValue(this,'first_name','<?php echo $ID; ?>')"><?php echo $first_name; ?></div></span> </td>
                     <td><div contenteditable="true" onBlur="updateValue(this,'last_name','<?php echo $ID; ?>')"><?php echo $last_name; ?></div></span> </td>
                     <td><div contenteditable="true" onBlur="updateValue(this,'email','<?php echo $ID; ?>')"><?php echo $email; ?></div></span> </td>
-                    <td><div contenteditable="true" onBlur="updateValue(this,'hash','<?php echo $ID; ?>')"><?php echo $hash; ?></div></span> </td>
                     <td><div contenteditable="true" onBlur="updateValue(this,'active','<?php echo $ID; ?>')"><?php echo $active; ?></div></span> </td>
                     <td><div contenteditable="true" onBlur="updateValue(this,'role','<?php echo $ID; ?>')"><?php echo $role; ?></div></span> </td>
                     <td><div contenteditable="true" onBlur="updateValue(this,'modified_time','<?php echo $ID; ?>')"><?php echo $modified_time; ?></div></span> </td>
@@ -101,7 +95,6 @@
                       <td>'.$row["first_name"].'</td>
                       <td>'.$row["last_name"].'</td>
                       <td>'.$row["email"].' </span> </td>
-                      <td>'.$row["hash"].'</td>
                       <td>'.$row["active"].'</td>
                       <td>'.$row["role"].' </span> </td>
                       <td>'.$row["modified_time"].' </span> </td>
