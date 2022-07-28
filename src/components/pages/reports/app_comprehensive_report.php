@@ -1,16 +1,24 @@
 <?php
 $nav_selected = "REPORTS";
-$left_selected = "AppComprehensiveReport";
+// $left_selected = "REPORTSFOSSCOUNT";
 $tabTitle = "SBOM - Reports (Comprehensive Report)";
 
+// include "../bom/get_scope.php";
 include("../../../../index.php");
-include("reports_left_menu.php");
+// include("reports_left_menu.php");
 
+// $def = "false";
+// $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
+// $scopeArray = array();
 ?>
 
 <?php
 $cookie_name = 'preference';
 global $pref_err;
+
+//We'll need different functions to grab the data from the db. Since we are working on the same file.
+//Make sure to work on your own function for each section/table we are displaying.
+//There might be a better way to do it this, if you find a way make sure to let everybody know!
 
 function getFixPlan($db)
 {
@@ -193,7 +201,6 @@ function getDuplicateComponents($db)
                 <td>' . $row["cmpt_version"] . '</td>
                 <td>' . $row["cmpt_name"] . '</td>
                 <td>' . $row["count"] . '</td>
-
                 </tr>';
         } //end while
     } //end if
@@ -339,7 +346,7 @@ function getLicenseCounts($db)
                 <td>' . $row["monitoring_id"] . '</td>
                 <td>' . $row["monitoring_digest"] . '</td>
                 <td>' . $row["fix_plan"] . '</span> </td>
-                </tr>';
+              </tr>';
                     }
                 }
                 ?>
@@ -374,6 +381,7 @@ function getLicenseCounts($db)
             </thead>
             <tbody>
                 <?php
+
                 getSecuritySummary($db);
                 if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
                     $def = "false";
@@ -389,7 +397,7 @@ function getLicenseCounts($db)
                 <td>' . $row["monitoring_id"] . '</td>
                 <td>' . $row["monitoring_digest"] . '</td>
                 <td>' . $row["issue_count"] . '</span> </td>
-                </tr>';
+              </tr>';
                     }
                 }
                 ?>
@@ -435,7 +443,7 @@ function getLicenseCounts($db)
                 <td>' . $row["cmp_id"] . '</td>
                 <td>' . $row["cmp_name"] . '</td>
                 <td>' . $row["status"] . '</span> </td>
-                </tr>';
+              </tr>';
                     }
                 }
                 ?>
@@ -473,8 +481,8 @@ function getLicenseCounts($db)
                         echo '<tr>
                 <td>' . $row["requester"] . '</td>
                 <td>' . $row["total_approved"] . '</td>
-                <td>' . $row["not_approved"] . '</span> </td>
-                </tr>';
+=                <td>' . $row["not_approved"] . '</span> </td>
+              </tr>';
                     }
                 }
                 ?>
@@ -513,7 +521,7 @@ function getLicenseCounts($db)
                 <td>' . $row["app_name"] . '</td>
                 <td>' . $row["app_version"] . '</td>
                 <td>' . $row["is_eol"] . '</span> </td>
-                </tr>';
+              </tr>';
                     }
                 }
                 ?>
@@ -552,7 +560,7 @@ function getLicenseCounts($db)
         <td>' . $row["cmpt_name"] . '</td>
         <td>' . $row["cmpt_version"] . '</td>
         <td>' . $row["issue_count"] . '</span> </td>
-        </tr>';
+      </tr>';
                     }
                 }
                 ?>
@@ -907,6 +915,8 @@ function getLicenseCounts($db)
                 };
 
                 var chart = new google.visualization.BarChart(document.getElementById('requesterChart'));
+                // var chart = new google.visualization.PieChart(document.getElementById('requesterChart'));
+
                 chart.draw(data, options);
             }
 
@@ -938,19 +948,19 @@ function getLicenseCounts($db)
                 chart.draw(data, options);
             }
 
-            //*******************************************************/
+            //****************************************************** */
             function drawComponentCount() {
                 var data = google.visualization.arrayToDataTable([
-                    ['App Name', 'App Version', 'OSS Count', 'Commercial Count', 'Total'],
+                    ['App name', 'OSS Count', 'Commercial Count'],
                     <?php
-                    $query = $db->query("SELECT app_name, app_version, SUM(CASE WHEN license NOT LIKE '%Commercial%' THEN 1 ELSE 0 END) as oss_count, SUM(CASE WHEN license LIKE '%Commercial%' THEN 1 ELSE 0 END) as commercial_count, COUNT(license) as total FROM apps_components GROUP BY app_name;");
+                    $query = $db->query("SELECT app_name, app_version, SUM(CASE WHEN license NOT LIKE '%Commercial%' THEN 1 ELSE 0 END) as oss_count, SUM(CASE WHEN license LIKE '%Commercial%' THEN 1 ELSE 0 END) as commercial_count, COUNT(license) as total
+          FROM apps_components
+          GROUP BY app_name;");
                     while ($query_row = $query->fetch_assoc()) {
                         $app_name = $query_row['app_name'];
-                        $app_version = $query_row['app_version'];
                         $oss_count = $query_row['oss_count'];
                         $commercial_count = $query_row['commercial_count'];
-                        $total_count = $query_row['total'];
-                    ?>['<?php echo $app_name; ?>', <?php echo $app_version; ?>, <?php echo $oss_count; ?>, <?php echo $commercial_count; ?>, <?php echo $total_count; ?>],
+                    ?>['<?php echo $app_name; ?>', <?php echo $oss_count; ?>, <?php echo $commercial_count; ?>],
                     <?php
                     }
                     ?>
@@ -968,17 +978,16 @@ function getLicenseCounts($db)
 
             function drawLicenesCount() {
                 var data = google.visualization.arrayToDataTable([
-                    ['App name', 'Issue Count', 'Total Issue Count'],
+                    ['License name', 'License Count'],
                     <?php
-                    $query = $db->query("SELECT red_app_id,app_name, app_version, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END)
-          as num_issue, SUM(issue_count) as total_issue_count
-          FROM apps_components
-          GROUP BY app_name;");
+                    $query = $db->query("SELECT license, COUNT(*) as cmpt_number
+          FROM `apps_components`
+          GROUP BY license
+          ORDER BY 2 DESC;");
                     while ($query_row = $query->fetch_assoc()) {
-                        $app_name = $query_row['app_name'];
-                        $num_issue = $query_row['num_issue'];
-                        $total_issue_count = $query_row['total_issue_count'];
-                    ?>['<?php echo $app_name; ?>', <?php echo $num_issue; ?>, <?php echo $total_issue_count; ?>],
+                        $license = $query_row['license'];
+                        $cmpt_number = $query_row['cmpt_number'];
+                    ?>['<?php echo $license; ?>', <?php echo $cmpt_number; ?>],
                     <?php
                     }
                     ?>
@@ -997,10 +1006,9 @@ function getLicenseCounts($db)
     </head>
 
     <body>
+
         <div id="requesterChart" style="border: 1px solid #ccc"></div>
         <div id="securityChart" style="border: 1px solid #ccc"></div>
         <div id="componentChart" style="border: 1px solid #ccc"></div>
         <div id="licenseChart" style="border: 1px solid #ccc"></div>
     </body>
-
-    </html>
