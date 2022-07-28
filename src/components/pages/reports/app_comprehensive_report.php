@@ -10,9 +10,17 @@ include("../../../../index.php");
 // $def = "false";
 // $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
 // $scopeArray = array();
+
 ?>
 
 <?php
+$start_time = microtime(TRUE);
+?>
+<html>
+<body>
+<div id="wrapper">
+<?php
+
 $cookie_name = 'preference';
 global $pref_err;
 
@@ -163,8 +171,8 @@ function getEOLComponents($db)
 
 function getComponentsWithIssues($db)
 {
-    $sql = "SELECT cmpt_id, cmpt_name,cmpt_version, issue_count FROM apps_components
-    ORDER BY issue_count;";
+    $sql = "SELECT cmpt_id, cmpt_name,cmpt_version, issue_count FROM apps_components 
+    where issue_count > 0 order by issue_count;";
     $result = $db->query($sql);
 
     if ($result->num_rows > 0) {
@@ -336,6 +344,15 @@ function getLicenseCounts($db)
             </thead>
             <tbody>
             <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
 
         getFixPlan($db);
         if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
@@ -365,6 +382,13 @@ function getLicenseCounts($db)
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Page generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Security Summary </button>
     <div class="table-container" style="display:none;">
@@ -1007,9 +1031,9 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
         var options = {
           chart: {
             title: 'License Count Report',
-            subtitle: 'License name and count',
+            subtitle: 'License name and ',
           },
-          bars: 'horizontal' 
+          bars: 'vertical' 
         };
         var chart = new google.charts.Bar(document.getElementById('licenseChart'));
 
@@ -1022,5 +1046,17 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
   <div id="requesterChart" style="width: 900px; height: 500px;"></div>
   <div id="securityChart" style="width: 900px; height: 500px;"></div>
   <div id="componentChart" style="width: 900px; height: 500px;"></div>
-  <div id="licenseChart" style="width: 1200px; height: 500px;"></div>
+  <div id="licenseChart" style="width: 900px; height: 500px;"></div>
+
 </body>
+</div>
+</body>
+</html>
+
+<?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Page generated in '.$time_taken.' seconds.';
+?>
