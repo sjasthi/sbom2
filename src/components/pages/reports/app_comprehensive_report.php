@@ -1199,7 +1199,6 @@ echo 'License Count menu generated in '.$time_taken.' seconds.';
     </script>
   </head>
   <body>
-
   <div id="requesterChart" style="width: 900px; height: 500px;"></div>
   <div id="securityChart" style="width: 900px; height: 500px;"></div>
   <div id="componentChart" style="width: 900px; height: 500px;"></div>
