@@ -122,6 +122,7 @@
         header('Content-type:application/json;charset=utf-8');
         http_response_code($responseCode);
         $response = array("response_code" => $responseCode, "Records" => $message, "Parameter Value" => $string, "data" => $data);
-        $json = json_encode($response, JSON_PRETTY_PRINT);
+        #$json = json_encode($response, JSON_PRETTY_PRINT);
+        $json = json_encode($response);
         echo $json;
     }

@@ -42,11 +42,11 @@
             if($processor->num_rows > 0) {
                 $count = $processor->num_rows;
                 while($row  = $processor->fetch_assoc()){
-                    $data = 'True';
+                    $data["is_safe"] = "True";
                 }
             }
             else {
-                $data = 'False';
+                $data["is_safe"] = "False";
             }
             response(200, $count, $component_name . ", " . $component_version, $data);
         }
@@ -71,11 +71,11 @@
             if ($processor->num_rows > 0) {
                 $count = $processor->num_rows;
                 while ($row = $processor->fetch_assoc()) {
-                    $data = 'True';
+                    $data["is_safe"] = "True";
                 }
             }
             else {
-                $data = 'False';
+                $data["is_safe"] = "False";
             }
             response(200, $count, $component_id, $data);
         }
@@ -98,11 +98,11 @@
             if($processor!==false && $processor->num_rows > 0) {
                 $count = $processor->num_rows;
                 while($row  = $processor->fetch_assoc()){
-                    $data[] = 'True';
+                    $data["is_safe"] = "True";
                 }
             }
             else {
-                $data = 'False';
+                $data["is_safe"] = "False";
             }
             response(200, $count, $component_name, $data);
         }

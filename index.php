@@ -84,7 +84,7 @@
   </body>
   <script>
 		window.botpressWebChat.init({
-		host: "http://localhost:3000",
+		host: "http://ics499-dev:3000",
 		botId: "sbom_bot",
 		})
 </script>

@@ -65,7 +65,7 @@
          */
         public function is_safe_id($component_id) {
             global $db;
-            $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components 
+            $sql = "SELECT distinct cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components 
                                                                        WHERE cmpt_id = $component_id 
                                                                        AND issue_count = 0";
             return $db->query($sql);
@@ -79,7 +79,7 @@
          */
         public function is_safe_name_version($component_name, $component_version) {
             global $db;
-            $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components 
+            $sql = "SELECT distinct cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components 
                                                                        WHERE cmpt_name = '$component_name%' 
                                                                        AND cmpt_version = '$component_version' 
                                                                        AND issue_count = 0";
@@ -93,7 +93,7 @@
          */
         public function is_safe_name($component_name) {
             global $db;
-            $sql = "SELECT cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components WHERE cmpt_name LIKE '$component_name%' 
+            $sql = "SELECT distinct cmpt_id, cmpt_name, cmpt_version, issue_count FROM apps_components WHERE cmpt_name LIKE '$component_name%' 
                                                                                               AND issue_count = 0";
             return $db->query($sql);
         }
@@ -424,6 +424,14 @@
             return $db->query($sql);
         }
 
-
+        public function get_requester_pending_tasks() {
+            global $db;
+            $sql = "SELECT applications.app_id, applications.app_name, applications.app_version, apps_components.cmpt_id,
+                    apps_components.cmpt_name, apps_components.cmpt_version, apps_components.app_id, apps_components.app_name, 
+                    apps_components.app_version, apps_components.status FROM apps_components 
+                        INNER JOIN applications ON applications.app_id = apps_components.red_app_id 
+                                                                        WHERE apps_components.status NOT LIKE 'Approved'";
+            return $db->query($sql);
+        }
 
     }
