@@ -211,7 +211,7 @@
         var options = {
           chart: {
             title: 'Security Issue Count',
-            subtitle: 'App Name, Issue count, and Total Issu count',
+            subtitle: 'App Name, Issue count, and Total Issue count',
           },
           bars: 'vertical' 
         };

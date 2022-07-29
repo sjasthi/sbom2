@@ -10,9 +10,17 @@ include("../../../../index.php");
 // $def = "false";
 // $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
 // $scopeArray = array();
+
 ?>
 
 <?php
+$start_time = microtime(TRUE);
+?>
+<html>
+<body>
+<div id="wrapper">
+<?php
+
 $cookie_name = 'preference';
 global $pref_err;
 
@@ -163,8 +171,8 @@ function getEOLComponents($db)
 
 function getComponentsWithIssues($db)
 {
-    $sql = "SELECT cmpt_id, cmpt_name,cmpt_version, issue_count FROM apps_components
-    ORDER BY issue_count;";
+    $sql = "SELECT cmpt_id, cmpt_name,cmpt_version, issue_count FROM apps_components 
+    where issue_count > 0 order by issue_count;";
     $result = $db->query($sql);
 
     if ($result->num_rows > 0) {
@@ -336,6 +344,15 @@ function getLicenseCounts($db)
             </thead>
             <tbody>
             <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
 
         getFixPlan($db);
         if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
@@ -365,6 +382,13 @@ function getLicenseCounts($db)
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Fix Plan menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Security Summary </button>
     <div class="table-container" style="display:none;">
@@ -383,7 +407,16 @@ function getLicenseCounts($db)
            </tr>
         </thead>
         <tbody> 
-            <?php
+        <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
 
         getSecuritySummary($db);
         if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
@@ -419,6 +452,13 @@ function getLicenseCounts($db)
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Security Summary menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">Component With Pending Status</button>
     <div class="table-container" style="display:none;">
@@ -434,6 +474,15 @@ function getLicenseCounts($db)
             </thead>
             <tbody>
             <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
 
         getComponentsWithPendingStatus($db);
         if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
@@ -461,6 +510,14 @@ function getLicenseCounts($db)
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Components With Pending Status menu generated in '.$time_taken.' seconds.';
+?>
+
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Requester Summary</button>
     <div class="table-container" style="display:none;">
@@ -475,7 +532,15 @@ function getLicenseCounts($db)
             <tbody>
 
             <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
 
+$cookie_name = 'preference';
+global $pref_err;
         getRequestorSummary($db);
         if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
             $def = "false";
@@ -499,6 +564,13 @@ function getLicenseCounts($db)
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Requester Summary menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">EOL Component</button>
     <div class="table-container" style="display:none;">
@@ -513,6 +585,16 @@ function getLicenseCounts($db)
             </thead>
             <tbody>
             <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
+
 
         getEOLComponents($db);
         if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
@@ -538,6 +620,13 @@ function getLicenseCounts($db)
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'EOL Components menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Components with Issues  </button>
     <div class="table-container" style="display:none;">
@@ -552,7 +641,17 @@ function getLicenseCounts($db)
         </thead>        
         <tbody>
             
-    <?php
+        <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
+
         getComponentsWithIssues($db);
 if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
     $def = "false";
@@ -577,6 +676,13 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Components with Issues menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Duplicate Components</button>
     <div class="table-container" style="display:none;">
@@ -593,7 +699,17 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </thead>
             <tbody>
-                <?php
+            <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
+
                 /*----------------- GET PREFERENCE COOKIE -----------------*/
                 //default if preference cookie is set, display user BOM preferences
                 if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
@@ -643,6 +759,13 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Duplicate Components menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%;font-size: 24px;">Component Count</button>
     <div class="table-container" style="display:none;">
@@ -657,7 +780,17 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </thead>
             <tbody>
-                <?php
+            <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
+
                 /*----------------- GET PREFERENCE COOKIE -----------------*/
                 // Calls the function where the query is set above.
                 getComponentCount($db);
@@ -689,6 +822,13 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Component Count menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">Dependency Report</button>
     <div class="table-container" style="display:none;">
@@ -702,7 +842,17 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </thead>
             <tbody>
-                <?php
+            <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
+
             getDependencyReport($db);
             if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
                 $def = "false";
@@ -725,6 +875,13 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+echo 'Dependency Report menu generated in '.$time_taken.' seconds.';
+
+ ?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">List of Unique Components</button>
     <div class="table-container" style="display:none;">
@@ -736,7 +893,17 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </thead>
             <tbody>
-                <?php
+            <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
+
             getUniqueComponents($db);
             if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
                 $def = "false";
@@ -755,6 +922,13 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Unique Componenet menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">License Counts</button>
     <div class="table-container" style="display:none;">
@@ -794,6 +968,13 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'License Count menu generated in '.$time_taken.' seconds.';
+?>
     </div>
 
     <script type="text/javascript" language="javascript">
@@ -885,7 +1066,7 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
   <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
+      google.charts.load('current', {'packages':['bar']});
       google.charts.setOnLoadCallback(drawRequesterChart);
       google.charts.setOnLoadCallback(drawSecurityChart);
       google.charts.setOnLoadCallback(drawComponentCount);
@@ -910,15 +1091,17 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
            ?> 
         ]);
 
-        var options = {title:'Requester count Report',
-                       width:550,
-                       height:500,
-                    };
+        var options = {
+          chart: {
+            title: 'Requester Count',
+            subtitle: 'Approved and Pending',
+          },
+          bars: 'vertical' 
+        };
 
-        var chart = new google.visualization.BarChart(document.getElementById('requesterChart'));
-       // var chart = new google.visualization.PieChart(document.getElementById('requesterChart'));
+        var chart = new google.charts.Bar(document.getElementById('requesterChart'));
 
-        chart.draw(data, options);
+        chart.draw(data, google.charts.Bar.convertOptions(options));
       }
 
       function drawSecurityChart() {
@@ -940,13 +1123,17 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
            ?> 
         ]);
 
-        var options = {title:'Security Count Report',
-                       width:550,
-                       height:500,
-                    }
+        var options = {
+          chart: {
+            title: 'Security Issue Count Report',
+            subtitle: 'Issue count and Total Issue count',
+          },
+          bars: 'vertical' 
+        };
 
-        var chart = new google.visualization.BarChart(document.getElementById('securityChart'));
-        chart.draw(data, options);
+        var chart = new google.charts.Bar(document.getElementById('securityChart'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
       }
     
     //****************************************************** */
@@ -968,13 +1155,17 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
            ?> 
         ]);
 
-        var options = {title:'Component Count Report',
-                       width:550,
-                       height:500,
-                    }
+        var options = {
+          chart: {
+            title: 'Component Count Report',
+            subtitle: 'OSS count and Total Commercial count',
+          },
+          bars: 'vertical' 
+        };
 
-        var chart = new google.visualization.BarChart(document.getElementById('componentChart'));
-        chart.draw(data, options);
+        var chart = new google.charts.Bar(document.getElementById('componentChart'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
       }
 
       function drawLicenesCount() {
@@ -994,21 +1185,34 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
             }
            ?> 
         ]);
+        var options = {
+          chart: {
+            title: 'License Count Report',
+            subtitle: 'License name and ',
+          },
+          bars: 'vertical' 
+        };
+        var chart = new google.charts.Bar(document.getElementById('licenseChart'));
 
-        var options = {title:'License Count Report',
-                       width:550,
-                       height:500,
-                    }
-
-        var chart = new google.visualization.BarChart(document.getElementById('licenseChart'));
-        chart.draw(data, options);
+        chart.draw(data, google.charts.Bar.convertOptions(options));
       }
     </script>
   </head>
   <body>
+  <div id="requesterChart" style="width: 900px; height: 500px;"></div>
+  <div id="securityChart" style="width: 900px; height: 500px;"></div>
+  <div id="componentChart" style="width: 900px; height: 500px;"></div>
+  <div id="licenseChart" style="width: 900px; height: 500px;"></div>
 
-<div id="requesterChart" style="border: 1px solid #ccc"></div>
-<div id="securityChart" style="border: 1px solid #ccc"></div>
-<div id="componentChart" style="border: 1px solid #ccc"></div>
-<div id="licenseChart" style="border: 1px solid #ccc"></div>
 </body>
+</div>
+</body>
+</html>
+
+<?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Page generated in '.$time_taken.' seconds.';
+?>
