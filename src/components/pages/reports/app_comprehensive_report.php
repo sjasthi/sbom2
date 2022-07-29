@@ -676,6 +676,13 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Components with Issues menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Duplicate Components</button>
     <div class="table-container" style="display:none;">
@@ -868,6 +875,13 @@ global $pref_err;
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+echo 'Dependency Report menu generated in '.$time_taken.' seconds.';
+
+ ?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">List of Unique Components</button>
     <div class="table-container" style="display:none;">
