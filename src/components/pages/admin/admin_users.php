@@ -86,7 +86,7 @@
                    
 
                     <?php echo '<td><a class="btn btn-warning btn-sm" href="edit_users.php?id='.$row["id"].'">Edit</a></td>' ?>
-                    <?php echo '<td><a class="btn btn-danger btn-sm" href="deleteDress.php?id='.$row["id"].'">Delete</a></td>' ?>
+                    <?php echo '<td><a class="btn btn-danger btn-sm" href="deleteusers.php?id='.$row["id"].'">Delete</a></td>' ?>
                 </tr>
                  <?php  
                     } else{
@@ -102,7 +102,7 @@
                       
 
                       <td><a class="btn btn-warning btn-sm" href="edit_users.php?id='.$row["id"].'">Edit</a></td>
-                     <td><a class="btn btn-danger btn-sm" href="deleteDress.php?id='.$row["id"].'">Delete</a></td>
+                     <td><a class="btn btn-danger btn-sm" href="deleteUser.php?id='.$row["id"].'">Delete</a></td>
                   </tr>';    
 
                     }//end while
