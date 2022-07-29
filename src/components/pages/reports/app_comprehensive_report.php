@@ -387,7 +387,7 @@ $end_time = microtime(TRUE);
 $time_taken =($end_time - $start_time)*1000;
 $time_taken = round($time_taken,5);
  
-echo 'Page generated in '.$time_taken.' seconds.';
+echo 'Fix Plan menu generated in '.$time_taken.' seconds.';
 ?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Security Summary </button>
@@ -407,7 +407,16 @@ echo 'Page generated in '.$time_taken.' seconds.';
            </tr>
         </thead>
         <tbody> 
-            <?php
+        <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
 
         getSecuritySummary($db);
         if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
@@ -443,6 +452,13 @@ echo 'Page generated in '.$time_taken.' seconds.';
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Security Summary menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">Component With Pending Status</button>
     <div class="table-container" style="display:none;">
@@ -458,6 +474,15 @@ echo 'Page generated in '.$time_taken.' seconds.';
             </thead>
             <tbody>
             <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
 
         getComponentsWithPendingStatus($db);
         if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
@@ -485,6 +510,14 @@ echo 'Page generated in '.$time_taken.' seconds.';
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Components With Pending Status menu generated in '.$time_taken.' seconds.';
+?>
+
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Requester Summary</button>
     <div class="table-container" style="display:none;">
@@ -499,7 +532,15 @@ echo 'Page generated in '.$time_taken.' seconds.';
             <tbody>
 
             <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
 
+$cookie_name = 'preference';
+global $pref_err;
         getRequestorSummary($db);
         if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
             $def = "false";
@@ -523,6 +564,13 @@ echo 'Page generated in '.$time_taken.' seconds.';
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Requester Summary menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">EOL Component</button>
     <div class="table-container" style="display:none;">
@@ -537,6 +585,16 @@ echo 'Page generated in '.$time_taken.' seconds.';
             </thead>
             <tbody>
             <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
+
 
         getEOLComponents($db);
         if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
@@ -562,6 +620,13 @@ echo 'Page generated in '.$time_taken.' seconds.';
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'EOL Components menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">Components with Issues  </button>
     <div class="table-container" style="display:none;">
@@ -576,7 +641,17 @@ echo 'Page generated in '.$time_taken.' seconds.';
         </thead>        
         <tbody>
             
-    <?php
+        <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
+
         getComponentsWithIssues($db);
 if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
     $def = "false";
@@ -617,7 +692,17 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </thead>
             <tbody>
-                <?php
+            <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
+
                 /*----------------- GET PREFERENCE COOKIE -----------------*/
                 //default if preference cookie is set, display user BOM preferences
                 if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
@@ -667,6 +752,13 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Duplicate Components menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%;font-size: 24px;">Component Count</button>
     <div class="table-container" style="display:none;">
@@ -681,7 +773,17 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </thead>
             <tbody>
-                <?php
+            <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
+
                 /*----------------- GET PREFERENCE COOKIE -----------------*/
                 // Calls the function where the query is set above.
                 getComponentCount($db);
@@ -713,6 +815,13 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Component Count menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">Dependency Report</button>
     <div class="table-container" style="display:none;">
@@ -726,7 +835,17 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </thead>
             <tbody>
-                <?php
+            <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
+
             getDependencyReport($db);
             if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
                 $def = "false";
@@ -760,7 +879,17 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </thead>
             <tbody>
-                <?php
+            <?php
+            $start_time = microtime(TRUE);
+            ?>
+            <html>
+<body>
+<div id="wrapper">
+<?php
+
+$cookie_name = 'preference';
+global $pref_err;
+
             getUniqueComponents($db);
             if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_POST['getpref'])) {
                 $def = "false";
@@ -779,6 +908,13 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'Unique Componenet menu generated in '.$time_taken.' seconds.';
+?>
     </div>
     <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px;">License Counts</button>
     <div class="table-container" style="display:none;">
@@ -818,6 +954,13 @@ if (isset($_COOKIE[$cookie_name]) || isset($_COOKIE[$cookie_name]) && isset($_PO
                 </tr>
             </tfoot>
         </table>
+        <?php
+$end_time = microtime(TRUE);
+$time_taken =($end_time - $start_time)*1000;
+$time_taken = round($time_taken,5);
+ 
+echo 'License Count menu generated in '.$time_taken.' seconds.';
+?>
     </div>
 
     <script type="text/javascript" language="javascript">
