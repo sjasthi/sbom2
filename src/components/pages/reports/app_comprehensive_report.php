@@ -12,10 +12,18 @@ include("../../../../index.php");
 // $scopeArray = array();
 
 ?>
-
 <?php
 $start_time = microtime(TRUE);
 ?>
+<?php if ($_GET['app_id'] == null || $_GET['app_name'] == null || $_GET['app_version'] == null) : ?>
+    <html>
+
+    <body>
+        Application does not exist!
+    </body>
+
+    </html>
+<?php endif; ?>
 <html>
 
 <body>
@@ -25,16 +33,16 @@ $start_time = microtime(TRUE);
         $cookie_name = 'preference';
         global $pref_err;
 
-        //We'll need different functions to grab the data from the db. Since we are working on the same file.
-        //Make sure to work on your own function for each section/table we are displaying.
-        //There might be a better way to do it this, if you find a way make sure to let everybody know!
-
         function getFixPlan($db)
         {
+            $app_id = $_GET['app_id'] ?? null;
+            $app_name = $_GET['app_name'] ?? null;
+            $app_version = $_GET['app_version'] ?? null;
             $sql = "SELECT red_app_id, app_name,app_version,monitoring_id,monitoring_digest,
     CASE WHEN monitoring_digest = 'critical' THEN 'Next Patch'
     ELSE 'Current Release' END AS fix_plan
-    FROM apps_components ;";
+    FROM apps_components
+    WHERE app_id ='$app_id';";
             $result = $db->query($sql);
 
             if ($result->num_rows > 0) {
