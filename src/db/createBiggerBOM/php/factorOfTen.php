@@ -1,10 +1,10 @@
 
 <?php
-    function factorOfTen( $list ) { // multiply any list by 10X
+    function factorOfTen( $list, $factor = 10 ) { // multiply any list by 10X
         $newList = [];
         $i = 0;
 
-        for( $x = 0; $x < 10; $x++ ) {
+        for( $x = 0; $x < $factor; $x++ ) {
             foreach( $list as $item ) {
                 $obj = new stdClasS();
 

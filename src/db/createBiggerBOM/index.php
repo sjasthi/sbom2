@@ -23,7 +23,7 @@
             </form>
 
             <form method="POST" action="./index.php">
-                <input type="submit" name="button" value="10,000"></input>
+                <input type="submit" name="button" value="2,000"></input>
             </form>
         </div>
     </body>
