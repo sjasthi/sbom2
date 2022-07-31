@@ -21,7 +21,10 @@
 
   <!-- added functionality -->
   <script>
-    $('.table-container').doubleScroll(); // assign a double scroll to this class
+    $(document).ready(function() {
+      $('.table-container').doubleScroll(); // assign a double scroll to this class
+      $('.table-container').doubleScroll({resetOnWindowResize: true});
+    });
   </script>
 </div>
 
