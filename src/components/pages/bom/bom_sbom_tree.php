@@ -1,48 +1,48 @@
 <?php
 
-  $nav_selected = "BOM";
-  $left_selected = "SBOMTREE";
-  $tabTitle = "SBOM - BOM (Tree)";
+$nav_selected = "BOM";
+$left_selected = "SBOMTREE";
+$tabTitle = "SBOM - BOM (Tree)";
 
 
 
-  include("../../../../index.php");
-  include("bom_left_menu.php");
-  include("bom_functions.php");
+include("../../../../index.php");
+include("bom_left_menu.php");
+include("bom_functions.php");
 
-  //Get DB Credentials
-  $DB_SERVER = constant('DB_SERVER');
-  $DB_NAME = constant('DB_NAME');
-  $DB_USER = constant('DB_USER');
-  $DB_PASS = constant('DB_PASS');
-  $preference_cookie_name = 'preference';
+//Get DB Credentials
+$DB_SERVER = constant('DB_SERVER');
+$DB_NAME = constant('DB_NAME');
+$DB_USER = constant('DB_USER');
+$DB_PASS = constant('DB_PASS');
+$preference_cookie_name = 'preference';
 
-  $def = "false";
-  $DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
-  $scopeArray = array();
+$def = "false";
+$DEFAULT_SCOPE_FOR_RELEASES = getScope($db);
+$scopeArray = array();
 
-  //Grabs default app_ids that are to be shown in the default scope
-  function getFilterArray($db) {
-    global $scopeArray;
-    global $pdo;
-    global $DEFAULT_SCOPE_FOR_RELEASES;
+//Grabs default app_ids that are to be shown in the default scope
+function getFilterArray($db) {
+  global $scopeArray;
+  global $pdo;
+  global $DEFAULT_SCOPE_FOR_RELEASES;
 
-    $sql = "
-    SELECT * FROM releases
-    WHERE app_id LIKE ?
-    ";
-    foreach($DEFAULT_SCOPE_FOR_RELEASES as $currentID){
-      $sqlID = $pdo->prepare($sql);
-      $sqlID->execute([$currentID]);
-      if ($sqlID->rowCount() > 0) {
-        while($row = $sqlID->fetch(PDO::FETCH_ASSOC)){
-          array_push($scopeArray, $row["app_id"]);
-        }
+  $sql = "
+  SELECT * FROM releases
+  WHERE app_id LIKE ?
+  ";
+  foreach($DEFAULT_SCOPE_FOR_RELEASES as $currentID){
+    $sqlID = $pdo->prepare($sql);
+    $sqlID->execute([$currentID]);
+    if ($sqlID->rowCount() > 0) {
+      while($row = $sqlID->fetch(PDO::FETCH_ASSOC)){
+        array_push($scopeArray, $row["app_id"]);
       }
     }
   }
+}
 
-  checkUserAppsetCookie();
+checkUserAppsetCookie();
 ?>
 
 <style>
@@ -116,27 +116,35 @@
           $findApp = false;
           $findAppName = true;
         }
+        $sql_components = "
+        SELECT * FROM applications a JOIN apps_components ac
+        ON a.app_id = ac.red_app_id
+        ";
         //if user clicks "get all BOMS", retrieve all BOMS
         if(isset($_POST['getall'])) {
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> BOM Tree --> All BOMS";</script>
           <?php
-          // getAllBoms($db);
-          displayBomsAsTable($db);
-        }
-        //If user clicks "get system BOMS", retrieve all default scope BOMS
-        elseif(isset($_POST['getdef'])) {
+          displayBOMTrees($db, $sql_components);
+        } elseif(isset($_POST['getdef'])) {
+          //If user clicks "get system BOMS", retrieve all default scope BOMS
           $is_set_sql = $db->prepare('SELECT value FROM preferences WHERE name = "ACTIVE_APP_SET"');
           if(!$is_set_sql->execute()) {
-            displayBomsAsTable($db);
+            displayBOMTrees($db, $sql_components);
           } else {
             $is_set_results = $is_set_sql->get_result();
             $is_set_rows = $is_set_results->fetch_all(MYSQLI_ASSOC);
             if ( 0 < count($is_set_rows)) {
-              $system_dbom_sql = 'SELECT * FROM applications WHERE app_id in ( SELECT app_id FROM app_sets WHERE app_set_id in ( SELECT value FROM preferences WHERE name = "ACTIVE_APP_SET" ));';
-              displayBomsAsTable($db, $system_dbom_sql);
+              $system_dbom_sql = '
+              SELECT * FROM applications a JOIN apps_components ac
+              ON a.app_id = ac.red_app_id
+              WHERE ac.red_app_id in
+              ( SELECT app_id FROM app_sets WHERE app_set_id in (
+                SELECT value FROM preferences WHERE name = "ACTIVE_APP_SET"
+              ));';
+              displayBOMTrees($db, $system_dbom_sql);
             } else {
-              displayBomsAsTable($db);
+              displayBOMTrees($db, $sql_components);
             }
           }
 
@@ -151,24 +159,17 @@
           <?php
           $prep_cookie_value = rtrim($_COOKIE[$bom_app_set_cookie_name], ',');
           $sql = "
-          SELECT * FROM applications
-          WHERE app_id IN (".$prep_cookie_value.")
+          SELECT * FROM applications a JOIN apps_components ac
+          ON a.app_id = ac.red_app_id
+          WHERE ac.red_app_id IN (".$prep_cookie_value.")
           ";
-          displayBomsAsTable($db, $sql);
-
-        } elseif(isset($_POST['getpref']) && !isset($_COOKIE[$preference_cookie_name])) {
-          //if no preference cookie is set but user clicks "show my BOMS"
-          ?>
-          <script>document.getElementById("scannerHeader").innerHTML = "BOM --> BOM Tree --> My BOMS";</script>
-          <?php
-          // getAllBoms($db);
-          displayBomsAsTable($db);
+          displayBOMTrees($db, $sql);
         } else {
           //if no preference cookie is set show all Boms
           ?>
           <script>document.getElementById("scannerHeader").innerHTML = "BOM --> BOM Tree --> All BOMS";</script>
           <?php
-          displayBomsAsTable($db);
+          displayBOMTrees($db, $sql_components);
         }
         $endTime = microtime(true) - $startTime;
         ?>
@@ -179,141 +180,141 @@
 </div>
 
 <script>
-  //Params for the treetable
-  let sbom_params = {
-    expandable: true,
-    clickableNodeNames: true,
-    indent: 40
-  };
-  $("#bom_treetable").treetable(sbom_params);
+//Params for the treetable
+let sbom_params = {
+  expandable: true,
+  clickableNodeNames: true,
+  indent: 40
+};
+$("#bom_treetable").treetable(sbom_params);
 
-  $(document).ready(function() {
-    //Function for Color/No Color Button
-    $("#color_noColor").click(function(){
-      $("#no_color").toggle();
-      $("div .parent").toggleClass("no_color");
-      $("div .child").toggleClass("no_color");
-      $("div .grandchild").toggleClass("no_color");
-    });
-
-    //click getRed to hide the yellows and show the reds
-    $("#showRed").click(function(){
-      $(".yellowComp").hide();
-      $(".greenComp").hide();
-      $(".redApp").show();
-    });
-
-    //click getYellow to hide the reds and show the yellows
-    $("#showYellow").click(function(){
-      expandAll();
-      $(".yellowComp").show();
-      $(".redApp").hide();
-    });
-
-    //click getRedYellow to show everything
-    $("#showRedYellow").click(function(){
-      expandAll();
-      $(".yellowComp").show();
-      $(".greenComp").hide();
-      $(".redApp").show();
-    });
+$(document).ready(function() {
+  //Function for Color/No Color Button
+  $("#color_noColor").click(function(){
+    $("#no_color").toggle();
+    $("div .parent").toggleClass("no_color");
+    $("div .child").toggleClass("no_color");
+    $("div .grandchild").toggleClass("no_color");
   });
 
-  //input search for where used
-  $('#input').on('keyup', function() {
-    filterTree();
+  //click getRed to hide the yellows and show the reds
+  $("#showRed").click(function(){
+    $(".yellowComp").hide();
+    $(".greenComp").hide();
+    $(".redApp").show();
   });
 
-  document.onreadystatechange = function () {
-    if (document.readyState === 'complete') {
-      $('#loading-text').hide();
-      $("#responsive-wrapper").css('opacity', '100.0');
-    }
-  }
-  function expandAll(){
-    $("#bom_treetable tbody tr.leaf").each((index, item) => {
-      $("#bom_treetable").treetable("reveal", $(item).attr("data-tt-id"));
-    });
-    // filterTree();
-  }
-  function collapseAll(){
-    $('#bom_treetable').treetable('collapseAll');
-  }
-
-  function hideAllTreeComponents(){
-    $('#bom_treetable tbody .component').each(function(){
-      $(this).hide();
-    });
-  }
-
-  function showAllTreeComponenets(){
-    $('#bom_treetable tbody .component').each(function(){
-      $(this).show();
-    });
-  }
-
-  function showById(id){
-    $(`[data-tt-id="${id.join('-')}"]`).show();
-  }
-
-  function showParentTreeItems(tableItem){
-    item_tt_id = $(tableItem).attr('data-tt-id');
-    split_id = item_tt_id.split('-');
-    while(split_id.length > 1){
-      showById(split_id);
-      split_id.pop();
-    }
-    $(`[data-tt-id="${$(tableItem).attr('data-tt-parent-id')}"]`).show();
-  }
-
-  function filterTree(){
-    let input = $('#input').val().toLowerCase().trim();
-    if(input == ''){
-      showAllTreeComponenets();
-      return;
-    }
+  //click getYellow to hide the reds and show the yellows
+  $("#showYellow").click(function(){
     expandAll();
-    hideAllTreeComponents()
-    let cmp_name_input = '', cmp_id_input = '';
-    //Checks to see if the search terms are delineated, if yes, split input into cmp_name_input and cmp_id_input
-    //Feel free to add more delimiters to this array exxcept backslash ( \ ). I'm nearly 100% sure it'll break something, somewhere.
-    let delimiterArray = [';', ':', ',', '|', '/'];
-    let usingDelimiter = delimiterArray.some(function(delimiter){
-      if(input.includes(delimiter)){
-        [cmp_name_input, cmp_id_input] = input.split(delimiter, 2);
-        return true;
+    $(".yellowComp").show();
+    $(".redApp").hide();
+  });
+
+  //click getRedYellow to show everything
+  $("#showRedYellow").click(function(){
+    expandAll();
+    $(".yellowComp").show();
+    $(".greenComp").hide();
+    $(".redApp").show();
+  });
+});
+
+//input search for where used
+$('#input').on('keyup', function() {
+  filterTree();
+});
+
+document.onreadystatechange = function () {
+  if (document.readyState === 'complete') {
+    $('#loading-text').hide();
+    $("#responsive-wrapper").css('opacity', '100.0');
+  }
+}
+function expandAll(){
+  $("#bom_treetable tbody tr.leaf").each((index, item) => {
+    $("#bom_treetable").treetable("reveal", $(item).attr("data-tt-id"));
+  });
+  // filterTree();
+}
+function collapseAll(){
+  $('#bom_treetable').treetable('collapseAll');
+}
+
+function hideAllTreeComponents(){
+  $('#bom_treetable tbody .component').each(function(){
+    $(this).hide();
+  });
+}
+
+function showAllTreeComponenets(){
+  $('#bom_treetable tbody .component').each(function(){
+    $(this).show();
+  });
+}
+
+function showById(id){
+  $(`[data-tt-id="${id.join('-')}"]`).show();
+}
+
+function showParentTreeItems(tableItem){
+  item_tt_id = $(tableItem).attr('data-tt-id');
+  split_id = item_tt_id.split('-');
+  while(split_id.length > 1){
+    showById(split_id);
+    split_id.pop();
+  }
+  $(`[data-tt-id="${$(tableItem).attr('data-tt-parent-id')}"]`).show();
+}
+
+function filterTree(){
+  let input = $('#input').val().toLowerCase().trim();
+  if(input == ''){
+    showAllTreeComponenets();
+    return;
+  }
+  expandAll();
+  hideAllTreeComponents()
+  let cmp_name_input = '', cmp_id_input = '';
+  //Checks to see if the search terms are delineated, if yes, split input into cmp_name_input and cmp_id_input
+  //Feel free to add more delimiters to this array exxcept backslash ( \ ). I'm nearly 100% sure it'll break something, somewhere.
+  let delimiterArray = [';', ':', ',', '|', '/'];
+  let usingDelimiter = delimiterArray.some(function(delimiter){
+    if(input.includes(delimiter)){
+      [cmp_name_input, cmp_id_input] = input.split(delimiter, 2);
+      return true;
+    }
+  });
+  //if we're not using a delimiter, assume input is only for component name
+  if(!usingDelimiter){
+    cmp_name_input = input;
+  }
+  $('#bom_treetable tbody').each(function() {
+    let sucessfulMatch = false;
+    let nameMatch = false, idMatch = false;
+    $(this).find(".component").each(function(){
+      if($(this).find(".cmp_name").text().toLowerCase().includes(cmp_name_input)){
+        nameMatch = true;
+        $(this).show();
+      }
+
+      //Outer: if there was a sucessful match, don't bother searching more
+      if(!sucessfulMatch) {
+        if (!nameMatch) { // component name not found
+          $(this).parent().hide();
+        } else { // match found
+          showParentTreeItems($(this));
+          $(this).parent().show();
+          sucessfulMatch = true;
+        }
       }
     });
-    //if we're not using a delimiter, assume input is only for component name
-    if(!usingDelimiter){
-      cmp_name_input = input;
-    }
-    $('#bom_treetable tbody').each(function() {
-      let sucessfulMatch = false;
-      let nameMatch = false, idMatch = false;
-      $(this).find(".component").each(function(){
-        if($(this).find(".cmp_name").text().toLowerCase().includes(cmp_name_input)){
-          nameMatch = true;
-          $(this).show();
-        }
+  });
+}
+<?php
+if ($findApp || $findAppName) {
+  echo "$( \"#expandAll\" ).trigger( \"click\" );";
+}
 
-        //Outer: if there was a sucessful match, don't bother searching more
-        if(!sucessfulMatch) {
-          if (!nameMatch) { // component name not found
-            $(this).parent().hide();
-          } else { // match found
-            showParentTreeItems($(this));
-            $(this).parent().show();
-            sucessfulMatch = true;
-          }
-        }
-      });
-    });
-  }
-  <?php
-  if ($findApp || $findAppName) {
-    echo "$( \"#expandAll\" ).trigger( \"click\" );";
-  }
-
-  ?>
+?>
 </script>

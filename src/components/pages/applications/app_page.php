@@ -28,13 +28,12 @@ function showAppsAsChecklist($db){
   $query_applications = $db->query($sql_applications_components_query);
   if($query_applications->num_rows > 0){
     global $BARGRAPH_LENGTH;
-    $last_app_id = '';
-    $last_app_name = '';
+    $last_app_id = NULL;
     // $total_security_issues = 0;
     $security_issues = [0,0,0];
     $debug_msg = array();
     while($application = $query_applications->fetch_assoc()){
-      if($last_app_id != $application['app_id'] && $last_app_id != ''){
+      if($last_app_id != $application['app_id']){
         echo '<tr>';
         echo '<td><input class="appCheckbox" name="'.$app_checkbox_name.'[]" id="checkbox'.$option_id.'" value="'.$application["app_id"].'" style="width:20px;height:20px;" type="checkbox"></td>';
         echo '<td>'.$application["app_name"].'</td>';
@@ -63,7 +62,6 @@ function showAppsAsChecklist($db){
         }
       }
       $last_app_id = $application['app_id'];
-      $last_app_name = $application['app_name'];
       $option_id++;
     }
   }
@@ -104,10 +102,12 @@ function showAppsAsChecklist($db){
           }
         }
       }
+
     }
 
     ?>
     <fieldset>
+      <div style="display: block; height: 600px; overflow-x: visible; overflow-y: scroll;">
       <table class="datatable table" id="info">
         <thead>
           <tr id="table-first-row">
@@ -128,6 +128,7 @@ function showAppsAsChecklist($db){
       </table>
     </fieldset>
   </form>
+  </div>
   <script type="text/javascript">
   $('#check-all').click(function(){
     if($('#check-all')[0].checked){
@@ -136,8 +137,9 @@ function showAppsAsChecklist($db){
       $('.appCheckbox').prop('checked', false);
     }
   });
-  $(document).ready( function () {
-    $('#info').DataTable();
-  });
+//  $(document).ready( function () {
+//    $('#info').DataTable();
+//  });
+
   </script>
 </div>

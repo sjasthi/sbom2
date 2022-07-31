@@ -21,6 +21,8 @@
   //if cookie is set, decode cookie into array
   if(isset($_COOKIE[$cookie_name])) {
     $cookie_map = json_decode($_COOKIE[$cookie_name]);
+  } else {
+    $cookie_map = null;
   }
 ?>
 
@@ -261,7 +263,7 @@
        }
 
        }
-
+       
    //while($data1 = fgetcsv($handle, 1000, ',')) {
    while($data1 = fgetcsv($handle)) {
      $row = array();
@@ -275,6 +277,7 @@
        echo "EMPTY";
 
      } else {
+
        /* apps_components */
        //temporary disable of autocommit
        $db->autocommit(FALSE);
@@ -318,8 +321,8 @@
               $issue_count = $row[$issue_count_col];
 
            if(!$sqlinsert->execute()) {
-             $db->autocommit(TRUE);
              echo '<p style="background: red; color: white; font-size: 2rem;">ERROR: '.$db->error.'</p>';
+             $db->autocommit(TRUE);
              $successful_inserts = false;
            }
        }
