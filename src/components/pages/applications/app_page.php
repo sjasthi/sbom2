@@ -102,11 +102,13 @@ function showAppsAsChecklist($db){
           }
         }
       }
+
     }
 
     ?>
     <fieldset>
-      <table class="datatable table" style="overflow-y: scroll" id="info">
+      <div style="display: block; height: 600px; overflow-x: visible; overflow-y: scroll;">
+      <table class="datatable table" id="info">
         <thead>
           <tr id="table-first-row">
             <th><input id="check-all" type="checkbox" style="width:20px;height:20px;"></th>
@@ -126,6 +128,7 @@ function showAppsAsChecklist($db){
       </table>
     </fieldset>
   </form>
+  </div>
   <script type="text/javascript">
   $('#check-all').click(function(){
     if($('#check-all')[0].checked){
