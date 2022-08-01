@@ -2,6 +2,7 @@
 <!-- checkSelectedLeftMenuLink() is in the header, so all left-menu's have access to the function -->
 <div class="wrap">
     <div id="menu-left">
+      <!--
         <a href="<?php echo checkSelectedLeftMenuLink( "REPORTSLOCATION", "reports_location.php" ); ?>">
             <div <?php echo checkSelectedLeftMenu( "REPORTSLOCATION" ); ?>>
                 <?php include $assetsPath."svg/location.svg"; ?>
@@ -27,6 +28,14 @@
             <div <?php echo checkSelectedLeftMenu( "REPORTSDUPLICATEVERSIONS" ); ?>>
                 <?php include $assetsPath."svg/duplicate.svg"; ?>
                 <p> Duplicate Versions </p>
+            </div>
+        </a>
+      -->
+
+        <a href="<?php echo checkSelectedLeftMenuLink( "REPORTSCOMPAREAPPS", "reports_compare_apps.php" ); ?>">
+            <div <?php echo checkSelectedLeftMenu( "REPORTSCOMPAREAPPS" ); ?>>
+                <?php include $assetsPath."svg/duplicate.svg"; ?>
+                <p> Comapre Apps </p>
             </div>
         </a>
 
