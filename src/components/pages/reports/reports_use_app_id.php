@@ -531,7 +531,6 @@ $start_time = microtime(TRUE);
                         </tr>
                     </thead>
                     <tbody>
-
                         <?php
                         $start_time = microtime(TRUE);
                         ?>
@@ -558,22 +557,26 @@ $start_time = microtime(TRUE);
                                 ?>
                     </tbody>
                     <tfoot>
+
                         <tr>
                             <th>Requestor Name</th>
                             <th>Total Approved</th>
                             <th>Not Apporved</th>
 
                         </tr>
-                    </tfoot>
+                    </tfoot> 
                 </table>
-                <?php
-                $end_time = microtime(TRUE);
-                $time_taken = ($end_time - $start_time) * 1000;
-                $time_taken = round($time_taken, 5);
+                <div>
+                <body>
+                <div id="requesterChart" style="width: 900px; height: 500px;"></div>
+            </body>
+        </div>
+</body>
 
-                echo 'Requester Summary menu generated in ' . $time_taken . ' seconds.';
-                ?>
-            </div>
+
+        </div>
+
+
             <button class="accordion" style="background-color:#01B0F1; color: #eee; width: 100%; font-size: 24px">EOL Component</button>
             <div class="table-container" style="display:none;">
                 <table id="info" cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered datatable-style table-hover" width="100%" style="width: 100px;">
@@ -1087,9 +1090,12 @@ $start_time = microtime(TRUE);
                         var data = google.visualization.arrayToDataTable([
                             ['Requester name', 'Approved', 'Pending'],
                             <?php
+                            $app_id = $_GET['app_id'] ?? null;
                             $query = $db->query("SELECT requester, SUM(CASE WHEN status LIKE '%Approved%' THEN 1 ELSE 0 END) as total_approved, SUM(CASE WHEN status NOT LIKE '%Approved%' THEN 1 ELSE 0 END) as not_approved
-          FROM apps_components
-          GROUP BY requester;");
+                            FROM apps_components
+                            WHERE app_id ='$app_id'
+                            GROUP BY requester;");
+                      
                             while ($query_row = $query->fetch_assoc()) {
                                 $requester = $query_row['requester'];
                                 $total_approved = $query_row['total_approved'];
@@ -1115,30 +1121,29 @@ $start_time = microtime(TRUE);
 
                     function drawSecurityChart() {
                         var data = google.visualization.arrayToDataTable([
-                            ['App name', 'Issue Count', 'Total Issue Count'],
+                            ['App name', 'Security Issue Count'],
                             <?php
-                            $query = $db->query("SELECT red_app_id,app_name, app_version, SUM(CASE WHEN issue_count > 0 THEN 1 ELSE 0 END)
-          as num_issue, SUM(issue_count) as total_issue_count
-          FROM apps_components
-          GROUP BY app_name;");
+
+                            $app_id = $_GET['app_id'] ?? null;
+                            $query = $db->query("SELECT DISTINCT red_app_id, app_name, app_version, cmpt_version, cmpt_id, cmpt_name, monitoring_id, monitoring_digest, issue_count
+                            FROM `apps_components`
+                            WHERE issue_count > 0 AND app_id ='$app_id';");
+   
                             while ($query_row = $query->fetch_assoc()) {
                                 $app_name = $query_row['app_name'];
-                                $num_issue = $query_row['num_issue'];
-                                $total_issue_count = $query_row['total_issue_count'];
-                            ?>['<?php echo $app_name; ?>', <?php echo $num_issue; ?>, <?php echo $total_issue_count; ?>],
+                                $issue_count = $query_row['issue_count'];
+                            ?>['<?php echo $app_name; ?>', <?php echo $issue_count; ?>],
                             <?php
                             }
                             ?>
                         ]);
-
                         var options = {
                             chart: {
                                 title: 'Security Issue Count Report',
-                                subtitle: 'Issue count and Total Issue count',
+                                subtitle: 'License name and Security Issue count',
                             },
                             bars: 'vertical'
                         };
-
                         var chart = new google.charts.Bar(document.getElementById('securityChart'));
 
                         chart.draw(data, google.charts.Bar.convertOptions(options));
@@ -1149,9 +1154,11 @@ $start_time = microtime(TRUE);
                         var data = google.visualization.arrayToDataTable([
                             ['App name', 'OSS Count', 'Commercial Count'],
                             <?php
+                            $app_id = $_GET['app_id'] ?? null;
                             $query = $db->query("SELECT app_name, app_version, SUM(CASE WHEN license NOT LIKE '%Commercial%' THEN 1 ELSE 0 END) as oss_count, SUM(CASE WHEN license LIKE '%Commercial%' THEN 1 ELSE 0 END) as commercial_count, COUNT(license) as total
-          FROM apps_components
-          GROUP BY app_name;");
+                            FROM apps_components
+                            WHERE app_id ='$app_id'
+                            GROUP BY app_name;");
                             while ($query_row = $query->fetch_assoc()) {
                                 $app_name = $query_row['app_name'];
                                 $oss_count = $query_row['oss_count'];
@@ -1179,10 +1186,14 @@ $start_time = microtime(TRUE);
                         var data = google.visualization.arrayToDataTable([
                             ['License name', 'License Count'],
                             <?php
+
+                            $app_id = $_GET['app_id'] ?? null;
                             $query = $db->query("SELECT license, COUNT(*) as cmpt_number
-          FROM `apps_components`
-          GROUP BY license
-          ORDER BY 2 DESC;");
+                            FROM apps_components
+                            WHERE app_id ='$app_id'
+                            GROUP BY license
+                            ORDER BY 2 DESC;");
+   
                             while ($query_row = $query->fetch_assoc()) {
                                 $license = $query_row['license'];
                                 $cmpt_number = $query_row['cmpt_number'];
@@ -1205,17 +1216,9 @@ $start_time = microtime(TRUE);
                 </script>
             </head>
 
-            <body>
-                <div id="requesterChart" style="width: 900px; height: 500px;"></div>
-                <div id="securityChart" style="width: 900px; height: 500px;"></div>
-                <div id="componentChart" style="width: 900px; height: 500px;"></div>
-                <div id="licenseChart" style="width: 900px; height: 500px;"></div>
 
-            </body>
-        </div>
-</body>
 
-</html>
+            </html>
 <?php
 $end_time = microtime(TRUE);
 $time_taken = ($end_time - $start_time) * 1000;
