@@ -16,9 +16,10 @@
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.1/js/buttons.print.min.js"></script>
-<script src="<?php echo $assetsPath; ?>/jquery/jquery.treetable.js"></script>
+<script src="<?php echo $assetsPath; ?>jquery/jquery.treetable.js"></script>
 
 <!-- double scrollbar -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="<?php echo $assetsPath; ?>jquery/doubleScroll/doubleScroll.js"></script>
 
 <!-- chatbot -->
