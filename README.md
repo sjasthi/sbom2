@@ -16,6 +16,6 @@
 * [yarn](https://github.com/yarnpkg/yarn/releases/download/v1.22.4/yarn-1.22.4.msi)
 
 1. After you have all of the requirements, CD (change directory) ./src/api/
-2. open a git terminal and download dependencies: ```yarn install```
-3. build botpress: ```yarn build``` (this can take 10-15 min. to fully build)
-4. start the botpress server ```yarn start``` (default: localhost:3000)
+    1. open a git terminal and download dependencies: ```yarn install```
+    2. build botpress: ```yarn build``` (this can take 10-15 min. to fully build)
+    3. start the botpress server ```yarn start``` (default: localhost:3000)
