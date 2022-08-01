@@ -10,6 +10,7 @@
 
   include("../../../../index.php");
   include("admin_left_menu.php");
+  require( '../../../../vendor/autoload.php');
 
   if(!isset($_SESSION)){
     session_start();
@@ -175,18 +176,29 @@
       text-align: center; border-radius: 2px;'>NO FILE WAS SELCTED</p>";
 
     }else {
-      $extension = 'csv';
+      $csv_extension = 'csv';
+      $excel_extension = 'xlsx';
+      $extension_array = array( $csv_extension, $excel_extension);
       $file_ext = pathinfo($chkfile);
 
-      //if the uploaded file is not a csv file
-      if($file_ext['extension'] !== $extension) {
+      //if the uploaded file is not a supported file
+      //if($file_ext['extension'] !== $csv_extension) {
+      if(!in_array($file_ext['extension'],$extension_array)) {
         echo "<p style='color: white; background-color: red; font-weight: bold; width: 500px;
-        text-align: center; border-radius: 2px;'>PLEASE SELECT AN CSV FILE</p>";
-
+        text-align: center; border-radius: 2px;'>PLEASE SELECT AN CSV OR XLSX FILE (Uploaded extension: ".$file_ext['extension'].")</p>";
       }else {
         $target_dir = "../../../../csv_files/";
-        $target_file = $target_dir.basename($_FILES["file"]["name"]);
-        move_uploaded_file($file,$target_file);
+        if ($file_ext['extension'] == $excel_extension) {
+          $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Xlsx");
+          $spreadsheet = $reader->load($file);
+          $writer = new \PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
+          $writer->setEnclosureRequired(false);
+          $writer->save($target_dir."converted.csv");
+          $target_file = $target_dir.basename($target_dir."converted.csv");
+        }else{
+          $target_file = $target_dir.basename($_FILES["file"]["name"]);
+          move_uploaded_file($file,$target_file);
+        }
         $_SESSION["the_file"] = $target_file;
         $handle = fopen($target_file, "r");
 
