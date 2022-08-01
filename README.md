@@ -21,5 +21,5 @@
     3. start the botpress server ```yarn start```
 
 2. login to the botpress server by going to the server url location (default: localhost:3000).
-3. import helper-bot under create.
+3. import helper-bot under the create drop-down.
 4. add the helper-bot avatar within `config > Avatar & Cover picture - Bot Avatar`
