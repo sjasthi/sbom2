@@ -18,4 +18,8 @@
 1. After you have all of the requirements, CD (change directory) ./src/api/
     1. open a git terminal and download dependencies: ```yarn install```
     2. build botpress: ```yarn build``` (this can take 10-15 min. to fully build)
-    3. start the botpress server ```yarn start``` (default: localhost:3000)
+    3. start the botpress server ```yarn start```
+
+2. login to the botpress server by going to the server url location (default: localhost:3000).
+3. import helper-bot under create.
+4. add the helper-bot avatar within `config > Avatar & Cover picture - Bot Avatar`
