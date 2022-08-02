@@ -39,12 +39,12 @@
 }
 
 .bp-widget-side {
-  top: 90px;
+  top: 0;
   left: auto;
   bottom: 0px;
   right: 0px;
-  width: 380px;
-  height: calc( 100% - 90px ) !important;
+  width: 100vw;
+  height: 100vh !important;
   z-index: 0;
 }
 

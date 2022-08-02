@@ -83,7 +83,6 @@ body.#{$ns}-overlay-open {
     $before: "&"
   );
   z-index: $pt-z-index-overlay;
-  background-color: $overlay-background-color;
   overflow: auto;
   user-select: none;
 
