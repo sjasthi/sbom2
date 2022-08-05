@@ -113,6 +113,8 @@
   <body>
     <div class="wrap">
     <h3>Admin --> Import BOM</h3>
+    <!--The line below can be uncommented to show the cookie for debugging.-->
+    <!--<p>Current contents of mapping cookie: <?php echo $_COOKIE[$cookie_name] ?></p>-->
     <div id='list'>
       <p>Before importing a file, please make sure the file is a <span style="font-weight: bold;">CSV</span>
       file with these <span style="font-weight: bold;">13 </span>columns:<br></p>
