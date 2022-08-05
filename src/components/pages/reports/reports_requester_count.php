@@ -288,6 +288,7 @@ echo '<p
           break;
 
       }
+<<<<<<< Updated upstream
     }
   </script>
 
@@ -311,3 +312,11 @@ echo '<p
     </div>
 
     </script>
+=======
+    </script>
+  </head>
+  <body>
+    <div id="barchart_material" style="width: 1000px; height: 600px;"></div>
+  </body>
+</html>
+>>>>>>> Stashed changes
