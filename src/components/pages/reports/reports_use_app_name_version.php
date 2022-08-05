@@ -470,6 +470,11 @@
                             </tr>
                         </tfoot>
                     </table>
+                    </head>
+  <body>
+    <div id="securityChart" style="width:400; height:300"></div>
+  </body>
+</html>
                     <?php
                     $end_time = microtime(TRUE);
                     $time_taken = ($end_time - $start_time) * 1000;
@@ -584,6 +589,12 @@
                             </tr>
                         </tfoot>
                     </table>
+                    </script>
+  </head>
+  <body>
+    <div id="requesterChart" style="width:400; height:300"></div>
+  </body>
+</html>
                     <?php
                     $end_time = microtime(TRUE);
                     $time_taken = ($end_time - $start_time) * 1000;
@@ -846,6 +857,12 @@
                             </tr>
                         </tfoot>
                     </table>
+                    </script>
+  </head>
+  <body>
+    <div id="componentChart" style="width:400; height:300"></div>
+  </body>
+</html>
                     <?php
                     $end_time = microtime(TRUE);
                     $time_taken = ($end_time - $start_time) * 1000;
@@ -994,6 +1011,12 @@
                             </tr>
                         </tfoot>
                     </table>
+                    </script>
+  </head>
+  <body>
+    <div id="licenseChart" style="width:400; height:300"></div>
+  </body>
+</html>
                     <?php
                     $end_time = microtime(TRUE);
                     $time_taken = ($end_time - $start_time) * 1000;
@@ -1088,12 +1111,11 @@
                     }
                 </script>
                 <html>
-
                 <head>
                     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
                     <script type="text/javascript">
                         google.charts.load('current', {
-                            'packages': ['bar']
+                            'packages': ['corechart']
                         });
                         google.charts.setOnLoadCallback(drawRequesterChart);
                         google.charts.setOnLoadCallback(drawSecurityChart);
@@ -1119,17 +1141,15 @@
                             ]);
 
                             var options = {
-                                chart: {
-                                    title: 'Requester Count',
-                                    subtitle: 'Approved and Pending',
-                                },
-                                bars: 'vertical'
-                            };
+                            title: 'Requester count report',
+                            width: 900,
+                            height: 500,
+                        };
 
-                            var chart = new google.charts.Bar(document.getElementById('requesterChart'));
-
-                            chart.draw(data, google.charts.Bar.convertOptions(options));
+                        var chart = new google.visualization.BarChart(document.getElementById("requesterChart"));
+                        chart.draw(data, options);
                         }
+
 
                         function drawSecurityChart() {
                             var data = google.visualization.arrayToDataTable([
@@ -1149,27 +1169,29 @@
                                 ?>
                             ]);
 
-                            var options = {
-                                chart: {
-                                    title: 'Security Issue Count Report',
-                                    subtitle: 'Issue count and Total Issue count',
-                                },
-                                bars: 'vertical'
-                            };
-
-                            var chart = new google.charts.Bar(document.getElementById('securityChart'));
-
-                            chart.draw(data, google.charts.Bar.convertOptions(options));
+                        var options = {
+                            title: 'Security Summary Report',
+                            width: 900,
+                            height: 500,
+                        };
+                        var chart = new google.visualization.BarChart(document.getElementById("securityChart"));
+                        chart.draw(data, options);
                         }
 
+
+                        //****************************************************** */
                         //****************************************************** */
                         function drawComponentCount() {
                             var data = google.visualization.arrayToDataTable([
                                 ['App name', 'OSS Count', 'Commercial Count'],
                                 <?php
+                                $app_name = $_GET['app_name'] ?? null;
+                                $app_version = $_GET['app_version'] ?? null;
                                 $query = $db->query("SELECT app_name, app_version, SUM(CASE WHEN license NOT LIKE '%Commercial%' THEN 1 ELSE 0 END) as oss_count, SUM(CASE WHEN license LIKE '%Commercial%' THEN 1 ELSE 0 END) as commercial_count, COUNT(license) as total
-          FROM apps_components
-          GROUP BY app_name;");
+                                FROM apps_components
+                                WHERE app_name ='$app_name'
+                                AND app_version = '$app_version'
+                                GROUP BY app_name;");
                                 while ($query_row = $query->fetch_assoc()) {
                                     $app_name = $query_row['app_name'];
                                     $oss_count = $query_row['oss_count'];
@@ -1180,27 +1202,29 @@
                                 ?>
                             ]);
 
-                            var options = {
-                                chart: {
-                                    title: 'Component Count Report',
-                                    subtitle: 'OSS count and Total Commercial count',
-                                },
-                                bars: 'vertical'
-                            };
+                        var options = {
+                            title: 'Component Count Report',
+                            width: 900,
+                            height: 500,
+                        };
 
-                            var chart = new google.charts.Bar(document.getElementById('componentChart'));
-
-                            chart.draw(data, google.charts.Bar.convertOptions(options));
+                        var chart = new google.visualization.BarChart(document.getElementById("componentChart"));
+                        chart.draw(data, options);
                         }
 
                         function drawLicenesCount() {
                             var data = google.visualization.arrayToDataTable([
                                 ['License name', 'License Count'],
                                 <?php
+
+                                $app_name = $_GET['app_name'] ?? null;
+                                $app_version = $_GET['app_version'] ?? null;
                                 $query = $db->query("SELECT license, COUNT(*) as cmpt_number
-          FROM `apps_components`
-          GROUP BY license
-          ORDER BY 2 DESC;");
+                                FROM `apps_components`
+                                WHERE app_name ='$app_name'
+                                AND app_version = '$app_version'
+                                GROUP BY license
+                                ORDER BY 2 DESC;");
                                 while ($query_row = $query->fetch_assoc()) {
                                     $license = $query_row['license'];
                                     $cmpt_number = $query_row['cmpt_number'];
@@ -1210,28 +1234,14 @@
                                 ?>
                             ]);
                             var options = {
-                                chart: {
-                                    title: 'License Count Report',
-                                    subtitle: 'License name and ',
-                                },
-                                bars: 'vertical'
-                            };
-                            var chart = new google.charts.Bar(document.getElementById('licenseChart'));
-
-                            chart.draw(data, google.charts.Bar.convertOptions(options));
+                            title: 'License Count Report', 
+                            width: 900,
+                            height: 500,
+                        };
+                        var chart = new google.visualization.BarChart(document.getElementById("licenseChart"));
+                        chart.draw(data, options);
                         }
                     </script>
-                </head>
-
-                <body>
-                    <div id="requesterChart" style="width: 900px; height: 500px;"></div>
-                    <div id="securityChart" style="width: 900px; height: 500px;"></div>
-                    <div id="componentChart" style="width: 900px; height: 500px;"></div>
-                    <div id="licenseChart" style="width: 900px; height: 500px;"></div>
-
-                </body>
-            </div>
-    </body>
 
     </html>
     <?php
