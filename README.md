@@ -22,3 +22,8 @@ php -r "unlink('composer-setup.php');"
 ```
 php composer.phar require phpoffice/phpspreadsheet
 ```
+
+# CSV Import - Monitoring Digest
+When specifying monitoring digest values in a CSV you *MUST* use a semi colon to seperate the values, the semi-colon delimiter will later be converted to a common for the database insert, an example of a valid entry for the monitoring digest field:
+```75 critical; 90 major; 65 minor```
+Let me emphasize again that the format of this field is quit strict.

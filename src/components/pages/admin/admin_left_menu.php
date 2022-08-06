@@ -18,12 +18,6 @@
       <p>BOM Compare</p></div>
     </a> -->
 
-    <a href="<?php echo checkSelectedLeftMenuLink( "SYSAPPSETS", "admin_system_app_sets.php" ); ?>">
-      <div <?php echo checkSelectedLeftMenu( "SYSAPPSETS" ); ?>>
-      <?php include $assetsPath."svg/list.svg"; ?>
-      <p>System App Sets</p></div>
-    </a>
-
     <a href="<?php echo checkSelectedLeftMenuLink( "IMPORTBOM", "admin_import_bom_2.php" ); ?>">
       <div <?php echo checkSelectedLeftMenu( "IMPORTBOM" ); ?>>
       <?php include $assetsPath."svg/upload.svg"; ?>
