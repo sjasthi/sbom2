@@ -331,7 +331,8 @@
               $requester = $row[$requester_col];
               $description = $row[$description_col];
               $monitoring_id = $row[$monitoring_id_col];
-              $monitoring_digest = $row[$monitoring_digest_col];
+//             $monitoring_digest = $row[$monitoring_digest_col];
+              $monitoring_digest = str_replace(";",",",$row[$monitoring_digest_col]);
               $issue_count = $row[$issue_count_col];
 
            if(!$sqlinsert->execute()) {

@@ -47,7 +47,7 @@
         for ( $j = 0; $j < $cmpt_per_red_app; $j++ ) {
   
 //        $line = sprintf("%'.08d", $cmpt_position).","."cmpt_".$cmpt_position.",".$rando_ver.",".sprintf("%'.08d", $parent_id_buffer).",cmpt_".$parent_id_buffer.",".$parent_ver_buffer.",GPLv3,approved,Nate's Buffer Builder,Description of cmpt_".$parent_id_buffer.",".sprintf("%'.08d", $cmpt_position).",na,0";
-        $line = sprintf("%'.08d", $cmpt_position).","."cmpt_".$cmpt_position.",".$rando_ver.",".sprintf("%'.08d", $parent_id_buffer).",cmpt_".$parent_id_buffer.",".$parent_ver_buffer.",GPLv3,approved,Nate's Buffer Builder,Description of cmpt_".$parent_id_buffer.",".sprintf("%'.08d", $cmpt_position).",".random_int(0,100)." critical, ".random_int(0,100)." major, ".random_int(0,100)." minor,0";
+        $line = sprintf("%'.08d", $cmpt_position).","."cmpt_".$cmpt_position.",".$rando_ver.",".sprintf("%'.08d", $parent_id_buffer).",cmpt_".$parent_id_buffer.",".$parent_ver_buffer.",GPLv3,approved,Nate's Buffer Builder,Description of cmpt_".$parent_id_buffer.",".sprintf("%'.08d", $cmpt_position).",".random_int(0,100)." critical; ".random_int(0,100)." major; ".random_int(0,100)." minor,0";
   	echo $line."</br>\n";
   	fwrite($red_app_csv, $line."\n");
     $branch_position = ( $branch_position + 7 ) % 6;
