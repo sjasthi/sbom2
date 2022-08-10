@@ -23,6 +23,13 @@
             </div>
         </a>
 
+        <a href="<?php echo checkSelectedLeftMenuLink( "SCALE", "help_scale_testing.php" ); ?>">
+            <div <?php echo checkSelectedLeftMenu( "SCALE" ); ?>>
+                <?php include $assetsPath."svg/path.svg"; ?>
+                <p> Scale Testing </p>
+            </div>
+        </a>
+
         <a href="<?php echo checkSelectedLeftMenuLink( "HELPFAQS", "help_faqs.php" ); ?>">
             <div <?php echo checkSelectedLeftMenu( "HELPFAQS" ); ?>>
                 <?php include $assetsPath."svg/faq.svg"; ?>
