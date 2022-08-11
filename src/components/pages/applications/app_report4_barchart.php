@@ -5,7 +5,8 @@
 
     include("../../../../index.php");
     include("app_left_menu.php");
-
+    ini_set('display_errors', 0);
+	
     global $db;
 ?>
 

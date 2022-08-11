@@ -75,6 +75,7 @@
     <div class="container">
       <h3>Applications</h3>
 
+		<button><a class="btn btn-sm" href="app_id.php">Comprehensive Report</a></button>
 
       <table id="info" cellpadding="0" cellspacing="0" border="0"
         class="datatable table table-striped table-bordered datatable-style table-hover"

@@ -1,6 +1,6 @@
 <?php
     $nav_selected = "APPLICATIONS";
-    $left_selected = "APP_ID2";
+    $left_selected = "APP_ID";
     $tabTitle = "Comprehensive Report";
 
     include("../../../../index.php");
@@ -67,10 +67,19 @@
     echo '<br>'.'<h3>Fix Plan: </h3>'. '<br>';  
     function getFixPlan($db)
     {
-        $sql = "SELECT red_app_id, app_name,app_version,monitoring_id,monitoring_digest,
-        CASE WHEN monitoring_digest = 'critical' THEN 'Need Fixing'
-        ELSE 'No Fix Needed' END AS fix_plan
-        FROM apps_components ;";
+        $id = isset($_GET["app_id"]) ? $_GET["app_id"] : "" ;
+        $app_name = isset($_GET["app_name"]) ? $_GET["app_name"] : "" ;
+        $version = isset($_GET["app_version"]) ? $_GET["app_version"] : "" ;
+
+
+        // $sql = "SELECT red_app_id, app_name,app_version,monitoring_id,monitoring_digest,
+        // CASE WHEN monitoring_digest = 'critical' THEN 'Need Fixing'
+        // ELSE 'No Fix Needed' END AS fix_plan
+        // FROM apps_components";
+          $sql = "SELECT red_app_id, app_name,app_version,monitoring_id,monitoring_digest,
+          CASE WHEN monitoring_digest = 'critical' THEN 'Need Fixing'
+          ELSE 'No Fix Needed' END AS fix_plan
+          FROM apps_components WHERE app_id='$id' OR (app_name='$app_name' AND app_version='$version')";
         $result = $db->query($sql);
     
         if ($result->num_rows > 0) {
@@ -87,6 +96,7 @@
         }
         else {
             echo "0 results";
+            // echo $result->error();
         }
         $result->close();
     }
@@ -142,9 +152,13 @@
             <tbody>
         <?php
 
-            // echo '<br>'.'<h3>Security Summary :</h3>'. '<br>';  
+            // echo '<br>'.'<h3>Security Summary :</h3>'. '<br>'; 
+            
+            $id = isset($_GET["app_id"]) ? $_GET["app_id"] : "" ;
+            $app_name = isset($_GET["app_name"]) ? $_GET["app_name"] : "" ;
+            $version = isset($_GET["app_version"]) ? $_GET["app_version"] : "" ;
 
-            $sql = "SELECT IF(monitoring_digest = 5 or monitoring_digest =4,'major issues', 'minor issues') as security , COUNT(monitoring_digest) as count FROM `apps_components` GROUP BY monitoring_digest";
+            $sql = "SELECT IF(monitoring_digest = 5 or monitoring_digest =4,'major issues', 'minor issues') as security , COUNT(monitoring_digest) as count FROM `apps_components` WHERE app_id='$id' OR (app_name='$app_name' AND app_version='$version') GROUP BY monitoring_digest";
 
                 $result = $db->query($sql);
                 if ($result->num_rows > 0) {
@@ -199,7 +213,11 @@
 
     <?php
 
-    $sql = "SELECT cmpt_name FROM `apps_components` WHERE status!='Approved'";
+    $id = isset($_GET["app_id"]) ? $_GET["app_id"] : "" ;
+    $app_name = isset($_GET["app_name"]) ? $_GET["app_name"] : "" ;
+    $version = isset($_GET["app_version"]) ? $_GET["app_version"] : "" ;
+
+    $sql = "SELECT cmpt_name FROM `apps_components` WHERE status!='Approved' AND app_id='$id' OR (app_name='$app_name' AND app_version='$version') ";
 
 
             $result = $db->query($sql);
@@ -260,8 +278,11 @@
             
     <?php
 
+    $id = isset($_GET["app_id"]) ? $_GET["app_id"] : "" ;
+    $app_name = isset($_GET["app_name"]) ? $_GET["app_name"] : "" ;
+    $version = isset($_GET["app_version"]) ? $_GET["app_version"] : "" ;
 
-    $sql = "SELECT requester, COUNT(requester) as count FROM `apps_components` GROUP BY requester; ";
+    $sql = "SELECT requester, COUNT(requester) as count FROM `apps_components` WHERE app_id='$id' OR (app_name='$app_name' AND app_version='$version')  GROUP BY requester";
 
         $result = $db->query($sql);
         if ($result->num_rows > 0) {
@@ -318,10 +339,19 @@
 
     <?php
 
-    $sql = "SELECT DISTINCT apps_components.cmpt_name FROM apps_components INNER JOIN applications ON apps_components.red_app_id=applications.app_id WHERE applications.is_eol=1; ";
+    $id = isset($_GET["app_id"]) ? $_GET["app_id"] : "" ;
+    $app_name = isset($_GET["app_name"]) ? $_GET["app_name"] : "" ;
+    $version = isset($_GET["app_version"]) ? $_GET["app_version"] : "" ;
+
+    $sql = "SELECT DISTINCT apps_components.cmpt_name FROM apps_components INNER JOIN applications ON apps_components.red_app_id=applications.app_id WHERE applications.is_eol=1";
+
+
+
+    // $sql = "SELECT DISTINCT apps_components.cmpt_name FROM apps_components INNER JOIN applications ON apps_components.red_app_id=applications.app_id WHERE applications.is_eol=1 AND apps_components.app_id='$id' OR (app_name='$app_name' AND app_version='$version')";
 
 
             $result = $db->query($sql);
+
             if ($result->num_rows > 0) {
                 // output data of each row
 
@@ -340,6 +370,8 @@
             }//end if
             else {
             echo "0 results";
+     
+            // echo $result->error;
             }//end else
             $result->close();
 
@@ -374,8 +406,13 @@
         
         <?php
 
+$id = isset($_GET["app_id"]) ? $_GET["app_id"] : "" ;
+$app_name = isset($_GET["app_name"]) ? $_GET["app_name"] : "" ;
+$version = isset($_GET["app_version"]) ? $_GET["app_version"] : "" ;
 
-    $sql = "SELECT cmpt_name FROM `apps_components` WHERE issue_count > 0";
+
+
+    $sql = "SELECT cmpt_name FROM `apps_components` WHERE issue_count > 0 AND apps_components.app_id='$id' OR (app_name='$app_name' AND app_version='$version')";
 
         $result = $db->query($sql);
         if ($result->num_rows > 0) {
@@ -427,8 +464,15 @@
 
     <?php    
 
+    
+$id = isset($_GET["app_id"]) ? $_GET["app_id"] : "" ;
+$app_name = isset($_GET["app_name"]) ? $_GET["app_name"] : "" ;
+$version = isset($_GET["app_version"]) ? $_GET["app_version"] : "" ;
 
-    $sql = "SELECT cmpt_name  FROM apps_components GROUP BY cmpt_name HAVING COUNT(app_version) > 1";
+
+
+
+    $sql = "SELECT cmpt_name  FROM apps_components WHERE apps_components.app_id='$id' OR (app_name='$app_name' AND app_version='$version') GROUP BY cmpt_name HAVING COUNT(app_version) > 1";
 
         $result = $db->query($sql);
         if ($result->num_rows > 0) {
@@ -510,6 +554,8 @@
                 <?php
     
             // getComponentCount($db);
+
+            
 
             $sql = "SELECT (SELECT count(*) FROM `apps_components` WHERE license like '%Commercial%') as commericalTotal,
             (SELECT count(*) FROM `apps_components` WHERE license not like '%Commercial%') as ossTotal;";

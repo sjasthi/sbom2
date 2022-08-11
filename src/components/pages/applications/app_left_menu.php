@@ -45,8 +45,9 @@
             </div>
         </a>
 
-        <a href="<?php echo checkSelectedLeftMenuLink( "APP_ID", "app_id.php" ); ?>">
-            <div <?php echo checkSelectedLeftMenu( "APP_ID" ); ?>>
+	
+		        <a href="<?php echo checkSelectedLeftMenuLink( "APP_ID2", "app_id.php" ); ?>">
+            <div <?php echo checkSelectedLeftMenu( "APP_ID2" ); ?>>
                 <?php include $assetsPath."svg/barChart.svg"; ?>
                 <p>Comprehensive Report</p>
             </div>
